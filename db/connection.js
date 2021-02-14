@@ -1,11 +1,17 @@
-var mysql = require('mysql');
-var config = require("../config.json")
+const config = require("../config.json")
 
-const con = mysql.createConnection({
-  host: config.HOST,
-  user: config.USER,
-  password: config.PASSWORD,
-  database: config.DB
-});
+const con = {
+  client: 'mysql',
+  connection: {
+    host: config.HOST,
+    user: config.USER,
+    password: config.PASSWORD,
+    database: config.DB,
+    multipleStatements: true
+  },
+  pool: { min: 0, max: 7 }
+};
 
-module.exports = con;
+const connection = require('knex')(con);
+
+module.exports = connection;
