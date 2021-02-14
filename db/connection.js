@@ -12,6 +12,6 @@ const con = {
   pool: { min: 0, max: 7 }
 };
 
-const connection = require('knex')(con);
+const db = require('knex')(con);
 
-module.exports = connection;
+module.exports = db;
