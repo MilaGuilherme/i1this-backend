@@ -10,6 +10,7 @@ create table users(
     email varchar(255) unique not null,
     type_id int,
     created_at datetime not null,
+    active boolean default true,
         foreign key (type_id) references user_types(id)
 );
 
