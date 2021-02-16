@@ -1,13 +1,9 @@
 const db = require("../../db/connection");
-const userHelper = require("../../helpers/userHelper")
 const errorHelper = require("../../helpers/errorHelper")
+const tables = require("../tables.json")
 
-const userTable = "users"
-const productsTable = "products"
-const plussedTable = "user_plussed_product"
-const watchedTable = "user_watches_category"
 
-// const data = {
+// const user = {
 //     "name": "Camila",
 //     "email": "camila@gmail.com",
 //     "type_id": "1",
@@ -15,27 +11,32 @@ const watchedTable = "user_watches_category"
 //     "active":true
 // }
 
-// const data = {
+// const oned = {
 //     "product_id": 1,
 //     "user_id": 1,
 //     "notification": true,
-//     "plussed_at": new Date(),
+//     "oned_at": new Date(),
 // }
 
-const data = {
-    "category_id": 1,
-    "user_id": 1
-}
+// const watched = {
+//     "category_id": 1,
+//     "user_id": 1
+// }
+
+// const accepted = {
+//     "proposal_id": 1,
+//     "user_id": 1,
+// }
 
 /**
- * @route post: /users
+ * @post /users
  * @param {Object} data
  * @returns {Promise}
  */
 function insertUser(data) {
-    db(userTable).insert(data)
-        .then((data) => {
-            db(userTable).where("id", data)
+    db(tables.userTable).insert(data)
+        .then((id) => {
+            db(tables.userTable).where("id", id)
                 .then((data) => {
                     let res = data.length === 0 ? `No data` : data
                     db.destroy();
@@ -49,17 +50,17 @@ function insertUser(data) {
             console.log(err);
             return err;
         })
-}
+};
 
 /**
- * @route post: /users/:id/plus/:id
+ * @post /users/{user_id}/one/{product_id}
  * @param {Object} data
  * @returns {Promise}
  */
-function userPlus(data) {
-    db(plussedTable).insert(data)
-        .then((data) => {
-            db(plussedTable).where("id", data)
+function insertOne(data) {
+    db(tables.onedTable).insert(data)
+        .then((id) => {
+            db(tables.onedTable).where("id", id)
                 .then((data) => {
                     let res = data.length === 0 ? `No data` : data
                     db.destroy();
@@ -73,17 +74,17 @@ function userPlus(data) {
             console.log(err);
             return err;
         })
-}
+};
 
 /**
- * @route post: /users/:id/category/:id
+ * @post /users/{user_id}/category/{category_id}
  * @param {Object} data
  * @returns {Promise}
  */
-function userWatch(data) {
-    db(watchedTable).insert(data)
-        .then((data) => {
-            db(watchedTable).where("id", data)
+function insertWatch(data) {
+    db(tables.watchedTable).insert(data)
+        .then((id) => {
+            db(tables.watchedTable).where("id", id)
                 .then((data) => {
                     let res = data.length === 0 ? `No data` : data
                     db.destroy();
@@ -97,8 +98,30 @@ function userWatch(data) {
             console.log(err);
             return err;
         })
-}
+};
 
-userWatch(data);
+/**
+ * @post /users/{user_id}/proposals/{proposal_id}
+ * @param {Object} data
+ * @returns {Promise}
+ */
+function insertAccept(data) {
+    db(tables.acceptedTable).insert(data)
+        .then((id) => {
+            db(tables.acceptedTable).where("id", id)
+                .then((data) => {
+                    let res = data.length === 0 ? `No data` : data
+                    db.destroy();
+                    console.log(res)
+                    return res;
+                })
+        })
+        .catch((error) => {
+            let err = errorHelper(error)
+            db.destroy();
+            console.log(err);
+            return err;
+        })
+};
 
-module.exports = { insertUser };
+module.exports = { insertUser, insertOne, insertWatch, insertAccept };

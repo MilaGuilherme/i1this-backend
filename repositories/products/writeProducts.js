@@ -1,40 +1,67 @@
 const db = require("../../db/connection");
 const errorHelper = require("../../helpers/errorHelper")
+const tables = require("../tables.json")
 
-const productsTable = "products"
+// const product = {
+//     "name": "Test Item",
+//     "created_by": "1",
+//     "created_at": new Date(),
+//     "price": "22.50",
+//     "description": "A test item",
+//     "photos":"http://"
+// }
 
-const data = {
-    "name": "Camila",
-    "email": "mila@gmail.com",
-    "type_id": "1",
-    "created_at": new Date(),
-    "active":true
-}
+// const prodCategory = {
+//     "product_id": "1",
+//     "category_id": "1"
+// }
 
 /**
- * @route post: /products
+ * @post /products
  * @param {Object} data
  * @returns {Promise}
  */
 function insertProduct(data) {
-    db(productsTable).insert(data)
-        .then((data) => {
-            db(userTable).where("id", data)
+    db(tables.productsTable).insert(data)
+        .then((id) => {
+            db(tables.productsTable).where("id", id)
                 .then((data) => {
-                    let res = userHelper.allUsers(data);
-                    db.destroy();
+                    let res = data.length === 0 ? `No data` : data
                     console.log(res)
+                    db.destroy();
                     return res;
                 })
         })
         .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
+            let err = errorHelper(error);
             console.log(err);
+            db.destroy();
             return err;
         })
 }
 
-insertProduct(data);
+/**
+ * @post /products/{product_id}/category/{category_id}
+ * @param {Object} data
+ * @returns {Promise}
+ */
+function insertProductInCategory(data) {
+    db(tables.PrdInCatTable).insert(data)
+        .then((id) => {
+            db(tables.PrdInCatTable).where("id", id)
+                .then((data) => {
+                    let res = data.length === 0 ? `No data` : data
+                    console.log(res)
+                    db.destroy();
+                    return res;
+                })
+        })
+        .catch((error) => {
+            let err = errorHelper(error);
+            console.log(err);
+            db.destroy();
+            return err;
+        })
+}
 
-module.exports = { insertProduct };
+module.exports = { insertProduct , insertProductInCategory };

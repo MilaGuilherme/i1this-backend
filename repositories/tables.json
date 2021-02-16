@@ -1,0 +1,9 @@
+{
+    "onedTable" : "user_plussed_product",
+    "watchedTable" : "user_watches_category",
+    "acceptedTable" : "user_accepted_proposal",
+    "userTable" : "users",
+    "productsTable" : "products",
+    "PrdInCatTable" : "product_in_category",
+    "proposalsTable" : "proposals"
+}

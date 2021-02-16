@@ -2,7 +2,7 @@ create schema if not exists `i1this` default character set utf8;
 
 use i1this;
 
-drop table if exists users, user_types, categories, products, proposals, product_in_category, user_plussed_product, user_accepted_proposal, user_watches_category, category_parents_category, logs;
+drop table if exists users, user_types, categories, products, proposals, product_in_category, user_oned_product, user_accepted_proposal, user_watches_category, category_parents_category, logs;
 
 create table users(
     id int not null auto_increment primary key,
@@ -32,7 +32,8 @@ create table products(
     price decimal not null,
     description varchar(255) not null,
     photos varchar(255) not null,
-    pluses int default 0,
+    ones int default 0,
+    active boolean default 1,
         foreign key (created_by) references users(id)
 );
 
@@ -58,12 +59,12 @@ create table product_in_category(
         foreign key (category_id) references categories(id)
 );
 
-create table user_plussed_product(
+create table user_oned_product(
     id int not null auto_increment primary key,
     product_id int not null,
     user_id int not null,
     notification boolean default false,
-    plussed_at datetime not null,
+    oned_at datetime not null,
         foreign key (product_id) references products(id),
         foreign key (user_id) references users(id)
 );

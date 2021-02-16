@@ -29,7 +29,7 @@ function userProducts(data,created_by){
  * @param {Number} user_id
  * @returns {JSON}
  */
-function userPlussed(data,user_id){
+function userOned(data,user_id){
     return data.length === 0 ? `No products +1 by the user of ID ${user_id} were found` : data
 }
 /**

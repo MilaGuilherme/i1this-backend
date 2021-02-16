@@ -1,18 +1,13 @@
 const db = require("../../db/connection");
-//const userHelper = require("../../helpers/userHelper")
 const errorHelper = require("../../helpers/errorHelper")
-
-const userTable = "users"
-const productsTable = "products"
-const plussedTable = "user_plussed_product"
-const watchedTable = "user_watches_category"
+const tables = require("../tables.json")
 
 /**
- * @route get: /users
+ * @get /users
  * @returns {Promise}
  */
 function getUsers() {
-    db(userTable)
+    db(tables.userTable)
         .then((data) => {
             let res = data.length === 0 ? `No users found` : data
             db.destroy();
@@ -21,19 +16,19 @@ function getUsers() {
         })
         .catch((error) => {
             let err = errorHelper(error)
-            db.destroy();
             console.log(err);
+            db.destroy();
             return err;
         })
 }
 
 /**
- * @route get: users/:id/
+ * @get users/{user_id}
  * @param {Number} id
  * @returns {Promise}
  */
 function getUserByID(id) {
-    db(userTable).where("id", id)
+    db(tables.userTable).where("id", id)
         .then((data) => {
             let res = data.length === 0 ? `No user registered with the ID ${id} were found` : data
             console.log(res);
@@ -42,19 +37,19 @@ function getUserByID(id) {
         })
         .catch((error) => {
             let err = errorHelper(error)
-            db.destroy();
             console.log(err);
+            db.destroy();
             return err;
         })
 }
 
 /**
- * @route get: users/:id/products
+ * @get users/{user_id}/products
  * @param {Number} created_by
  * @returns {Promise}
  */
-function getUserProducts(created_by) {
-    db(productsTable).where("created_by", created_by)
+function getUserProduct(created_by) {
+    db(tables.productsTable).where("created_by", created_by)
         .then((data) => {
             let res = data.length === 0 ? `No products registered by the user of ID ${created_by} were found` : data
             console.log(res);
@@ -63,20 +58,20 @@ function getUserProducts(created_by) {
         })
         .catch((error) => {
             let err = errorHelper(error)
-            db.destroy();
             console.log(err);
+            db.destroy();
             return err;
         })
 }
 
 
 /**
- * @route get: users/:id/plus
+ * @get users/{user_id}/ones
  * @param {Number} user_id
  * @returns {Promise}
  */
-function getUserPlusseds(user_id) {
-    db(plussedTable).where("user_id", user_id)
+function getUserOned(user_id) {
+    db(tables.onedTable).where("user_id", user_id)
         .then((data) => {
             let res = data.length === 0 ? `No products +1 by the user of ID ${user_id} were found` : data
             console.log(res);
@@ -85,19 +80,19 @@ function getUserPlusseds(user_id) {
         })
         .catch((error) => {
             let err = errorHelper(error)
-            db.destroy();
             console.log(err);
+            db.destroy();
             return err;
         })
 }
 
 /**
- * @route get: users/:id/categories
+ * @get users/{user_id}/categories
  * @param {Number} user_id
  * @returns {Promise}
  */
 function getUserWatched(user_id) {
-    db(watchedTable).where("user_id", user_id)
+    db(tables.watchedTable).where("user_id", user_id)
         .then((data) => {
             let res = data.length === 0 ? `No categories watched by the user of ID ${user_id} were found` : data
             console.log(res);
@@ -106,10 +101,30 @@ function getUserWatched(user_id) {
         })
         .catch((error) => {
             let err = errorHelper(error)
-            db.destroy();
             console.log(err);
+            db.destroy();
+            return err;
+        })
+}
+/**
+ * @get users/{user_id}/accepted
+ * @param {Number} user_id
+ * @returns {Promise}
+ */
+function getUserAccepted(user_id) {
+    db(tables.acceptedTable).where("user_id", user_id)
+        .then((data) => {
+            let res = data.length === 0 ? `No proposals accepted by the user of ID ${user_id} were found` : data
+            console.log(res);
+            db.destroy();
+            return res;
+        })
+        .catch((error) => {
+            let err = errorHelper(error)
+            console.log(err);
+            db.destroy();
             return err;
         })
 }
 
-module.exports = { getUsers , getUserByID , getUserProducts , getUserPlusseds , getUserWatched};
+module.exports = { getUsers , getUserByID , getUserProduct , getUserOned, getUserWatched, getUserAccepted };
