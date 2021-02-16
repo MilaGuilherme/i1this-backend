@@ -9,7 +9,7 @@ const tables = require("../tables.json")
 function getCategories() {
     db(tables.categoriesTable)
         .then((data) => {
-            let res = data.length === 0 ? `No products found` : data
+            let res = data.length === 0 ? `No categories found` : data
             db.destroy();
             console.log(res)
             return res;
@@ -93,7 +93,7 @@ function getCategoryWatchers(category_id) {
 function getCategoryParents(child_id) {
     db(tables.catParentsTable).where("child_id", child_id)
         .then((data) => {
-            let res = data.length === 0 ? `No categories parent of the category of ID ${child_id} were found` : data
+            let res = data.length === 0 ? `No categories parents of the category of ID ${child_id} were found` : data
             console.log(res);
             db.destroy();
             return res;
