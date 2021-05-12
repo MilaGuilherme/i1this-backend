@@ -1,6 +1,3 @@
-// Update with your config settings.
-const config = require("./config.json")
-
 module.exports = {
 
   development: {
@@ -43,10 +40,10 @@ module.exports = {
   production: {
     client: 'mysql',
     connection: {
-      host: config.HOST,
-      user: config.USER,
-      password: config.PASSWORD,
-      database: config.DB,
+      host: process.env.HOST,
+      user: process.env.USER,
+      password: process.env.PASSWORD,
+      database: process.env.DB,
       multipleStatements: true
     },
     pool: {
