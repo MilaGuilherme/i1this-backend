@@ -7,7 +7,7 @@
     "proposalsTable" : "proposals",
     "userTable" : "users",
     "acceptedTable" : "user_accepted_proposal",
-    "onedTable" : "user_plussed_product",
+    "onedTable" : "user_oned_product",
     "userTypesTable" : "user_Types",
     "watchedTable" : "user_watches_category"
 }

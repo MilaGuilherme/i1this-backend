@@ -51,10 +51,4 @@ function updateUserType(db,id,data) {
         })
 };
 
-// const type = {
-//     "name": "Admin",
-// }
-
-// insertUserType(type)
-
 module.exports = { insertUserType };

@@ -34,7 +34,7 @@ function insertUser(db,data) {
  * @returns {Promise}
  */
 
-//NOT TESTED
+//TODO Test
 function updateUser(db,id,data) {
     db(tables.userTable).where("id", id).update(data)
         .then((id) => {
@@ -130,11 +130,4 @@ function insertAccept(db,data) {
         })
 };
 
-const accepted = {
-    "proposal_id": 1,
-    "user_id": 1,
-}
-
-insertAccept(db,accepted)
-
-module.exports = { insertUser, insertOne, insertWatch, insertAccept };
+module.exports = { insertUser, insertOne, insertWatch, insertAccept , updateUser };

@@ -65,9 +65,4 @@ function getUserTypeUsers(db,type_id) {
             return err;
         })
 }
-
-//getUserTypes();
-//getUserTypeByID(1);
-//getUserTypeUsers(2);
-
 module.exports = { getUserTypes , getUserTypeByID , getUserTypeUsers };
