@@ -130,26 +130,6 @@ function insertAccept(db,data) {
         })
 };
 
-// const user = {
-//     "name": "Camila",
-//     "email": "camila@gmail.com",
-//     "type_id": "1",
-//     "created_at": new Date(),
-//     "active":true
-// }
-
-// const oned = {
-//     "product_id": 1,
-//     "user_id": 1,
-//     "notification": true,
-//     "oned_at": new Date(),
-// }
-
-// const watched = {
-//     "category_id": 1,
-//     "user_id": 1
-// }
-
 const accepted = {
     "proposal_id": 1,
     "user_id": 1,

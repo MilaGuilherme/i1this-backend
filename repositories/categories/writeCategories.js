@@ -1,26 +1,13 @@
 const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
 
-const category = {
-    "name": "Test",
-}
-
-const child = {
-    "child_id": "1",
-    "parent_id": "1"
-}
-
-const parent = {
-    "parent_id": "1",
-    "child_id": "1"
-}
-
 /**
  * @post /category
+ * @param {Object} db
  * @param {Object} data
  * @returns {Promise}
  */
-function insertCategory(data) {
+function insertCategory(db,data) {
     db(tables.categoriesTable).insert(data)
         .then((id) => {
             db(tables.categoriesTable).where("id", id)
@@ -41,10 +28,11 @@ function insertCategory(data) {
 
 /**
  * @post /category/{category_id}/child/{child_id}
+ * @param {Object} db
  * @param {Object} data
  * @returns {Promise}
  */
-function insertChild(data) {
+function insertChild(db,data) {
     db(tables.catParentsTable).insert(data)
         .then((id) => {
             db(tables.catParentsTable).where("id", id)
@@ -65,10 +53,11 @@ function insertChild(data) {
 
 /**
  * @post /category/{category_id}/parent/{parent_id}
+ * @param {Object} db
  * @param {Object} data
  * @returns {Promise}
  */
-function insertParent(data) {
+function insertParent(db,data) {
     db(tables.catParentsTable).insert(data)
         .then((id) => {
             db(tables.catParentsTable).where("id", id)
@@ -87,7 +76,4 @@ function insertParent(data) {
         })
 }
 
-//insertCategory(category);
-//insertChild(child);
-//insertParent(parent);
 module.exports = { insertCategory , insertChild , insertParent };

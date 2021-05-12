@@ -3,10 +3,11 @@ const tables = require("../tables.json")
 
 /**
  * @post proposals/
+ * @param {Object} db
  * @param {Object} data
  * @returns {Promise}
  */
-function insertProposal(data) {
+function insertProposal(db,data) {
     db(tables.proposalsTable).insert(data)
         .then((id) => {
             db(tables.proposalsTable).where("id", id)
@@ -24,17 +25,4 @@ function insertProposal(data) {
             return err;
         })
 }
-
-// const proposal = {
-//     "product_id":"1",
-//     "created_by":"1",
-//     "created_at": new Date(),
-//     "price" : 24.65,
-//     "link":"http://",
-//     "minimun_quantity" : "20",
-//     "requires_intent" : false
-// }
-
-//insertProposal(proposal);
-
 module.exports = { insertProposal };

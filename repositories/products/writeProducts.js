@@ -1,26 +1,13 @@
 const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
 
-// const product = {
-//     "name": "Test Item",
-//     "created_by": "1",
-//     "created_at": new Date(),
-//     "price": "22.50",
-//     "description": "A test item",
-//     "photos":"http://"
-// }
-
-// const prodCategory = {
-//     "product_id": "1",
-//     "category_id": "1"
-// }
-
 /**
  * @post /products
+ * @param {Object} db
  * @param {Object} data
  * @returns {Promise}
  */
-function insertProduct(data) {
+function insertProduct(db,data) {
     db(tables.productsTable).insert(data)
         .then((id) => {
             db(tables.productsTable).where("id", id)
@@ -41,10 +28,11 @@ function insertProduct(data) {
 
 /**
  * @post /products/{product_id}/category/{category_id}
+ * @param {Object} db
  * @param {Object} data
  * @returns {Promise}
  */
-function insertProductInCategory(data) {
+function insertProductInCategory(db,data) {
     db(tables.PrdInCatTable).insert(data)
         .then((id) => {
             db(tables.PrdInCatTable).where("id", id)

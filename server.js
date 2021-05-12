@@ -1,9 +1,10 @@
 const express = require('express');
-const db = require('./knex/knex.js');
+const dotenv = require('dotenv');
+dotenv.config();
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

@@ -3,9 +3,10 @@ const tables = require("../tables.json")
 
 /**
  * @get proposals/
+ * @param {Object} db
  * @returns {Promise}
  */
-function getProposals() {
+function getProposals(db) {
     db(tables.proposalsTable)
         .then((data) => {
             let res = data.length === 0 ? `No proposals found` : data
@@ -23,10 +24,11 @@ function getProposals() {
 
 /**
  * @get proposals/{category_id}
+ * @param {Object} db
  * @param {Number} id
  * @returns {Promise}
  */
-function getProposalsByID(id) {
+function getProposalsByID(db,id) {
     db(tables.proposalsTable).where("id", id)
         .then((data) => {
             let res = data.length === 0 ? `No proposal with the ID ${id} was found` : data
@@ -44,10 +46,11 @@ function getProposalsByID(id) {
 
 /**
  * @get proposals/{proposal_id}/users
+ * @param {Object} db
  * @param {Number} proposal_id
  * @returns {Promise}
  */
-function getProposalUsers(proposal_id) {
+function getProposalUsers(db,proposal_id) {
     db(tables.acceptedTable).where("proposal_id", proposal_id)
         .then((data) => {
             let res = data.length === 0 ? `No users who accepted the proposal of ID ${proposal_id} were found` : data
@@ -62,9 +65,5 @@ function getProposalUsers(proposal_id) {
             return err;
         })
 }
-
-// getProposals()
-// getProposalsByID(1)
-// getProposalUsers(1);
 
 module.exports = { getProposals , getProposalsByID , getProposalUsers };
