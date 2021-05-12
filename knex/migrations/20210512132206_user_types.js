@@ -3,7 +3,7 @@ exports.up = function (knex) {
     return knex.schema.createTable('user_types', function (table) {
         table.increments('id').primary()
         table.string('name').notNullable();
-        table.json('permissions');
+        table.text('permissions');
     })
 };
 

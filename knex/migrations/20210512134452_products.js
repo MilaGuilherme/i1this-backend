@@ -7,8 +7,8 @@ exports.up = function (knex) {
         table.timestamp('created_at');
         table.timestamp('updated_at');
         table.decimal('price').notNullable();
-        table.json('description').notNullable();
-        table.json('photos').notNullable();
+        table.text('description').notNullable();
+        table.text('photos').notNullable();
         table.integer('ones').notNullable();
         table.boolean('active');
         table.foreign('created_by').references('users.id')

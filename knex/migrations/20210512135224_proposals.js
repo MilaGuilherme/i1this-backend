@@ -7,8 +7,8 @@ exports.up = function (knex) {
         table.timestamp('created_at');
         table.timestamp('updated_at');
         table.decimal('price').notNullable();
-        table.json('link');
-        table.json('photos').notNullable();
+        table.text('links');
+        table.text('photos').notNullable();
         table.integer('minimun_quantity');
         table.boolean('requires_intent');
         table.boolean('active');
