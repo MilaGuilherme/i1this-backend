@@ -26,6 +26,7 @@
   "homepage": "https://github.com/MilaGuilherme/i1this-backend#readme",
   "devDependencies": {
     "chai": "^4.3.0",
+    "faker-br": "^0.4.1",
     "jest": "^26.6.3",
     "mocha": "^8.3.0",
     "nodemon": "^2.0.7"

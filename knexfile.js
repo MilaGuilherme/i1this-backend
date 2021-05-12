@@ -14,6 +14,9 @@ module.exports = {
     },
     migrations: {
       directory: __dirname+'/knex/migrations'
+    },
+    seeds: {
+      directory: __dirname + '/knex/seeds'
     }
   },
 
@@ -32,6 +35,9 @@ module.exports = {
     },
     migrations: {
       directory: __dirname+'/knex/migrations'
+    },
+    seeds: {
+      directory: __dirname + '/knex/seeds'
     }
   },
   production: {
@@ -49,6 +55,9 @@ module.exports = {
     },
     migrations: {
       directory: __dirname+'/knex/migrations'
+    },
+    seeds: {
+      directory: __dirname + '/knex/seeds'
     }
   }
 
