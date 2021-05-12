@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('./knex/knex.js');
 const bodyParser = require('body-parser');
 
 const app = express();

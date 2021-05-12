@@ -1,4 +1,4 @@
-const db = require('./connection');
+const db = require('./db');
 const fs = require('fs');
 const sql = fs.readFileSync(__dirname + '\\queries\\create.sql').toString();
 

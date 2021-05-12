@@ -1,12 +1,12 @@
-const db = require("../../db/connection");
 const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
 
 /**
  * @get /users
+ * @param {Object} db
  * @returns {Promise}
  */
-function getUsers() {
+function getUsers(db) {
     db(tables.userTable)
         .then((data) => {
             let res = data.length === 0 ? `No users found` : data
@@ -24,10 +24,11 @@ function getUsers() {
 
 /**
  * @get users/{user_id}
+ * @param {Object} db
  * @param {Number} id
  * @returns {Promise}
  */
-function getUserByID(id) {
+function getUserByID(db,id) {
     db(tables.userTable).where("id", id)
         .then((data) => {
             let res = data.length === 0 ? `No user registered with the ID ${id} were found` : data
@@ -45,10 +46,11 @@ function getUserByID(id) {
 
 /**
  * @get users/{user_id}/products
+ * @param {Object} db
  * @param {Number} created_by
  * @returns {Promise}
  */
-function getUserProduct(created_by) {
+function getUserProduct(db,created_by) {
     db(tables.productsTable).where("created_by", created_by)
         .then((data) => {
             let res = data.length === 0 ? `No products registered by the user of ID ${created_by} were found` : data
@@ -67,10 +69,11 @@ function getUserProduct(created_by) {
 
 /**
  * @get users/{user_id}/ones
+ * @param {Object} db
  * @param {Number} user_id
  * @returns {Promise}
  */
-function getUserOned(user_id) {
+function getUserOned(db,user_id) {
     db(tables.onedTable).where("user_id", user_id)
         .then((data) => {
             let res = data.length === 0 ? `No products +1 by the user of ID ${user_id} were found` : data
@@ -88,10 +91,11 @@ function getUserOned(user_id) {
 
 /**
  * @get users/{user_id}/categories
+ * @param {Object} db
  * @param {Number} user_id
  * @returns {Promise}
  */
-function getUserWatched(user_id) {
+function getUserWatched(db,user_id) {
     db(tables.watchedTable).where("user_id", user_id)
         .then((data) => {
             let res = data.length === 0 ? `No categories watched by the user of ID ${user_id} were found` : data
@@ -108,10 +112,11 @@ function getUserWatched(user_id) {
 }
 /**
  * @get users/{user_id}/accepted
+ * @param {Object} db
  * @param {Number} user_id
  * @returns {Promise}
  */
-function getUserAccepted(user_id) {
+function getUserAccepted(db,user_id) {
     db(tables.acceptedTable).where("user_id", user_id)
         .then((data) => {
             let res = data.length === 0 ? `No proposals accepted by the user of ID ${user_id} were found` : data

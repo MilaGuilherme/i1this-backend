@@ -41,4 +41,4 @@ function userWatched(data,user_id){
     return data.length === 0 ? `No categories watched by the user of ID ${user_id} were found` : data
 }
 
-module.exports = {};
+module.exports = {allUsers,byID,userProducts,userOned,userWatched};

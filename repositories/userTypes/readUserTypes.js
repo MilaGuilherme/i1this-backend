@@ -1,12 +1,12 @@
-const db = require("../../db/connection");
 const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
 
 /**
  * @get /usertypes
+ * @param {Object} db
  * @returns {Promise}
  */
-function getUserTypes() {
+function getUserTypes(db) {
     db(tables.userTypesTable)
         .then((data) => {
             let res = data.length === 0 ? `No users types found` : data
@@ -24,10 +24,11 @@ function getUserTypes() {
 
 /**
  * @get usertypes/{id}
+ * @param {Object} db
  * @param {Number} id
  * @returns {Promise}
  */
-function getUserTypeByID(id) {
+function getUserTypeByID(db,id) {
     db(tables.userTable).where("id", id)
         .then((data) => {
             let res = data.length === 0 ? `No user type with the ID ${id} was found` : data
@@ -45,10 +46,11 @@ function getUserTypeByID(id) {
 
 /**
  * @get usertypes/{type_id}/users
+ * @param {Object} db
  * @param {Number} created_by
  * @returns {Promise}
  */
-function getUserTypeUsers(type_id) {
+function getUserTypeUsers(db,type_id) {
     db(tables.userTable).where("type_id", type_id)
         .then((data) => {
             let res = data.length === 0 ? `No users of the type of ID ${type_id} were found` : data

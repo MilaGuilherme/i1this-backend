@@ -1,4 +1,3 @@
-const db = require("../../db/connection");
 const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
 
