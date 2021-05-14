@@ -9,7 +9,7 @@ const port = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const router = require("./controllers/");
+const router = require("./controllers");
 app.use('/api', router);
 
 const listener = app.listen(port, () => {

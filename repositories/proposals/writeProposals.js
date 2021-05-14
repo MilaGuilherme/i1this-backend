@@ -25,4 +25,7 @@ function insertProposal(db,data) {
             return err;
         })
 }
+
+// TODO updateProposal
+
 module.exports = { insertProposal };

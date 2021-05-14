@@ -27,7 +27,7 @@ function insertUserType(db,data) {
 };
 
 /**
- * @put /usertypes/{type_id}
+ * @patch /usertypes/{type_id}
  * @param {Object} db
  * @param {Object} data
  * @returns {Promise}

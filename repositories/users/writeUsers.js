@@ -30,8 +30,9 @@ function insertUser(db, data) {
 };
 
 /**
- * @put /users/{user_id}
+ * @patch /users/{user_id}
  * @param {Object} db
+ * @param {number} id
  * @param {Object} data
  * @returns {Promise}
  */
