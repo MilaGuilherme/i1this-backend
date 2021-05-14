@@ -1,6 +1,8 @@
 const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
 
+db = require('../../db/db');
+
 
 /**
  * @post /users
@@ -8,7 +10,7 @@ const tables = require("../tables.json")
  * @param {Object} data
  * @returns {Promise}
  */
-function insertUser(db,data) {
+function insertUser(db, data) {
     db(tables.userTable).insert(data)
         .then((id) => {
             db(tables.userTable).where("id", id)
@@ -34,8 +36,7 @@ function insertUser(db,data) {
  * @returns {Promise}
  */
 
-//TODO Test
-function updateUser(db,id,data) {
+function updateUser(db, id, data) {
     db(tables.userTable).where("id", id).update(data)
         .then((id) => {
             db(tables.userTable).where("id", id)
@@ -61,7 +62,7 @@ function updateUser(db,id,data) {
  * @param {Object} data
  * @returns {Promise}
  */
-function insertOne(db,data) {
+function insertOne(db, data) {
     db(tables.onedTable).insert(data)
         .then((id) => {
             db(tables.onedTable).where("id", id)
@@ -86,7 +87,7 @@ function insertOne(db,data) {
 * @param {Object} data
 * @returns {Promise}
 */
-function insertWatch(db,data) {
+function insertWatch(db, data) {
     db(tables.watchedTable).insert(data)
         .then((id) => {
             db(tables.watchedTable).where("id", id)
@@ -111,7 +112,7 @@ function insertWatch(db,data) {
  * @param {Object} data
  * @returns {Promise}
  */
-function insertAccept(db,data) {
+function insertAccept(db, data) {
     db(tables.acceptedTable).insert(data)
         .then((id) => {
             db(tables.acceptedTable).where("id", id)
@@ -130,4 +131,4 @@ function insertAccept(db,data) {
         })
 };
 
-module.exports = { insertUser, insertOne, insertWatch, insertAccept , updateUser };
+module.exports = { insertUser, insertOne, insertWatch, insertAccept, updateUser };
