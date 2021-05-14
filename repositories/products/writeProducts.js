@@ -79,7 +79,7 @@ function insertProductInCategory(db,data) {
 }
 
 /**
- * @update /products/{product_id}/category/{category_id}
+ * @patch /products/{product_id}/category/{category_id}
  * @param {Object} db
  * @param {number}  id
  * @returns {Promise}
@@ -102,7 +102,7 @@ function removeProductFromCategory(db,id) {
             return err;
         })
 }
-db = require("../../db/db")
-removeProductFromCategory(db,1)
+// db = require("../../db/db")
+// removeProductFromCategory(db,1)
 
 module.exports = { insertProduct , updateProduct , insertProductInCategory , removeProductFromCategory };

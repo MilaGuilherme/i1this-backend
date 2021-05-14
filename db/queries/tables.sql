@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS users, user_types, categories, products, proposals,
+product_in_category, user_oned_product, user_accepted_proposal,
+user_watches_category, category_parents_category, logs; 
+
+
 CREATE TABLE `users`
   (
      `id`         INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
@@ -155,7 +160,8 @@ CREATE TABLE `logs`
   (
      `id`              INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
      `modified_table`  VARCHAR(255) NOT NULL,
-     `modified_column` VARCHAR(255) NOT NULL,
+     `modification`    VARCHAR(255) NOT NULL,
+     `modified_id`     INT,
      `modified_by`     INT NOT NULL,
      `modified_at`     TIMESTAMP NOT NULL,
      `old_value`       VARCHAR(255),

@@ -36,7 +36,6 @@ function insertUser(db, data) {
  * @param {Object} data
  * @returns {Promise}
  */
-
 function updateUser(db, id, data) {
     db(tables.userTable).where("id", id).update(data)
         .then((id) => {

@@ -1,135 +1,109 @@
 const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
+const methods = require('../methods');
 
 /**
  * @get /categories
- * @param {Object} db
- * @returns {Promise}
+ * @returns {Object} data
  */
-function getCategories(db) {
-    db(tables.categoriesTable)
-        .then((data) => {
+function getCategories() {
+    try {
+        methods.getAll(tables.categoriesTable).then((res) => {
             let res = data.length === 0 ? `No categories found` : data
-            db.destroy();
-            console.log(res)
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
- * @get categories/{category_id}
- * @param {Object} db
+ * @get categories/{id}
  * @param {Number} id
- * @returns {Promise}
  */
-function getCategoryById(db,id) {
-    db(tables.categoriesTable).where("id", id)
-        .then((data) => {
-            let res = data.length === 0 ? `No category with the ID ${id} was found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+function getCategoryById(id) {
+    const data = { "id": id }
+    try {
+        methods.getBy(tables.categoriesTable, data).then((data) => {
+            let res = data.length === 0 ? `No categories found` : data
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
  * @get categories/{category_id}/products
- * @param {Object} db
  * @param {Number} category_id
- * @returns {Promise}
  */
-function getCategoryProducts(db,category_id) {
-    db(tables.PrdInCatTable).where("category_id", category_id)
-        .then((data) => {
+function getCategoryProducts(category_id) {
+    const data = { "category_id": category_id }
+    try {
+        methods.getBy(tables.PrdInCatTable, data).then((data) => {
             let res = data.length === 0 ? `No products in the category of ID ${category_id} were found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
  * @get categories/{category_id}/watchers
- * @param {Object} db
  * @param {Number} category_id
- * @returns {Promise}
+ * @returns {Object} data
  */
-function getCategoryWatchers(db,category_id) {
-    db(tables.watchedTable).where("category_id", category_id)
-        .then((data) => {
+function getCategoryWatchers(category_id) {
+    const data = { "category_id": category_id }
+    try {
+        methods.getBy(tables.watchedTable, data).then((data) => {
             let res = data.length === 0 ? `No users watching in the category of ID ${category_id} were found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
  * @get categories/{category_id}/parents
- * @param {Object} db
  * @param {Number} child_id
- * @returns {Promise}
+ * @returns {Object} data
  */
-function getCategoryParents(db,child_id) {
-    db(tables.catParentsTable).where("child_id", child_id)
-        .then((data) => {
-            let res = data.length === 0 ? `No categories parents of the category of ID ${child_id} were found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+function getCategoryParents(child_id) {
+    const data = { "child_id": child_id }
+    try {
+        methods.getBy(tables.catParentsTable, data).then((data) => {
+            let res = data.length === 0 ? `No parents to the category of ID ${child_id} were found` : data
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
  * @get categories/{category_id}/children
- * @param {Object} db
  * @param {Number} parent_id
- * @returns {Promise}
+ * @returns {Object} data
  */
-function getCategoryChildren(db,parent_id) {
-    db(tables.catParentsTable).where("parent_id", parent_id)
-        .then((data) => {
-            let res = data.length === 0 ? `No categories children of the category of ID ${parent_id} were found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+function getCategoryChildren(parent_id) {
+    const data = { "parent_id": parent_id }
+    try {
+        methods.getBy(tables.catParentsTable, data).then((data) => {
+            let res = data.length === 0 ? `No children to the category of ID ${child_id} were found` : data
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
-module.exports = { getCategories , getCategoryById , getCategoryProducts , getCategoryWatchers , getCategoryParents, getCategoryChildren };
+module.exports = { getCategories, getCategoryById, getCategoryProducts, getCategoryWatchers, getCategoryParents, getCategoryChildren };

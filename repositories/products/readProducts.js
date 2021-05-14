@@ -3,45 +3,36 @@ const tables = require("../tables.json")
 
 /**
  * @get /products
- * @param {Object} db
  * @returns {Promise}
  */
-function getProducts(db) {
-    db(tables.productsTable)
-        .then((data) => {
+function getProducts() {
+    try {
+        methods.getAll(tables.productsTable).then((data) => {
             let res = data.length === 0 ? `No products found` : data
-            db.destroy();
-            console.log(res)
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
- * @get products/{product_id}
- * @param {Object} db
+ * @get products/{id}
  * @param {Number} id
  * @returns {Promise}
  */
-function getProductByID(db,id) {
-    db(tables.productsTable).where("id", id)
-        .then((data) => {
+function getProductByID(id) {
+    const data = { "id": id }
+    try {
+        methods.getBy(tables.productsTable, data).then((data) => {
             let res = data.length === 0 ? `No product registered with the ID ${id} was found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**

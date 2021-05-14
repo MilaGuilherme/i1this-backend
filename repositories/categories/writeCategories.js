@@ -1,107 +1,82 @@
 const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
+const methods = require('../methods');
+
 //TODO removeCategory removeParent removeChild
 
 /**
  * @post /categories
- * @param {Object} db
+ * @param {number} agent_id
  * @param {Object} data
- * @returns {Promise}
+ * @returns {Object}
  */
-function insertCategory(db, data) {
-    db(tables.categoriesTable).insert(data)
-        .then((id) => {
-            db(tables.categoriesTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    console.log(res)
-                    db.destroy();
-                    return res;
-                })
+function insertCategory(agent_id, data) {
+    try {
+        methods.insert(tables.categoriesTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error);
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
  * @patch /categories/{category_id}
- * @param {Object} db
  * @param {number} id
+ * @param {number} agent_id
  * @param {Object} data
- * @returns {Promise}
+ * @returns {Object}
  */
-function updateCategory(db, id, data) {
-    db(tables.categoriesTable).where("id", id).update(data)
-        .then((id) => {
-            db(tables.categoriesTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function updateCategory(id, agent_id, data) {
+    try {
+        methods.update(tables.categoriesTable, data, id, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 };
 
-
 /**
- * @post /categories/{category_id}/child/{child_id}
- * @param {Object} db
- * @param {Object} data
- * @returns {Promise}
+ * @delete categories/{category_id}
+ * @param {number} id
+ * @param {number} agent_id
+ * @returns {Object}
  */
-function insertChild(db, data) {
-    db(tables.catParentsTable).insert(data)
-        .then((id) => {
-            db(tables.catParentsTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    console.log(res)
-                    db.destroy();
-                    return res;
-                })
+function removeCategory(id, agent_id) {
+    try {
+        methods.remove(tables.categoriesTable, id, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error);
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
- * @post /categories/{category_id}/parent/{parent_id}
- * @param {Object} db
- * @param {Object} data
- * @returns {Promise}
+ * @post /categories/{parent_id}/children/{child_id}
+ * @param {number} agent_id
+ * @param {number} parent_id
+ * @param {number} child_id
+ * @returns {Object}
  */
-function insertParent(db, data) {
-    db(tables.catParentsTable).insert(data)
-        .then((id) => {
-            db(tables.catParentsTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    console.log(res)
-                    db.destroy();
-                    return res;
-                })
+function insertRelationship(agent_id, parent_id, child_id) {
+    const data = {
+        "parent_id": parent_id,
+        "child_id": child_id
+    }
+    try {
+        methods.insert(tables.catParentsTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error);
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
-module.exports = { insertCategory, updateCategory, insertChild, insertParent };
+
+module.exports = { insertCategory, removeCategory, updateCategory, insertRelationship};
