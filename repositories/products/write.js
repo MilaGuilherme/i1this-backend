@@ -1,4 +1,4 @@
-const tables = require("../tables.json")
+const tables = require("../../db/tables.json")
 const methods = require('../../helpers/methodsHelper');
 
 /**

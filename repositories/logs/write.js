@@ -1,6 +1,6 @@
 
 const errorHelper = require("../../helpers/errorHelper")
-const tables = require("../tables.json")
+const tables = require("../../db/tables.json")
 const db = require('../../db/db')
 
 //DO NOT USE THE METHODS FROM METHOD.JS
@@ -28,12 +28,12 @@ function log(modifiedTable, modification, modifiedId, modifiedBy, oldValue, newV
         .then((id) => {
             db(tables.logsTable).where("id", id)
                 .then((data) => {
-                    process.env.NODE_ENV === 'development' ? console.log(data) : null;
+                    //process.env.NODE_ENV === 'development' ? console.log(data) : null;
                 })
         })
         .catch((error) => {
             let err = errorHelper(error);
-            process.env.NODE_ENV === 'development' ? console.log(err) : null;
+            //process.env.NODE_ENV === 'development' ? console.log(err) : null;
         })
     }
 

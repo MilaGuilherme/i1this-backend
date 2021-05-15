@@ -3,7 +3,7 @@
 const knex = require("knex");
 
 function run(knex) {
-    //replace this up to the, leaving the .toString()
+    //replace this with a migration function leaving the .toString()
     return knex.schema.createTable('categories', function (table) {
         table.increments('id').primary()
         table.string('name').notNullable();

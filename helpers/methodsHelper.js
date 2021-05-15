@@ -1,8 +1,8 @@
 const db = require('../db/db')
 const dotenv = require('dotenv');
-const writelogs = require('../repositories/logs/writeLogs');
+const writelogs = require('../repositories/logs/write');
 const log = writelogs.log;
-const errorHelper = require("./errorHelper")
+const errorHelper = require("./errorHelper");
 dotenv.config();
 
 /**
@@ -12,22 +12,26 @@ dotenv.config();
  * @returns {Promise}
  */
 function insert(tableName, data, agent_id) {
-    return db(tableName).insert(data)
-        .then((id) => {
-            db(tableName).where("id", id)
+    return db(tableName)
+        .insert(data)
+        .then(id => {
+            db(tableName)
+                .where("id", id)
                 .then((response) => {
-                    log(tableName, "insert", id[0], agent_id, "", JSON.stringify(response));
-                    process.env.NODE_ENV === 'development' ? console.log(response) : null;
-                    return response;
-                })
+                    //log(tableName, "insert", id[0], agent_id, "", JSON.stringify(response));
+                    //process.env.NODE_ENV === 'development' ? console.log(response) : null;
+                    return response
+                });
         })
-        .catch((error) => {
+        .catch(error => {
             let err = errorHelper(error);
             process.env.NODE_ENV === 'development' ? console.log(err) : null;
-            ;
-            return err;
+            return err
         })
 }
+
+insert("categories", { "name": "Teste" }, 1).then((response) => { console.log(response) })
+getAll("categories").then(response => { console.log(response) })
 
 /**
  * @param {string} tableName
@@ -37,15 +41,19 @@ function insert(tableName, data, agent_id) {
  * @returns {Promise}
  */
 function update(tableName, data, id, agent_id) {
-    db(tableName).where("id", id)
+    db(tableName)
+        .where("id", id)
         .then((response) => {
             if (response.length > 0)
                 log(tableName, "update", id, agent_id, JSON.stringify(response), JSON.stringify(data))
             else { }
         })
-    return db(tableName).where("id", id).update(data)
+    return db(tableName)
+        .where("id", id)
+        .update(data)
         .then((id) => {
-            db(tableName).where("id", id)
+            db(tableName)
+                .where("id", id)
                 .then((response) => {
                     process.env.NODE_ENV === 'development' ? console.log(response) : null;
                     return response;
@@ -73,9 +81,12 @@ function updateBatch(tableName, condition, data, agent_id) {
                 log(tableName, "updated in batch", null, agent_id, JSON.stringify(response), JSON.stringify(data))
             else { }
         })
-    return db(tableName).where(condition).update(data)
-        .then((id) => {
-            db(tableName).where(condition)
+    return db(tableName)
+        .where(condition)
+        .update(data)
+        .then(() => {
+            db(tableName)
+                .where(condition)
                 .then((response) => {
                     process.env.NODE_ENV === 'development' ? console.log(response) : null;
                     return response;
@@ -95,13 +106,16 @@ function updateBatch(tableName, condition, data, agent_id) {
  * @returns {Promise}
  */
 function remove(tableName, id, agent_id) {
-    db(tableName).where("id", id)
+    db(tableName)
+        .where("id", id)
         .then((response) => {
             if (response.length > 0)
                 log(tableName, "remove", id, agent_id, JSON.stringify(data), "deleted")
             else { }
         })
-    return db(tableName).where("id", id).del()
+    return db(tableName)
+        .where("id", id)
+        .del()
         .then((data) => {
             let response = data === 0 ? `No data to delete` : `Deleted data`
             process.env.NODE_ENV == 'development' ? console.log(response) : null;
@@ -122,13 +136,16 @@ function remove(tableName, id, agent_id) {
  * @returns {Promise}
  */
 function removeBatch(tableName, condition, agent_id) {
-    db(tableName).where(condition)
+    db(tableName)
+        .where(condition)
         .then((data) => {
             if (data.length > 0)
                 log(tableName, "removed in batch", 0, agent_id, JSON.stringify(condition), "deleted")
             else { }
         })
-    return db(tableName).where(condition).del()
+    return db(tableName)
+        .where(condition)
+        .del()
         .then((data) => {
             let response = data === 0 ? `No data to delete` : `Deleted data`
             process.env.NODE_ENV == 'development' ? console.log(response) : null;
@@ -149,12 +166,12 @@ function removeBatch(tableName, condition, agent_id) {
 function getAll(tableName) {
     return db(tableName)
         .then((response) => {
-            process.env.NODE_ENV === 'development' ? console.log(response) : null;
+            //process.env.NODE_ENV === 'development' ? console.log(response) : null;
             return response;
         })
         .catch((error) => {
             let err = errorHelper(error)
-            process.env.NODE_ENV === 'development' ? console.log(err) : null;
+            //process.env.NODE_ENV === 'development' ? console.log(err) : null;
             return err;
         })
 }
@@ -165,7 +182,8 @@ function getAll(tableName) {
  * @returns {Promise}
  */
 function getBy(tableName, data) {
-    return db(tableName).where(data)
+    return db(tableName)
+        .where(data)
         .then((response) => {
             process.env.NODE_ENV === 'development' ? console.log(response) : null;
             return response;
