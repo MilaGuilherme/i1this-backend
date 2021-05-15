@@ -10,14 +10,9 @@ const methods = require('../methods');
  * @returns {Object}
  */
 function insertCategory(agent_id, data) {
-    try {
-        methods.insert(tables.categoriesTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+    return methods.insert(tables.categoriesTable, data, agent_id).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -28,14 +23,9 @@ function insertCategory(agent_id, data) {
  * @returns {Object}
  */
 function updateCategory(id, agent_id, data) {
-    try {
-        methods.update(tables.categoriesTable, data, id, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+    return methods.update(tables.categoriesTable, data, id, agent_id).then((response) => {
+        return response
+    })
 };
 
 /**
@@ -45,21 +35,13 @@ function updateCategory(id, agent_id, data) {
  * @returns {Object}
  */
 function removeCategory(id, agent_id) {
-    try { 
-        let data = { "category_id": 0 }
-        let condition = { "category_id": id }
-        methods.updateBatch(tables.PrdInCatTable, condition, data, agent_id)
-        methods.remove(tables.categoriesTable, id, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+    let data = { "category_id": 0 }
+    let condition = { "category_id": id }
+    methods.updateBatch(tables.PrdInCatTable, condition, data, agent_id)
+    return methods.remove(tables.categoriesTable, id, agent_id).then((response) => {
+        return response
+    })
 }
-
-removeCategory(1, 1)
-
 /**
  * @post /categories/{parent_id}/children/{child_id}
  * @param {number} agent_id
@@ -72,15 +54,11 @@ function insertRelationship(agent_id, parent_id, child_id) {
         "parent_id": parent_id,
         "child_id": child_id
     }
-    try {
-        methods.insert(tables.catParentsTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+    return methods.insert(tables.catParentsTable, data, agent_id).then((response) => {
+        return response
+    })
 }
+
 
 
 module.exports = { insertCategory, removeCategory, updateCategory, insertRelationship };

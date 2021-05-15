@@ -7,15 +7,10 @@ const methods = require('../methods');
  * @returns {Object}
  */
 function getUsers() {
-    try {
-        methods.getAll(tables.userTable).then((data) => {
-            let res = data.length === 0 ? `No products found` : data
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.getAll(tables.userTable).then((data) => {
+            let response = data.length === 0 ? `No products found` : data
+            return response
+        }) 
 }
 
 /**
@@ -25,15 +20,10 @@ function getUsers() {
  */
 function getUserByID(id) {
     const data = { "id": id }
-    try {
-        methods.getBy(tables.userTable, data).then((data) => {
-            let res = data.length === 0 ? `No user registered with the ID ${id} were found` : data
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.getBy(tables.userTable, data).then((data) => {
+            let response = data.length === 0 ? `No user registered with the ID ${id} were found` : data
+            return response
+        }) 
 }
 
 /**
@@ -44,15 +34,10 @@ function getUserByID(id) {
  */
 function getUserProduct(created_by) {
     const data = { "created_by": created_by }
-    try {
-        methods.getBy(tables.productsTable, data).then((data) => {
-            let res = data.length === 0 ? `No products registered by the user of ID ${created_by} were found` : data
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.getBy(tables.productsTable, data).then((data) => {
+            let response = data.length === 0 ? `No products registered by the user of ID ${created_by} were found` : data
+            return response
+        }) 
 }
 
 
@@ -63,15 +48,10 @@ function getUserProduct(created_by) {
  */
 function getUserOned(user_id) {
     const data = { "user_id": user_id }
-    try {
-        methods.getBy(tables.onedTable, data).then((data) => {
-            let res = data.length === 0 ? `No products +1 by the user of ID ${user_id} were found` : data
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.getBy(tables.onedTable, data).then((data) => {
+            let response = data.length === 0 ? `No products +1 by the user of ID ${user_id} were found` : data
+            return response
+        }) 
 }
 
 /**
@@ -81,15 +61,10 @@ function getUserOned(user_id) {
  */
 function getUserWatched(user_id) {
     const data = { "user_id": user_id }
-    try {
-        methods.getBy(tables.watchedTable, data).then((data) => {
-            let res = data.length === 0 ? `No categories watched by the user of ID ${user_id} were found` : data
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.getBy(tables.watchedTable, data).then((data) => {
+            let response = data.length === 0 ? `No categories watched by the user of ID ${user_id} were found` : data
+            return response
+        }) 
 }
 /**
  * @get users/{user_id}/accepted
@@ -99,15 +74,10 @@ function getUserWatched(user_id) {
  */
 function getUserAccepted(db,user_id) {
     const data = { "user_id": user_id }
-    try {
-        methods.getBy(tables.acceptedTable, data).then((data) => {
-            let res = data.length === 0 ? `No proposals accepted by the user of ID ${user_id} were found` : data
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.getBy(tables.acceptedTable, data).then((data) => {
+            let response = data.length === 0 ? `No proposals accepted by the user of ID ${user_id} were found` : data
+            return response
+        }) 
 }
 
 module.exports = { getUsers , getUserByID , getUserProduct , getUserOned, getUserWatched, getUserAccepted };

@@ -8,14 +8,9 @@ const methods = require('../methods');
  * @returns {Object}
  */
 function insertProduct(agent_id, data) {
-    try {
-        methods.insert(tables.productsTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.insert(tables.productsTable, data, agent_id).then((response) => {
+            return response
+        }) 
 }
 
 /**
@@ -26,14 +21,9 @@ function insertProduct(agent_id, data) {
  * @returns {Object}
  */
 function updateProduct(agent_id, id, data) {
-    try {
-        methods.update(tables.productsTable, data, id, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.update(tables.productsTable, data, id, agent_id).then((response) => {
+            return response
+        }) 
 };
 
 
@@ -49,14 +39,9 @@ function insertProductInCategory(agent_id, product_id, category_id) {
         "product_id": product_id,
         "category_id": category_id
     }
-    try {
-        methods.insert(tables.PrdInCatTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.insert(tables.PrdInCatTable, data, agent_id).then((response) => {
+            return response
+        }) 
 }
 
 /**
@@ -70,14 +55,9 @@ function removeProductFromCategory(agent_id, product_id) {
         "product_id": product_id,
         "category_id": 0
     }
-    try {
-        methods.update(tables.PrdInCatTable, data, product_id, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.update(tables.PrdInCatTable, data, product_id, agent_id).then((response) => {
+            return response
+        }) 
 }
 
 module.exports = { insertProduct, updateProduct, insertProductInCategory, removeProductFromCategory };

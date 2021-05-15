@@ -9,14 +9,9 @@ const methods = require('../methods');
  * @returns {Object}
  */
 function insertProposal(agent_id, data) {
-    try {
-        methods.insert(tables.proposalsTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.insert(tables.proposalsTable, data, agent_id).then((response) => {
+            return response
+        }) 
 }
 
 /**
@@ -27,14 +22,9 @@ function insertProposal(agent_id, data) {
  * @returns {Object}
  */
 function updateProposal(agent_id, id, data) {
-    try {
-        methods.update(tables.proposalsTable, data, id, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.update(tables.proposalsTable, data, id, agent_id).then((response) => {
+            return response
+        }) 
 }
 
 module.exports = { insertProposal ,updateProposal };

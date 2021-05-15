@@ -8,14 +8,9 @@ const methods = require('../methods');
  * @returns {Object}
  */
 function insertUser(data,agent_id) {
-    try {
-        methods.insert(tables.userTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.insert(tables.userTable, data, agent_id).then((response) => {
+            return response
+        }) 
 };
 
 /**
@@ -26,14 +21,9 @@ function insertUser(data,agent_id) {
  * @returns {Object}
  */
 function updateUser(id, data,agent_id) {
-    try {
-        methods.update(tables.userTable, data, id, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.update(tables.userTable, data, id, agent_id).then((response) => {
+            return response
+        }) 
 };
 
 
@@ -49,14 +39,9 @@ function insertOne(agent_id,user_id,product_id) {
         "user_id": user_id,
         "product_id": product_id
     }
-    try {
-        methods.insert(tables.onedTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.insert(tables.onedTable, data, agent_id).then((response) => {
+            return response
+        }) 
 };
 
 /**
@@ -71,14 +56,9 @@ function insertWatch(user_id, category_id,agent_id) {
         "user_id": user_id,
         "category_id": category_id
     }
-    try {
-        methods.insert(tables.watchedTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.insert(tables.watchedTable, data, agent_id).then((response) => {
+            return response
+        }) 
 };
 
 /**
@@ -93,14 +73,9 @@ function insertAccept(user_id, proposal_id,agent_id) {
         "user_id": user_id,
         "proposal_id": proposal_id
     }
-    try {
-        methods.insert(tables.acceptedTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.insert(tables.acceptedTable, data, agent_id).then((response) => {
+            return response
+        }) 
 };
 
 module.exports = { insertUser, updateUser, insertOne, insertWatch, insertAccept };

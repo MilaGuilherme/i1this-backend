@@ -9,14 +9,9 @@ const methods = require('../methods');
  * @returns {Object}
  */
 function insertUserType(data) {
-    try {
-        methods.insert(tables.userTypesTable, data, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.insert(tables.userTypesTable, data, agent_id).then((response) => {
+            return response
+        }) 
 };
 
 /**
@@ -26,14 +21,9 @@ function insertUserType(data) {
  * @param {number} agent_id
  */
 function updateUserType(data,id,agent_id) {
-    try {
-        methods.update(tables.userTypesTable, data, id, agent_id).then((res) => {
-            return res
-        })
-    }
-    catch (err) {
-        return err
-    }
+  return methods.update(tables.userTypesTable, data, id, agent_id).then((response) => {
+            return response
+        }) 
 };
 
 module.exports = { insertUserType , updateUserType };
