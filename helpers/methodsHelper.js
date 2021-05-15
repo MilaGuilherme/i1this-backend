@@ -16,7 +16,7 @@ function insert(tableName, data, agent_id) {
         .insert(data)
         .then((id) => {
             return db(tableName)
-                .where({"id":id})
+                .where({ "id": id })
                 .then((response) => {
                     log(tableName, "insert", response, agent_id, "", JSON.stringify(data))
                     process.env.NODE_ENV === 'development' ? console.log(response) : null;
@@ -49,7 +49,7 @@ function update(tableName, data, id, agent_id) {
         .where("id", id)
         .update(data)
         .then((id) => {
-            db(tableName)
+            return db(tableName)
                 .where("id", id)
                 .then((response) => {
                     process.env.NODE_ENV === 'development' ? console.log(response) : null;
@@ -82,7 +82,7 @@ function updateBatch(tableName, condition, data, agent_id) {
         .where(condition)
         .update(data)
         .then(() => {
-            db(tableName)
+            return db(tableName)
                 .where(condition)
                 .then((response) => {
                     process.env.NODE_ENV === 'development' ? console.log(response) : null;

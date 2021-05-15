@@ -15,13 +15,6 @@ CREATE TABLE `users`
      `active`     BOOLEAN
   );
 
-ALTER TABLE `users`
-  ADD UNIQUE `users_email_unique`(`email`);
-
-ALTER TABLE `users`
-  ADD CONSTRAINT `users_type_id_foreign` FOREIGN KEY (`type_id`) REFERENCES
-  `user_types` (`id`);
-
 CREATE TABLE `user_types`
   (
      `id`          INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
@@ -49,10 +42,6 @@ CREATE TABLE `products`
      `active`      BOOLEAN
   );
 
-ALTER TABLE `products`
-  ADD CONSTRAINT `products_created_by_foreign` FOREIGN KEY (`created_by`)
-  REFERENCES `users` (`id`);
-
 CREATE TABLE `proposals`
   (
      `id`               INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
@@ -68,28 +57,12 @@ CREATE TABLE `proposals`
      `active`           BOOLEAN
   );
 
-ALTER TABLE `proposals`
-  ADD CONSTRAINT `proposals_product_id_foreign` FOREIGN KEY (`product_id`)
-  REFERENCES `products` (`id`);
-
-ALTER TABLE `proposals`
-  ADD CONSTRAINT `proposals_created_by_foreign` FOREIGN KEY (`created_by`)
-  REFERENCES `users` (`id`);
-
 CREATE TABLE `product_in_category`
   (
      `id`          INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
      `product_id`  INT NOT NULL,
      `category_id` INT NOT NULL
   );
-
-ALTER TABLE `product_in_category`
-  ADD CONSTRAINT `product_in_category_product_id_foreign` FOREIGN KEY (
-  `product_id`) REFERENCES `products` (`id`);
-
-ALTER TABLE `product_in_category`
-  ADD CONSTRAINT `product_in_category_category_id_foreign` FOREIGN KEY (
-  `category_id`) REFERENCES `categories` (`id`);
 
 CREATE TABLE `user_oned_product`
   (
@@ -100,14 +73,6 @@ CREATE TABLE `user_oned_product`
      `oned_at`      TIMESTAMP
   );
 
-ALTER TABLE `user_oned_product`
-  ADD CONSTRAINT `user_oned_product_product_id_foreign` FOREIGN KEY (
-  `product_id`) REFERENCES `products` (`id`);
-
-ALTER TABLE `user_oned_product`
-  ADD CONSTRAINT `user_oned_product_user_id_foreign` FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`);
-
 CREATE TABLE `user_accepted_proposal`
   (
      `id`            INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
@@ -117,14 +82,6 @@ CREATE TABLE `user_accepted_proposal`
      `accepted_at`   TIMESTAMP
   );
 
-ALTER TABLE `user_accepted_proposal`
-  ADD CONSTRAINT `user_accepted_proposal_proposal_id_foreign` FOREIGN KEY (
-  `proposal_id`) REFERENCES `proposals` (`id`);
-
-ALTER TABLE `user_accepted_proposal`
-  ADD CONSTRAINT `user_accepted_proposal_user_id_foreign` FOREIGN KEY (`user_id`
-  ) REFERENCES `users` (`id`);
-
 CREATE TABLE `user_watches_category`
   (
      `id`          INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
@@ -133,28 +90,12 @@ CREATE TABLE `user_watches_category`
      `watched_at`  TIMESTAMP
   );
 
-ALTER TABLE `user_watches_category`
-  ADD CONSTRAINT `user_watches_category_user_id_foreign` FOREIGN KEY (`user_id`)
-  REFERENCES `users` (`id`);
-
-ALTER TABLE `user_watches_category`
-  ADD CONSTRAINT `user_watches_category_category_id_foreign` FOREIGN KEY (
-  `category_id`) REFERENCES `categories` (`id`);
-
 CREATE TABLE `category_parents_category`
   (
      `id`        INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
      `parent_id` INT NOT NULL,
      `child_id`  INT NOT NULL
   );
-
-ALTER TABLE `category_parents_category`
-  ADD CONSTRAINT `category_parents_category_parent_id_foreign` FOREIGN KEY (
-  `parent_id`) REFERENCES `categories` (`id`);
-
-ALTER TABLE `category_parents_category`
-  ADD CONSTRAINT `category_parents_category_child_id_foreign` FOREIGN KEY (
-  `child_id`) REFERENCES `categories` (`id`);
 
 CREATE TABLE `logs`
   (
@@ -168,6 +109,64 @@ CREATE TABLE `logs`
      `new_value`       VARCHAR(255) NOT NULL
   );
 
+ALTER TABLE `category_parents_category`
+  ADD CONSTRAINT `category_parents_category_parent_id_foreign` FOREIGN KEY (
+  `parent_id`) REFERENCES `categories` (`id`);
+
+ALTER TABLE `category_parents_category`
+  ADD CONSTRAINT `category_parents_category_child_id_foreign` FOREIGN KEY (
+  `child_id`) REFERENCES `categories` (`id`);
+
 ALTER TABLE `logs`
   ADD CONSTRAINT `logs_modified_by_foreign` FOREIGN KEY (`modified_by`)
   REFERENCES `users` (`id`); 
+  
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_created_by_foreign` FOREIGN KEY (`created_by`)
+  REFERENCES `users` (`id`);
+  
+ALTER TABLE `proposals`
+  ADD CONSTRAINT `proposals_product_id_foreign` FOREIGN KEY (`product_id`)
+  REFERENCES `products` (`id`);
+
+ALTER TABLE `proposals`
+  ADD CONSTRAINT `proposals_created_by_foreign` FOREIGN KEY (`created_by`)
+  REFERENCES `users` (`id`);
+
+ALTER TABLE `product_in_category`
+  ADD CONSTRAINT `product_in_category_product_id_foreign` FOREIGN KEY (
+  `product_id`) REFERENCES `products` (`id`);
+
+ALTER TABLE `product_in_category`
+  ADD CONSTRAINT `product_in_category_category_id_foreign` FOREIGN KEY (
+  `category_id`) REFERENCES `categories` (`id`);
+
+ALTER TABLE `user_oned_product`
+  ADD CONSTRAINT `user_oned_product_product_id_foreign` FOREIGN KEY (
+  `product_id`) REFERENCES `products` (`id`);
+
+ALTER TABLE `user_oned_product`
+  ADD CONSTRAINT `user_oned_product_user_id_foreign` FOREIGN KEY (`user_id`)
+  REFERENCES `users` (`id`);
+
+ALTER TABLE `user_accepted_proposal`
+  ADD CONSTRAINT `user_accepted_proposal_proposal_id_foreign` FOREIGN KEY (
+  `proposal_id`) REFERENCES `proposals` (`id`);
+
+ALTER TABLE `user_accepted_proposal`
+  ADD CONSTRAINT `user_accepted_proposal_user_id_foreign` FOREIGN KEY (`user_id`
+  ) REFERENCES `users` (`id`);
+  ALTER TABLE `user_watches_category`
+  ADD CONSTRAINT `user_watches_category_user_id_foreign` FOREIGN KEY (`user_id`)
+  REFERENCES `users` (`id`);
+
+ALTER TABLE `user_watches_category`
+  ADD CONSTRAINT `user_watches_category_category_id_foreign` FOREIGN KEY (
+  `category_id`) REFERENCES `categories` (`id`);
+
+ALTER TABLE `users`
+  ADD UNIQUE `users_email_unique`(`email`);
+
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_type_id_foreign` FOREIGN KEY (`type_id`) REFERENCES
+  `user_types` (`id`);
