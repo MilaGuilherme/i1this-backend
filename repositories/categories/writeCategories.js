@@ -1,4 +1,3 @@
-const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
 const methods = require('../methods');
 
@@ -46,7 +45,10 @@ function updateCategory(id, agent_id, data) {
  * @returns {Object}
  */
 function removeCategory(id, agent_id) {
-    try {
+    try { 
+        let data = { "category_id": 0 }
+        let condition = { "category_id": id }
+        methods.updateBatch(tables.PrdInCatTable, condition, data, agent_id)
         methods.remove(tables.categoriesTable, id, agent_id).then((res) => {
             return res
         })
@@ -55,6 +57,8 @@ function removeCategory(id, agent_id) {
         return err
     }
 }
+
+removeCategory(1, 1)
 
 /**
  * @post /categories/{parent_id}/children/{child_id}
@@ -79,4 +83,4 @@ function insertRelationship(agent_id, parent_id, child_id) {
 }
 
 
-module.exports = { insertCategory, removeCategory, updateCategory, insertRelationship};
+module.exports = { insertCategory, removeCategory, updateCategory, insertRelationship };

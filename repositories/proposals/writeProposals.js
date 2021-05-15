@@ -1,31 +1,40 @@
-const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
+const methods = require('../methods');
+
 
 /**
  * @post proposals/
- * @param {Object} db
+ * @param {number} agent_id
  * @param {Object} data
- * @returns {Promise}
+ * @returns {Object}
  */
-function insertProposal(db,data) {
-    db(tables.proposalsTable).insert(data)
-        .then((id) => {
-            db(tables.proposalsTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    console.log(res)
-                    db.destroy();
-                    return res;
-                })
+function insertProposal(agent_id, data) {
+    try {
+        methods.insert(tables.proposalsTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error);
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
-// TODO updateProposal
+/**
+ * @patch proposals/{id}
+ * @param {number} agent_id
+ * @param {number}  id
+ * @param {Object} data
+ * @returns {Object}
+ */
+function updateProposal(agent_id, id, data) {
+    try {
+        methods.update(tables.proposalsTable, data, id, agent_id).then((res) => {
+            return res
+        })
+    }
+    catch (err) {
+        return err
+    }
+}
 
-module.exports = { insertProposal };
+module.exports = { insertProposal ,updateProposal };

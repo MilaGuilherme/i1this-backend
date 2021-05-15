@@ -34,7 +34,7 @@ function log(modifiedTable, modification, modifiedId, modifiedBy, oldValue, newV
         .catch((error) => {
             let err = errorHelper(error);
             process.env.NODE_ENV === 'development' ? console.log(err) : null;
-        }).finally(() => db.destroy())
+        })
     }
 
 module.exports = {log}

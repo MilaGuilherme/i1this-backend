@@ -1,54 +1,39 @@
-const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
+const methods = require('../methods');
+
 
 /**
  * @post /usertypes
- * @param {Object} db
  * @param {Object} data
- * @returns {Promise}
+ * @param {number} agent_id
+ * @returns {Object}
  */
-function insertUserType(db,data) {
-    db(tables.userTypesTable).insert(data)
-        .then((id) => {
-            db(tables.userTypesTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function insertUserType(data) {
+    try {
+        methods.insert(tables.userTypesTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 };
 
 /**
- * @patch /usertypes/{type_id}
- * @param {Object} db
+ * @patch /usertypes/{id}
  * @param {Object} data
- * @returns {Promise}
+ * @param {number} id
+ * @param {number} agent_id
  */
-function updateUserType(db,id,data) {
-    db(tables.userTypesTable).insert(data)
-        .then((id) => {
-            db(tables.userTypesTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function updateUserType(data,id,agent_id) {
+    try {
+        methods.update(tables.userTypesTable, data, id, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 };
 
-module.exports = { insertUserType };
+module.exports = { insertUserType , updateUserType };

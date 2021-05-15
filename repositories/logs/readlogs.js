@@ -1,11 +1,10 @@
 
-const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
 const methods = require('../methods');
 
 /**
  * @get /logs
- * @returns {Promise}
+ * @returns {Object}
  */
  function getLogs() {
     try {
@@ -22,7 +21,7 @@ const methods = require('../methods');
 /**
  * @get logs/{modified_by}
  * @param {Number} id
- * @returns {Promise}
+ * @returns {Object}
  */
 function getLogByModifiedBy(id) {
     const data = { "id": id }
@@ -40,7 +39,7 @@ function getLogByModifiedBy(id) {
 /**
  * @get logs/{modified_table}
  * @param {String} tableName
- * @returns {Promise}
+ * @returns {Object}
  */
 function getLogByModifiedTable(tableName) {
     const data = { "modified_table": tableName }
@@ -59,7 +58,7 @@ function getLogByModifiedTable(tableName) {
  * @get logs/{modified_table}/{modified_id}
  * @param {String} tableName
  * @param {Number} modified_id
- * @returns {Promise}
+ * @returns {Object}
  */
 function getLogByModifiedTableAndId(tableName, modified_id) {
     const data = { 

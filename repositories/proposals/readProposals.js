@@ -1,69 +1,57 @@
-const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
+const methods = require('../methods');
+
 
 /**
  * @get proposals/
- * @param {Object} db
- * @returns {Promise}
+ * @returns {Object}
  */
-function getProposals(db) {
-    db(tables.proposalsTable)
-        .then((data) => {
-            let res = data.length === 0 ? `No proposals found` : data
-            db.destroy();
-            console.log(res)
-            return res;
+function getProposals() {
+    try {
+        methods.getAll(tables.proposalsTable).then((data) => {
+            let res = data.length === 0 ? `No products found` : data
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
- * @get proposals/{category_id}
- * @param {Object} db
+ * @get proposals/{id}
  * @param {Number} id
- * @returns {Promise}
+ * @returns {Object}
  */
-function getProposalsByID(db,id) {
-    db(tables.proposalsTable).where("id", id)
-        .then((data) => {
+function getProposalsByID(id) {
+    const data = { "id": id }
+    try {
+        methods.getBy(tables.proposalsTable, data).then((data) => {
             let res = data.length === 0 ? `No proposal with the ID ${id} was found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
  * @get proposals/{proposal_id}/users
- * @param {Object} db
  * @param {Number} proposal_id
- * @returns {Promise}
+ * @returns {Object}
  */
-function getProposalUsers(db,proposal_id) {
-    db(tables.acceptedTable).where("proposal_id", proposal_id)
-        .then((data) => {
+function getProposalUsers(proposal_id) {
+    const data = { "proposal_id": proposal_id }
+    try {
+        methods.getBy(tables.acceptedTable, data).then((data) => {
             let res = data.length === 0 ? `No users who accepted the proposal of ID ${proposal_id} were found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 module.exports = { getProposals , getProposalsByID , getProposalUsers };

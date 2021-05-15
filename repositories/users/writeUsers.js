@@ -1,134 +1,106 @@
-const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
-
-db = require('../../db/db');
-
+const methods = require('../methods');
 
 /**
  * @post /users
- * @param {Object} db
  * @param {Object} data
- * @returns {Promise}
+ * @param {number} agent_id
+ * @returns {Object}
  */
-function insertUser(db, data) {
-    db(tables.userTable).insert(data)
-        .then((id) => {
-            db(tables.userTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function insertUser(data,agent_id) {
+    try {
+        methods.insert(tables.userTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 };
 
 /**
- * @patch /users/{user_id}
- * @param {Object} db
- * @param {number} id
+ * @patch /users/{id}
  * @param {Object} data
- * @returns {Promise}
+ * @param {number} id
+ * @param {number} agent_id
+ * @returns {Object}
  */
-function updateUser(db, id, data) {
-    db(tables.userTable).where("id", id).update(data)
-        .then((id) => {
-            db(tables.userTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function updateUser(id, data,agent_id) {
+    try {
+        methods.update(tables.userTable, data, id, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 };
 
 
 /**
  * @post /users/{user_id}/one/{product_id}
- * @param {Object} db
- * @param {Object} data
- * @returns {Promise}
+ * @param {number} user_id
+ * @param {number} product_id
+ * @param {number} agent_id
+ * @returns {Object}
  */
-function insertOne(db, data) {
-    db(tables.onedTable).insert(data)
-        .then((id) => {
-            db(tables.onedTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function insertOne(agent_id,user_id,product_id) {
+    let data = {
+        "user_id": user_id,
+        "product_id": product_id
+    }
+    try {
+        methods.insert(tables.onedTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 };
 
 /**
 * @post /users/{user_id}/category/{category_id}
-* @param {Object} db
-* @param {Object} data
-* @returns {Promise}
+* @param {number} user_id
+* @param {number} category_id
+* @param {number} agent_id
+* @returns {Object}
 */
-function insertWatch(db, data) {
-    db(tables.watchedTable).insert(data)
-        .then((id) => {
-            db(tables.watchedTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function insertWatch(user_id, category_id,agent_id) {
+    let data = {
+        "user_id": user_id,
+        "category_id": category_id
+    }
+    try {
+        methods.insert(tables.watchedTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 };
 
 /**
  * @post /users/{user_id}/proposals/{proposal_id}
- * @param {Object} db
- * @param {Object} data
- * @returns {Promise}
+* @param {number} user_id
+* @param {number} proposal_id
+* @param {number} agent_id
+ * @returns {Object}
  */
-function insertAccept(db, data) {
-    db(tables.acceptedTable).insert(data)
-        .then((id) => {
-            db(tables.acceptedTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function insertAccept(user_id, proposal_id,agent_id) {
+    let data = {
+        "user_id": user_id,
+        "proposal_id": proposal_id
+    }
+    try {
+        methods.insert(tables.acceptedTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 };
 
-module.exports = { insertUser, insertOne, insertWatch, insertAccept, updateUser };
+module.exports = { insertUser, updateUser, insertOne, insertWatch, insertAccept };

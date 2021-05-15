@@ -13,5 +13,5 @@ const sql = fs.readFileSync(__dirname + '\\queries\\db.sql').toString();
 
 db.raw(sql).then((data) => {
     console.log(data[0][0]);
-    db.destroy()
+    
 })

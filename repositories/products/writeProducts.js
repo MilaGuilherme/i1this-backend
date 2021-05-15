@@ -1,108 +1,83 @@
-const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
+const methods = require('../methods');
 
 /**
  * @post /products
- * @param {Object} db
+ * @param {number} agent_id
  * @param {Object} data
- * @returns {Promise}
+ * @returns {Object}
  */
-function insertProduct(db,data) {
-    db(tables.productsTable).insert(data)
-        .then((id) => {
-            db(tables.productsTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    console.log(res)
-                    db.destroy();
-                    return res;
-                })
+function insertProduct(agent_id, data) {
+    try {
+        methods.insert(tables.productsTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error);
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
- * @patch /products/{product_id}
- * @param {Object}  db
+ * @patch /products/{id}
+ * @param {number} agent_id
  * @param {number}  id
  * @param {Object}  data
- * @returns {Promise} Promise
+ * @returns {Object}
  */
- function updateProduct(db, id, data) {
-    db(tables.productsTable).where("id", id).update(data)
-        .then((id) => {
-            db(tables.productsTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function updateProduct(agent_id, id, data) {
+    try {
+        methods.update(tables.productsTable, data, id, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 };
 
 
 /**
  * @post /products/{product_id}/category/{category_id}
- * @param {Object} db
- * @param {Object} data
- * @returns {Promise}
+ * @param {number} agent_id
+ * @param {number} product_id
+ * @param {number} category_id
+ * @returns {Object}
  */
-function insertProductInCategory(db,data) {
-    db(tables.PrdInCatTable).insert(data)
-        .then((id) => {
-            db(tables.PrdInCatTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    console.log(res)
-                    db.destroy();
-                    return res;
-                })
+function insertProductInCategory(agent_id, product_id, category_id) {
+    let data = {
+        "product_id": product_id,
+        "category_id": category_id
+    }
+    try {
+        methods.insert(tables.PrdInCatTable, data, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error);
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
- * @patch /products/{product_id}/category/{category_id}
- * @param {Object} db
- * @param {number}  id
- * @returns {Promise}
+ * @delete /products/{product_id}/category
+ * @param {number} agent_id
+ * @param {number}  product_id
+ * @returns {Object}
  */
-function removeProductFromCategory(db,id) {
-    db(tables.PrdInCatTable).where("product_id", id).update("category_id",0)
-        .then((id) => {
-            db(tables.PrdInCatTable).where("id", id)
-                .then((data) => {
-                    let res = data.length === 0 ? `No data` : data
-                    db.destroy();
-                    console.log(res)
-                    return res;
-                })
+function removeProductFromCategory(agent_id, product_id) {
+    let data = {
+        "product_id": product_id,
+        "category_id": 0
+    }
+    try {
+        methods.update(tables.PrdInCatTable, data, product_id, agent_id).then((res) => {
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            db.destroy();
-            console.log(err);
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
-// db = require("../../db/db")
-// removeProductFromCategory(db,1)
 
-module.exports = { insertProduct , updateProduct , insertProductInCategory , removeProductFromCategory };
+module.exports = { insertProduct, updateProduct, insertProductInCategory, removeProductFromCategory };

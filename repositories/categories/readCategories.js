@@ -1,4 +1,3 @@
-const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
 const methods = require('../methods');
 

@@ -4,7 +4,6 @@ const writelogs = require('./logs/writeLogs');
 const log = writelogs.log;
 const errorHelper = require("../helpers/errorHelper")
 dotenv.config();
-let agent_id = 0;
 
 /**
  * @param {string} tableName
@@ -25,7 +24,7 @@ function insert(tableName, data, agent_id) {
         .catch((error) => {
             let err = errorHelper(error);
             process.env.NODE_ENV === 'development' ? console.log(err) : null;
-            db.destroy();
+            ;
             return err;
         })
 }
@@ -40,7 +39,9 @@ function insert(tableName, data, agent_id) {
 function update(tableName, data, id, agent_id) {
     db(tableName).where("id", id)
         .then((res) => {
-            log(tableName, "update", id, agent_id, JSON.stringify(res), JSON.stringify(data))
+            if (res.length > 0)
+                log(tableName, "update", id, agent_id, JSON.stringify(res), JSON.stringify(data))
+            else { }
         })
     return db(tableName).where("id", id).update(data)
         .then((id) => {
@@ -52,7 +53,36 @@ function update(tableName, data, id, agent_id) {
         })
         .catch((error) => {
             let err = errorHelper(error)
-            db.destroy()
+
+            process.env.NODE_ENV === 'development' ? console.log(err) : null;
+            return err;
+        })
+};
+
+/**
+ * @param {string} tableName
+ * @param {Object} condition
+ * @param {Object} data
+ * @param {number} agent_id
+ * @returns {Promise}
+ */
+function updateBatch(tableName, condition, data, agent_id) {
+    db(tableName).where(condition)
+        .then((res) => {
+            if (res.length > 0)
+                log(tableName, "updated in batch", null, agent_id, JSON.stringify(res), JSON.stringify(data))
+            else { }
+        })
+    return db(tableName).where(condition).update(data)
+        .then((id) => {
+            db(tableName).where(condition)
+                .then((res) => {
+                    process.env.NODE_ENV === 'development' ? console.log(res) : null;
+                    return res;
+                })
+        })
+        .catch((error) => {
+            let err = errorHelper(error)
             process.env.NODE_ENV === 'development' ? console.log(err) : null;
             return err;
         })
@@ -64,14 +94,12 @@ function update(tableName, data, id, agent_id) {
  * @param {number} agent_id
  * @returns {Promise}
  */
-function remove(tableName, id) {
+function remove(tableName, id, agent_id) {
     db(tableName).where("id", id)
-        .then((data) => {
-            if (data.length > 0)
-            log(tableName, "remove", id, agent_id, JSON.stringify(data),"deleted")
-            else {
-                db.destroy()
-            }
+        .then((res) => {
+            if (res.length > 0)
+                log(tableName, "remove", id, agent_id, JSON.stringify(data), "deleted")
+            else { }
         })
     return db(tableName).where("id", id).del()
         .then((data) => {
@@ -81,7 +109,34 @@ function remove(tableName, id) {
         })
         .catch((error) => {
             let err = errorHelper(error)
-            db.destroy()
+
+            process.env.NODE_ENV === 'development' ? console.log(err) : null;
+            return err;
+        })
+};
+
+/**
+ * @param {string} tableName
+ * @param {Object} condition
+ * @param {number} agent_id
+ * @returns {Promise}
+ */
+function removeBatch(tableName, condition, agent_id) {
+    db(tableName).where(condition)
+        .then((data) => {
+            if (data.length > 0)
+                log(tableName, "removed in batch", 0, agent_id, JSON.stringify(condition), "deleted")
+            else { }
+        })
+    return db(tableName).where(condition).del()
+        .then((data) => {
+            let res = data === 0 ? `No data to delete` : `Deleted data`
+            process.env.NODE_ENV == 'development' ? console.log(res) : null;
+            return res;
+        })
+        .catch((error) => {
+            let err = errorHelper(error)
+
             process.env.NODE_ENV === 'development' ? console.log(err) : null;
             return err;
         })
@@ -101,7 +156,7 @@ function getAll(tableName) {
             let err = errorHelper(error)
             process.env.NODE_ENV === 'development' ? console.log(err) : null;
             return err;
-        }).finally(() => db.destroy())
+        })
 }
 
 /**
@@ -119,7 +174,7 @@ function getBy(tableName, data) {
             let err = errorHelper(error)
             process.env.NODE_ENV === 'development' ? console.log(err) : null;
             return err;
-        }).finally(() => db.destroy())
+        })
 }
 
-module.exports = { insert, update, remove, getAll, getBy }
+module.exports = { insert, update, updateBatch, remove, removeBatch, getAll, getBy }

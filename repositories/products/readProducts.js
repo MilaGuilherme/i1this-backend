@@ -1,9 +1,9 @@
-const errorHelper = require("../../helpers/errorHelper")
 const tables = require("../tables.json")
+const methods = require('../methods');
 
 /**
  * @get /products
- * @returns {Promise}
+ * @returns {Object}
  */
 function getProducts() {
     try {
@@ -20,7 +20,7 @@ function getProducts() {
 /**
  * @get products/{id}
  * @param {Number} id
- * @returns {Promise}
+ * @returns {Object}
  */
 function getProductByID(id) {
     const data = { "id": id }
@@ -37,69 +37,57 @@ function getProductByID(id) {
 
 /**
  * @get products/{product_id}/onedby
- * @param {Object} db
  * @param {Number} product_id
- * @returns {Promise}
+ * @returns {Object}
  */
-function getProductOnes(db,product_id) {
-    db(tables.onedTable).where("product_id", product_id)
-        .then((data) => {
+function getProductOnes(product_id) {
+    const data = { "product_id": product_id }
+    try {
+        methods.getBy(tables.onedTable, data).then((data) => {
             let res = data.length === 0 ? `No users who +1 the product with the ID ${product_id} were found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 
 /**
  * @get products/{product_id}/proposals
- * @param {Object} db
  * @param {Number} product_id
- * @returns {Promise}
+ * @returns {Object}
  */
-function getProductProposals(db,product_id) {
-    db(tables.proposalsTable).where("product_id", product_id)
-        .then((data) => {
+function getProductProposals(product_id) {
+    const data = { "product_id": product_id }
+    try {
+        methods.getBy(tables.proposalsTable, data).then((data) => {
             let res = data.length === 0 ? `No proposals for the product of ID ${product_id} were found` : data
-            console.log(res);
-            db.destroy();
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 /**
  * @get products/{product_id}/categories
- * @param {Object} db
  * @param {Number} product_id
- * @returns {Promise}
+ * @returns {Object}
  */
-function getProductCategories(db,product_id) {
-    db(tables.PrdInCatTable).where("product_id", product_id)
-        .then((data) => {
+function getProductCategories(product_id) {
+    const data = { "product_id": product_id }
+    try {
+        methods.getBy(tables.PrdInCatTable, data).then((data) => {
             let res = data.length === 0 ? `The product of ID ${product_id} is not registered in any category` : data
-            console.log(res);
-            db.destroy();
-            return res;
+            return res
         })
-        .catch((error) => {
-            let err = errorHelper(error)
-            console.log(err);
-            db.destroy();
-            return err;
-        })
+    }
+    catch (err) {
+        return err
+    }
 }
 
 module.exports = { getProducts , getProductByID , getProductOnes , getProductProposals , getProductCategories };
