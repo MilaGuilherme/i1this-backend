@@ -53,9 +53,15 @@ router.get('/:id/children', function (req, res) {
  */
 router.post('/', function (req, res) {
     let data = req.body
-    service.post(data).then(response=>{
-        res.send(response)
-    })
+    try {
+        service.post(data)
+            .then((response) => {
+                console.log(response)
+                res.send(response)
+            })
+    }
+    catch (err) {
+    }
 });
 
 

@@ -10,10 +10,12 @@ const methods = require('../../helpers/methodsHelper');
  * @returns {Promise}
  */
 function insertCategory(agent_id, data) {
-    return methods.insert(tables.categoriesTable, data, agent_id).then(response => {
+    return methods.insert(tables.categoriesTable, data, agent_id)
+    .then(response => {
         return response
     })
 }
+
 
 /**
  * @patch /categories/{category_id}

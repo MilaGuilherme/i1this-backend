@@ -20,7 +20,7 @@ function getCategories() {
 function getCategoryById(id) {
     const data = { "id": id }
     return  methods.getBy(tables.categoriesTable, data).then((data) => {
-            let response = data.length === 0 ? `No categories found` : data
+            let response = data.length === 0 ? `No category with id ${id} was found` : data
             return response
         })
 }

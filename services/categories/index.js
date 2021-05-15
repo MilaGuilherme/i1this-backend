@@ -79,9 +79,9 @@ function getChildren(id) {
  * @post /categories
  * @param {number} agent_id
  * @param {Object} data
- * @returns {Object}
+ * @returns {Promise}
  */
-function post(data) {
+async function post(data) {
     if (!data.agent_id)
         return 'missing: agent_id'
 
@@ -94,16 +94,10 @@ function post(data) {
     else {
         return write.insertCategory(data.agent_id, data.data)
             .then(response => {
-                console.log(response)
-                let parsedResponse = {
-                    response: response
-                }
                 return response
             })
     }
 }
-
-write.insertCategory(1,{"name":"Teste"}).then(response=>console.log(response))
 
 /**
  * @patch /categories/{category_id}

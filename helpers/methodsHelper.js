@@ -14,14 +14,14 @@ dotenv.config();
 function insert(tableName, data, agent_id) {
     return db(tableName)
         .insert(data)
-        .then(id => {
-            db(tableName)
-                .where("id", id)
+        .then((id) => {
+            return db(tableName)
+                .where({"id":id})
                 .then((response) => {
-                    //log(tableName, "insert", id[0], agent_id, "", JSON.stringify(response));
-                    //process.env.NODE_ENV === 'development' ? console.log(response) : null;
-                    return response
-                });
+                    log(tableName, "insert", response, agent_id, "", JSON.stringify(data))
+                    process.env.NODE_ENV === 'development' ? console.log(response) : null;
+                    return response;
+                })
         })
         .catch(error => {
             let err = errorHelper(error);
@@ -29,9 +29,6 @@ function insert(tableName, data, agent_id) {
             return err
         })
 }
-
-insert("categories", { "name": "Teste" }, 1).then((response) => { console.log(response) })
-getAll("categories").then(response => { console.log(response) })
 
 /**
  * @param {string} tableName
