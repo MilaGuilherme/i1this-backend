@@ -1,5 +1,5 @@
 const tables = require("../../db/tables.json")
- const methods = require('../../helpers/methodsHelper');
+const methods = require('../../helpers/methodsHelper');
 
 
 /**
@@ -10,8 +10,8 @@ const tables = require("../../db/tables.json")
  */
 function insertUserType(data) {
   return methods.insert(tables.userTypesTable, data, agent_id).then((response) => {
-            return response
-        }) 
+    return response
+  })
 };
 
 /**
@@ -20,10 +20,10 @@ function insertUserType(data) {
  * @param {number} id
  * @param {number} agent_id
  */
-function updateUserType(data,id,agent_id) {
-  return methods.update(tables.userTypesTable, data, id, agent_id).then((response) => {
-            return response
-        }) 
+function updateUserType(data, id, agent_id) {
+  return methods.update(tables.userTypesTable, id, data, agent_id).then((response) => {
+    return response
+  })
 };
 
-module.exports = { insertUserType , updateUserType };
+module.exports = { insertUserType, updateUserType };

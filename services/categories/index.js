@@ -12,7 +12,9 @@ const write = require('../../repositories/categories/write')
  */
 function get() {
     return read.getCategories().then((response) => {
-        return response;
+        let res;
+        response.status ? res = response : res = { "status": 200, "message": "success", "content": response }
+        return res;
     })
 }
 
@@ -23,7 +25,9 @@ function get() {
  */
 function getById(id) {
     return read.getCategoryById(id).then((response) => {
-        return response;
+        let res;
+        response.status ? res = response : res = { "status": 200, "message": "success", "content": response }
+        return res;
     })
 }
 
@@ -34,7 +38,9 @@ function getById(id) {
  */
 function getProducts(id) {
     return read.getCategoryProducts(id).then((response) => {
-        return response;
+        let res;
+        response.status ? res = response : res = { "status": 200, "message": "success", "content": response }
+        return res;
     })
 }
 
@@ -45,7 +51,9 @@ function getProducts(id) {
  */
 function getWatchers(id) {
     return read.getCategoryWatchers(id).then((response) => {
-        return response;
+        let res;
+        response.status ? res = response : res = { "status": 200, "message": "success", "content": response }
+        return res;
     })
 }
 
@@ -56,7 +64,9 @@ function getWatchers(id) {
  */
 function getParents(id) {
     return read.getCategoryParents(id).then((response) => {
-        return response;
+        let res;
+        response.status ? res = response : res = { "status": 200, "message": "success", "content": response }
+        return res;
     })
 }
 
@@ -67,7 +77,9 @@ function getParents(id) {
  */
 function getChildren(id) {
     return read.getCategoryChildren(id).then((response) => {
-        return response;
+        let res;
+        response.status ? res = response : res = { "status": 200, "message": "success", "content": response }
+        return res;
     })
 }
 
@@ -77,24 +89,25 @@ function getChildren(id) {
 
 /**
  * @post /categories
- * @param {number} agent_id
  * @param {Object} data
  * @returns {Promise}
  */
-async function post(data) {
+function post(data) {
     if (!data.agent_id)
-        return 'missing: agent_id'
+        return { code: 403, message: 'missing: agent_id' }
 
     else if (!data.data)
-        return 'missing: data'
+        return { code: 403, message: 'missing: data' }
 
     else if (!data.data.name)
-        return 'missing: data.name'
+        return { code: 403, message: 'missing: data.name' }
 
     else {
         return write.insertCategory(data.agent_id, data.data)
             .then(response => {
-                return response
+                let res;
+                response.status ? res = response : res = { "status": 201, "message": "success", "content": response }
+                return res;
             })
     }
 }
@@ -102,10 +115,31 @@ async function post(data) {
 /**
  * @patch /categories/{category_id}
  * @param {number} id
- * @param {number} agent_id
  * @param {Object} data
  * @returns {Object}
  */
+function update(id, data) {
+    if (!id)
+        return { code: 403, message: 'id' }
+
+    if (!data.agent_id)
+        return { code: 403, message: 'missing: agent_id' }
+
+    else if (!data.data)
+        return { code: 403, message: 'missing: data' }
+
+    else if (!data.data.name)
+        return { code: 403, message: 'missing: data.name' }
+
+    else {
+        return write.updateCategory(id, data.data, data.agent_id)
+            .then(response => {
+                let res;
+                response.status ? res = response : res = { "status": 200, "message": "success", "content": response }
+                return res;
+            })
+    }
+}
 
 /**
  * @delete categories/{category_id}
@@ -113,14 +147,39 @@ async function post(data) {
  * @param {number} agent_id
  * @returns {Object}
  */
+function update(id, data) {
+    if (!id)
+        return { code: 403, message: 'id' }
+
+    if (!data.agent_id)
+        return { code: 403, message: 'missing: agent_id' }
+
+    else if (!data.data)
+        return { code: 403, message: 'missing: data' }
+
+    else if (!data.data.name)
+        return { code: 403, message: 'missing: data.name' }
+
+    else {
+        return write.removeCategory(id, data.agent_id)
+            .then(response => {
+                let res;
+                response.status ? res = response : res = { "status": 200, "message": "Category deleted" }
+                return res;
+            })
+    }
+}
+
+
+//let response = data === 0 ? { "status": 205, "message": "No content to delete" } : { "status": 205, "message": "Deleted content" }
 
 /**
  * @post /categories/{parent_id}/children/{child_id}
  * @param {number} agent_id
  * @param {number} parent_id
  * @param {number} child_id
- * @returns {Object}
+ * @returns {Object} 
  */
 
 
-module.exports = { get, getById, getProducts, getWatchers, getParents, getChildren, post }
+module.exports = { get, getById, getProducts, getWatchers, getParents, getChildren, post, update }

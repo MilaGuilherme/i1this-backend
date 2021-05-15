@@ -5,9 +5,9 @@
 function errorHelper(data){
     switch (data.code) {
         case "ECONNREFUSED":
-            return "502 - Connection refused"
+            return {"status": 503, "message" :'Service Unavailable', "content":{}}
         case "ER_DUP_ENTRY":
-            return data.sqlMessage
+            return {"status": 502, "message" :'Duplicate entry', "content":{}}
         default:
             return data;
     } 

@@ -2,48 +2,47 @@ const express = require('express');
 const service = require('../../services/categories')
 const router = express.Router();
 
-
 /*
  * GET ROUTES
  */
 router.get('/', function (req, res) {
     service.get().then((response) => {
-        res.send(response);
+        res.status(response.status).send({...response})
     })
 });
 
 router.get('/:id', function (req, res) {
     let id = req.params.id
     service.getById(id).then((response) => {
-        res.send(response);
+        res.status(response.status).send(...response)
     })
 });
 
 router.get('/:id/products', function (req, res) {
     let id = req.params.id
     service.getProducts(id).then((response) => {
-        res.send(response);
+        res.status(response.status).send(...response)
     })
 });
 
 router.get('/:id/watchers', function (req, res) {
     let id = req.params.id
     service.getWatchers(id).then((response) => {
-        res.send(response);
+        res.status(response.status).send(...response)
     })
 })
 
 router.get('/:id/parents', function (req, res) {
     let id = req.params.id
     service.getParents(id).then((response) => {
-        res.send(response);
+        res.status(response.status).send(...response)
     })
 })
 
 router.get('/:id/children', function (req, res) {
     let id = req.params.id
     service.getChildren(id).then((response) => {
-        res.send(response);
+        res.status(response.status).send(...response)
     })
 })
 
@@ -52,32 +51,38 @@ router.get('/:id/children', function (req, res) {
  * POST ROUTES
  */
 router.post('/', function (req, res) {
-    let data = req.body
-    try {
-        service.post(data)
-            .then((response) => {
-                console.log(response)
-                res.send(response)
-            })
-    }
-    catch (err) {
-    }
+    let data = req.body;
+    service.post(data)
+        .then((response) => {
+            res.status(response.status).send(...response)
+        })
 });
-
 
 /*
  * PATCH ROUTES
  */
-
+router.patch('/:id', function (req, res) {
+    let data = req.body;
+    service.update(req.params.id,data)
+        .then((response) => {
+            res.status(response.status).send(...response)
+        })
+});
 
 /*
  * DELETE ROUTES
  */
 router.delete('/:id', function (req, res) {
-    write.removeCategory(req.params.id, 1).then((response) => {
+    write.removeCategory(req.params.id, req.body.agent_id).then((response) => {
         console.log
-        res.send(response);
+        res.status(response.status).send(...response)
     })
+});
+
+router.delete('/:id/parents/:parent_id', function (req, res) {
+});
+
+router.delete('/:id/children/:child_id', function (req, res) {
 });
 
 module.exports = router;

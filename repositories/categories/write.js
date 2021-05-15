@@ -5,11 +5,11 @@ const methods = require('../../helpers/methodsHelper');
 
 /**
  * @post /categories
- * @param {number} agent_id
  * @param {Object} data
+ * @param {number} agent_id
  * @returns {Promise}
  */
-function insertCategory(agent_id, data) {
+function insertCategory(data,agent_id) {
     return methods.insert(tables.categoriesTable, data, agent_id)
     .then(response => {
         return response
@@ -20,12 +20,12 @@ function insertCategory(agent_id, data) {
 /**
  * @patch /categories/{category_id}
  * @param {number} id
- * @param {number} agent_id
  * @param {Object} data
+ * @param {number} agent_id
  * @returns {Promise}
  */
-function updateCategory(id, agent_id, data) {
-    return methods.update(tables.categoriesTable, data, id, agent_id).then(response => {
+function updateCategory(id, data, agent_id) {
+    return methods.update(tables.categoriesTable, id,data, agent_id).then(response => {
         return response
     })
 };
@@ -39,7 +39,7 @@ function updateCategory(id, agent_id, data) {
 function removeCategory(id, agent_id) {
     let data = { "category_id": 0 }
     let condition = { "category_id": id }
-    methods.updateBatch(tables.PrdInCatTable, condition, data, agent_id)
+    methods.updateBatch(tables.PrdInCatTable, data, condition, agent_id)
     return methods.remove(tables.categoriesTable, id, agent_id).then(response => {
         return response
     })
@@ -47,9 +47,9 @@ function removeCategory(id, agent_id) {
 
 /**
  * @post /categories/{parent_id}/children/{child_id}
- * @param {number} agent_id
  * @param {number} parent_id
  * @param {number} child_id
+ * @param {number} agent_id
  * @returns {Promise}
  */
 function insertRelationship(agent_id, parent_id, child_id) {

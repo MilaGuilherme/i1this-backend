@@ -20,7 +20,7 @@ function insert(tableName, data, agent_id) {
                 .then((response) => {
                     log(tableName, "insert", response, agent_id, "", JSON.stringify(data))
                     process.env.NODE_ENV === 'development' ? console.log(response) : null;
-                    return response;
+                    return response
                 })
         })
         .catch(error => {
@@ -37,7 +37,9 @@ function insert(tableName, data, agent_id) {
  * @param {number} agent_id
  * @returns {Promise}
  */
-function update(tableName, data, id, agent_id) {
+function update(tableName, id, data, agent_id) {
+    console.log(data)
+    console.log(id)
     db(tableName)
         .where("id", id)
         .then((response) => {
@@ -53,12 +55,11 @@ function update(tableName, data, id, agent_id) {
                 .where("id", id)
                 .then((response) => {
                     process.env.NODE_ENV === 'development' ? console.log(response) : null;
-                    return response;
+                    return { "status": 200, "message": response };
                 })
         })
         .catch((error) => {
             let err = errorHelper(error)
-
             process.env.NODE_ENV === 'development' ? console.log(err) : null;
             return err;
         })
@@ -82,12 +83,7 @@ function updateBatch(tableName, condition, data, agent_id) {
         .where(condition)
         .update(data)
         .then(() => {
-            return db(tableName)
-                .where(condition)
-                .then((response) => {
-                    process.env.NODE_ENV === 'development' ? console.log(response) : null;
-                    return response;
-                })
+            return { "status": 202, "message": "Batch update accepted" };
         })
         .catch((error) => {
             let err = errorHelper(error)
@@ -113,14 +109,12 @@ function remove(tableName, id, agent_id) {
     return db(tableName)
         .where("id", id)
         .del()
-        .then((data) => {
-            let response = data === 0 ? `No data to delete` : `Deleted data`
+        .then((response) => {
             process.env.NODE_ENV == 'development' ? console.log(response) : null;
             return response;
         })
         .catch((error) => {
             let err = errorHelper(error)
-
             process.env.NODE_ENV === 'development' ? console.log(err) : null;
             return err;
         })
@@ -163,12 +157,12 @@ function removeBatch(tableName, condition, agent_id) {
 function getAll(tableName) {
     return db(tableName)
         .then((response) => {
-            //process.env.NODE_ENV === 'development' ? console.log(response) : null;
+            process.env.NODE_ENV === 'development' ? console.log(response) : null;
             return response;
         })
         .catch((error) => {
             let err = errorHelper(error)
-            //process.env.NODE_ENV === 'development' ? console.log(err) : null;
+            process.env.NODE_ENV === 'development' ? console.log(err) : null;
             return err;
         })
 }

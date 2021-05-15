@@ -5,7 +5,7 @@ user_watches_category, category_parents_category, logs;
 
 CREATE TABLE `users`
   (
-     `id`         INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`         INT NOT NULL auto_increment PRIMARY KEY,
      `name`       VARCHAR(255) NOT NULL,
      `password`   VARCHAR(255) NOT NULL,
      `email`      VARCHAR(255) NOT NULL,
@@ -17,20 +17,20 @@ CREATE TABLE `users`
 
 CREATE TABLE `user_types`
   (
-     `id`          INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`          INT NOT NULL auto_increment PRIMARY KEY,
      `name`        VARCHAR(255) NOT NULL,
      `permissions` TEXT
   );
 
 CREATE TABLE `categories`
   (
-     `id`   INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`   INT NOT NULL auto_increment PRIMARY KEY,
      `name` VARCHAR(255) NOT NULL
   );
 
 CREATE TABLE `products`
   (
-     `id`          INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`          INT NOT NULL auto_increment PRIMARY KEY,
      `name`        VARCHAR(255) NOT NULL,
      `created_by`  INT NOT NULL,
      `created_at`  TIMESTAMP,
@@ -44,7 +44,7 @@ CREATE TABLE `products`
 
 CREATE TABLE `proposals`
   (
-     `id`               INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`               INT NOT NULL auto_increment PRIMARY KEY,
      `product_id`       INT NOT NULL,
      `created_by`       INT NOT NULL,
      `created_at`       TIMESTAMP,
@@ -59,14 +59,14 @@ CREATE TABLE `proposals`
 
 CREATE TABLE `product_in_category`
   (
-     `id`          INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`          INT NOT NULL auto_increment PRIMARY KEY,
      `product_id`  INT NOT NULL,
      `category_id` INT NOT NULL
   );
 
 CREATE TABLE `user_oned_product`
   (
-     `id`           INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`           INT NOT NULL auto_increment PRIMARY KEY,
      `product_id`   INT NOT NULL,
      `user_id`      INT NOT NULL,
      `notification` BOOLEAN DEFAULT '0',
@@ -75,7 +75,7 @@ CREATE TABLE `user_oned_product`
 
 CREATE TABLE `user_accepted_proposal`
   (
-     `id`            INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`            INT NOT NULL auto_increment PRIMARY KEY,
      `proposal_id`   INT NOT NULL,
      `user_id`       INT NOT NULL,
      `buying_intent` BOOLEAN DEFAULT '0',
@@ -84,7 +84,7 @@ CREATE TABLE `user_accepted_proposal`
 
 CREATE TABLE `user_watches_category`
   (
-     `id`          INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`          INT NOT NULL auto_increment PRIMARY KEY,
      `user_id`     INT NOT NULL,
      `category_id` INT NOT NULL,
      `watched_at`  TIMESTAMP
@@ -92,14 +92,14 @@ CREATE TABLE `user_watches_category`
 
 CREATE TABLE `category_parents_category`
   (
-     `id`        INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`        INT NOT NULL auto_increment PRIMARY KEY,
      `parent_id` INT NOT NULL,
      `child_id`  INT NOT NULL
   );
 
 CREATE TABLE `logs`
   (
-     `id`              INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+     `id`              INT NOT NULL auto_increment PRIMARY KEY,
      `modified_table`  VARCHAR(255) NOT NULL,
      `modification`    VARCHAR(255) NOT NULL,
      `modified_id`     INT,
@@ -120,7 +120,6 @@ ALTER TABLE `category_parents_category`
 ALTER TABLE `logs`
   ADD CONSTRAINT `logs_modified_by_foreign` FOREIGN KEY (`modified_by`)
   REFERENCES `users` (`id`); 
-  
 ALTER TABLE `products`
   ADD CONSTRAINT `products_created_by_foreign` FOREIGN KEY (`created_by`)
   REFERENCES `users` (`id`);
