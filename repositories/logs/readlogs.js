@@ -1,6 +1,6 @@
 
 const tables = require("../tables.json")
-const methods = require('../methods');
+ const methods = require('../../helpers/methodsHelper');
 
 /**
  * @get /logs

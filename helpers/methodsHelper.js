@@ -1,8 +1,8 @@
 const db = require('../db/db')
 const dotenv = require('dotenv');
-const writelogs = require('./logs/writeLogs');
+const writelogs = require('../repositories/logs/writeLogs');
 const log = writelogs.log;
-const errorHelper = require("../helpers/errorHelper")
+const errorHelper = require("./errorHelper")
 dotenv.config();
 
 /**
