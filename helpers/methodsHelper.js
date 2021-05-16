@@ -32,18 +32,17 @@ function insert(tableName, data, agent_id) {
 
 /**
  * @param {string} tableName
- * @param {Object} data
  * @param {Object} condition
+ * @param {Object} data
  * @param {number} agent_id
- * @param {number} id
  * @returns {Promise}
  */
-function update(tableName, data, condition, agent_id, id) {
+function update(tableName, condition, data, agent_id) {
     db(tableName)
         .where(condition)
         .then((response) => {
             if (response.length > 0)
-                log(tableName, "update", id || undefined, agent_id, JSON.stringify(response), JSON.stringify(data))
+                log(tableName, "update", response.id, agent_id, JSON.stringify(response), JSON.stringify(data))
             else { }
         })
     return db(tableName)
@@ -167,12 +166,12 @@ function getAll(tableName) {
 
 /**
  * @param {string} tableName
- * @param {Object} data
+ * @param {Object} condition
  * @returns {Promise}
  */
-function getBy(tableName, data) {
+function getBy(tableName, condition) {
     return db(tableName)
-        .where(data)
+        .where(condition)
         .then((response) => {
             process.env.NODE_ENV === 'development' ? console.log(response) : null;
             return response;

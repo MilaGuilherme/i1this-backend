@@ -17,8 +17,7 @@ function getCategories() {
  * @returns {Promise}
  */
 function getCategoryById(id) {
-    const data = { "id": id }
-    return methods.getBy(tables.categoriesTable, data).then((response) => {
+    return methods.getBy(tables.categoriesTable, { id }).then((response) => {
         return response
     })
 }
@@ -29,8 +28,7 @@ function getCategoryById(id) {
  * @returns {Promise}
  */
 function getCategoryProducts(category_id) {
-    const data = { "category_id": category_id }
-    return methods.getBy(tables.PrdInCatTable, data).then((response) => {
+    return methods.getBy(tables.PrdInCatTable, { "category_id": category_id }).then((response) => {
         return response
     })
 }
@@ -41,8 +39,7 @@ function getCategoryProducts(category_id) {
  * @returns {Promise}
  */
 function getCategoryWatchers(category_id) {
-    const data = { "category_id": category_id }
-    return methods.getBy(tables.watchedTable, data).then((response) => {
+    return methods.getBy(tables.watchedTable, { "category_id": category_id }).then((response) => {
         return response
     })
 }
@@ -53,8 +50,7 @@ function getCategoryWatchers(category_id) {
  * @returns {Promise}
  */
 function getCategoryParents(child_id) {
-    const data = { "child_id": child_id }
-    return methods.getBy(tables.catParentsTable, data).then((response) => {
+    return methods.getBy(tables.catParentsTable, { "child_id": child_id }).then((response) => {
         return response
     })
 }
@@ -65,8 +61,7 @@ function getCategoryParents(child_id) {
  * @returns {Promise}
  */
 function getCategoryChildren(parent_id) {
-    const data = { "parent_id": parent_id }
-    return methods.getBy(tables.catParentsTable, data).then((response) => {
+    return methods.getBy(tables.catParentsTable, { "parent_id": parent_id }).then((response) => {
         return response
     })
 }

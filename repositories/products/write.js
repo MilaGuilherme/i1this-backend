@@ -8,9 +8,9 @@ const methods = require('../../helpers/methodsHelper');
  * @returns {Object}
  */
 function insertProduct(agent_id, data) {
-  return methods.insert(tables.productsTable, data, agent_id).then((response) => {
-            return response
-        }) 
+    return methods.insert(tables.productsTable, data, agent_id).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -21,9 +21,9 @@ function insertProduct(agent_id, data) {
  * @returns {Object}
  */
 function updateProduct(agent_id, id, data) {
-  return methods.update(tables.productsTable, data, id, agent_id).then((response) => {
-            return response
-        }) 
+    return methods.update(tables.productsTable, id, data, agent_id).then((response) => {
+        return response
+    })
 };
 
 
@@ -39,9 +39,9 @@ function insertProductInCategory(agent_id, product_id, category_id) {
         "product_id": product_id,
         "category_id": category_id
     }
-  return methods.insert(tables.PrdInCatTable, data, agent_id).then((response) => {
-            return response
-        }) 
+    return methods.insert(tables.PrdInCatTable, data, agent_id).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -55,9 +55,9 @@ function removeProductFromCategory(agent_id, product_id) {
         "product_id": product_id,
         "category_id": 0
     }
-  return methods.update(tables.PrdInCatTable, data, product_id, agent_id).then((response) => {
-            return response
-        }) 
+    return methods.update(tables.PrdInCatTable, data, product_id, agent_id).then((response) => {
+        return response
+    })
 }
 
 module.exports = { insertProduct, updateProduct, insertProductInCategory, removeProductFromCategory };

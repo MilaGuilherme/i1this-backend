@@ -22,7 +22,7 @@ function insertCategory(data, agent_id) {
  * @returns {Promise}
  */
 function updateCategory(id, data, agent_id) {
-    return methods.update(tables.categoriesTable, data, { id }, agent_id).then(response => {
+    return methods.update(tables.categoriesTable, { id }, data, agent_id).then(response => {
         return response
     })
 };
@@ -34,7 +34,7 @@ function updateCategory(id, data, agent_id) {
  * @returns {Promise}
  */
 function removeCategory(id, agent_id) {
-    methods.updateBatch(tables.PrdInCatTable, { "category_id": 0 }, { "category_id": id }, agent_id, id)
+    methods.updateBatch(tables.PrdInCatTable, { "category_id": id },{ "category_id": 0 }, agent_id, id)
     return methods.remove(tables.categoriesTable, { id }, agent_id).then(response => {
         return response
     })
