@@ -15,7 +15,7 @@ function insertUserType(data) {
 };
 
 /**
- * @patch /usertypes/{id}
+ * @put /usertypes/{id}
  * @param {Object} data
  * @param {number} id
  * @param {number} agent_id

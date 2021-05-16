@@ -14,7 +14,7 @@ function insertUser(data,agent_id) {
 };
 
 /**
- * @patch /users/{id}
+ * @put /users/{id}
  * @param {Object} data
  * @param {number} id
  * @param {number} agent_id

@@ -14,7 +14,7 @@ function insertProduct(agent_id, data) {
 }
 
 /**
- * @patch /products/{id}
+ * @put /products/{id}
  * @param {number} agent_id
  * @param {number}  id
  * @param {Object}  data

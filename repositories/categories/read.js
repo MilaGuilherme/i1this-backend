@@ -6,8 +6,7 @@ const methods = require('../../helpers/methodsHelper');
  * @returns {Promise}
  */
 function getCategories() {
-    return methods.getAll(tables.categoriesTable).then((data) => {
-        let response = data.length === 0 ? `No categories found` : data
+    return methods.getAll(tables.categoriesTable).then((response) => {
         return response
     })
 }
@@ -19,10 +18,9 @@ function getCategories() {
  */
 function getCategoryById(id) {
     const data = { "id": id }
-    return  methods.getBy(tables.categoriesTable, data).then((data) => {
-            let response = data.length === 0 ? `No category with id ${id} was found` : data
-            return response
-        })
+    return methods.getBy(tables.categoriesTable, data).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -32,10 +30,9 @@ function getCategoryById(id) {
  */
 function getCategoryProducts(category_id) {
     const data = { "category_id": category_id }
-  return methods.getBy(tables.PrdInCatTable, data).then((data) => {
-            let response = data.length === 0 ? `No products in the category of ID ${category_id} were found` : data
-            return response
-        })
+    return methods.getBy(tables.PrdInCatTable, data).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -45,10 +42,9 @@ function getCategoryProducts(category_id) {
  */
 function getCategoryWatchers(category_id) {
     const data = { "category_id": category_id }
-  return methods.getBy(tables.watchedTable, data).then((data) => {
-            let response = data.length === 0 ? `No users watching in the category of ID ${category_id} were found` : data
-            return response
-        })
+    return methods.getBy(tables.watchedTable, data).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -58,10 +54,9 @@ function getCategoryWatchers(category_id) {
  */
 function getCategoryParents(child_id) {
     const data = { "child_id": child_id }
-    return methods.getBy(tables.catParentsTable, data).then((data) => {
-            let response = data.length === 0 ? `No parents to the category of ID ${child_id} were found` : data
-            return response
-        })
+    return methods.getBy(tables.catParentsTable, data).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -71,10 +66,9 @@ function getCategoryParents(child_id) {
  */
 function getCategoryChildren(parent_id) {
     const data = { "parent_id": parent_id }
-    return methods.getBy(tables.catParentsTable, data).then((data) => {
-            let response = data.length === 0 ? `No children to the category of ID ${child_id} were found` : data
-            return response
-        })
+    return methods.getBy(tables.catParentsTable, data).then((response) => {
+        return response
+    })
 }
 
 module.exports = { getCategories, getCategoryById, getCategoryProducts, getCategoryWatchers, getCategoryParents, getCategoryChildren };

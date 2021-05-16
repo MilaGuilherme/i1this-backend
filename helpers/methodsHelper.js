@@ -14,7 +14,7 @@ dotenv.config();
 function insert(tableName, data, agent_id) {
     return db(tableName)
         .insert(data)
-        .then((id) => {
+        .then(id => {
             return db(tableName)
                 .where({ "id": id })
                 .then((response) => {
@@ -33,29 +33,28 @@ function insert(tableName, data, agent_id) {
 /**
  * @param {string} tableName
  * @param {Object} data
- * @param {number} id
+ * @param {Object} condition
  * @param {number} agent_id
+ * @param {number} id
  * @returns {Promise}
  */
-function update(tableName, id, data, agent_id) {
-    console.log(data)
-    console.log(id)
+function update(tableName, data, condition, agent_id, id) {
     db(tableName)
-        .where("id", id)
+        .where(condition)
         .then((response) => {
             if (response.length > 0)
-                log(tableName, "update", id, agent_id, JSON.stringify(response), JSON.stringify(data))
+                log(tableName, "update", id || undefined, agent_id, JSON.stringify(response), JSON.stringify(data))
             else { }
         })
     return db(tableName)
-        .where("id", id)
+        .where(condition)
         .update(data)
         .then((id) => {
             return db(tableName)
-                .where("id", id)
+                .where({ "id": id })
                 .then((response) => {
                     process.env.NODE_ENV === 'development' ? console.log(response) : null;
-                    return { "status": 200, "message": response };
+                    return response;
                 })
         })
         .catch((error) => {
@@ -82,8 +81,8 @@ function updateBatch(tableName, condition, data, agent_id) {
     return db(tableName)
         .where(condition)
         .update(data)
-        .then(() => {
-            return { "status": 202, "message": "Batch update accepted" };
+        .then((response) => {
+            return response;
         })
         .catch((error) => {
             let err = errorHelper(error)
@@ -94,20 +93,20 @@ function updateBatch(tableName, condition, data, agent_id) {
 
 /**
  * @param {string} tableName
- * @param {number} id
+ * @param {Object} condition
  * @param {number} agent_id
  * @returns {Promise}
  */
-function remove(tableName, id, agent_id) {
+function remove(tableName, condition, agent_id) {
     db(tableName)
-        .where("id", id)
+        .where(condition)
         .then((response) => {
             if (response.length > 0)
-                log(tableName, "remove", id, agent_id, JSON.stringify(data), "deleted")
+                log(tableName, "remove", response.id, agent_id, JSON.stringify(response), "deleted")
             else { }
         })
     return db(tableName)
-        .where("id", id)
+        .where(condition)
         .del()
         .then((response) => {
             process.env.NODE_ENV == 'development' ? console.log(response) : null;
@@ -137,8 +136,7 @@ function removeBatch(tableName, condition, agent_id) {
     return db(tableName)
         .where(condition)
         .del()
-        .then((data) => {
-            let response = data === 0 ? `No data to delete` : `Deleted data`
+        .then((response) => {
             process.env.NODE_ENV == 'development' ? console.log(response) : null;
             return response;
         })

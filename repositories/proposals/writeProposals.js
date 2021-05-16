@@ -15,7 +15,7 @@ function insertProposal(agent_id, data) {
 }
 
 /**
- * @patch proposals/{id}
+ * @put proposals/{id}
  * @param {number} agent_id
  * @param {number}  id
  * @param {Object} data
