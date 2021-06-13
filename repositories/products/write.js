@@ -3,12 +3,16 @@ const methods = require('../../helpers/methodsHelper');
 
 /**
  * @post /products
- * @param {number} agent_id
  * @param {Object} data
+ * @param {number} agent_id
  * @returns {Object}
  */
-function insertProduct(agent_id, data) {
+function insertProduct(data,agent_id) {
     return methods.insert(tables.productsTable, data, agent_id).then((response) => {
+        insertProductInCategory(agent_id, {
+            "product_id": response.id,
+            "category_id": data.category_id
+        })
         return response
     })
 }
@@ -20,7 +24,7 @@ function insertProduct(agent_id, data) {
  * @param {Object}  data
  * @returns {Object}
  */
-function updateProduct(agent_id, id, data) {
+function updateProduct(id, data, agent_id) {
     return methods.update(tables.productsTable, id, data, agent_id).then((response) => {
         return response
     })
@@ -30,15 +34,10 @@ function updateProduct(agent_id, id, data) {
 /**
  * @post /products/{product_id}/category/{category_id}
  * @param {number} agent_id
- * @param {number} product_id
- * @param {number} category_id
+ * @param {Object} data
  * @returns {Object}
  */
-function insertProductInCategory(agent_id, product_id, category_id) {
-    let data = {
-        "product_id": product_id,
-        "category_id": category_id
-    }
+function insertProductInCategory(data,agent_id) {
     return methods.insert(tables.PrdInCatTable, data, agent_id).then((response) => {
         return response
     })
@@ -47,14 +46,10 @@ function insertProductInCategory(agent_id, product_id, category_id) {
 /**
  * @delete /products/{product_id}/category
  * @param {number} agent_id
- * @param {number}  product_id
+ * @param {Object}  data
  * @returns {Object}
  */
-function removeProductFromCategory(agent_id, product_id) {
-    let data = {
-        "product_id": product_id,
-        "category_id": 0
-    }
+function removeProductFromCategory(data,agent_id) {
     return methods.update(tables.PrdInCatTable, data, product_id, agent_id).then((response) => {
         return response
     })

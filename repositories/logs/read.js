@@ -1,16 +1,16 @@
+//ANCHOR Don't bother with service or controllers for now
 
 const tables = require("../../db/tables.json")
- const methods = require('../../helpers/methodsHelper');
+const methods = require('../../helpers/methodsHelper');
 
 /**
  * @get /logs
  * @returns {Object}
  */
- function getLogs() {
-  return methods.getAll(tables.logsTable).then((data) => {
-            let response = data.length === 0 ? `No logs found` : data
-            return response
-        }) 
+function getLogs() {
+    return methods.getAll(tables.logsTable).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -19,11 +19,9 @@ const tables = require("../../db/tables.json")
  * @returns {Object}
  */
 function getLogByModifiedBy(id) {
-    const data = { "id": id }
-  return methods.getBy(tables.logsTable, data).then((data) => {
-            let response = data.length === 0 ? `No log modified by the user with the ID ${id} was found` : data
-            return response
-        }) 
+    return methods.getBy(tables.logsTable, { "id": id }).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -32,11 +30,9 @@ function getLogByModifiedBy(id) {
  * @returns {Object}
  */
 function getLogByModifiedTable(tableName) {
-    const data = { "modified_table": tableName }
-  return methods.getBy(tables.logsTable, data).then((data) => {
-            let response = data.length === 0 ? `No log of modifications on the table '${tableName}' was found` : data
-            return response
-        }) 
+    return methods.getBy(tables.logsTable,  { "modified_table": tableName }).then((response) => {
+        return response
+    })
 }
 
 /**
@@ -46,15 +42,13 @@ function getLogByModifiedTable(tableName) {
  * @returns {Object}
  */
 function getLogByModifiedTableAndId(tableName, modified_id) {
-    const data = { 
+    const data = {
         "modified_table": tableName,
-        "modified_id":modified_id
+        "modified_id": modified_id
     }
-  return methods.getBy(tables.logsTable, data).then((data) => {
-            let response = data.length === 0 ? `No log of modifications on the table '${tableName}' and entity with ${modified_id} was found` : data
-            console.log(response)
-            return response
-        }) 
+    return methods.getBy(tables.logsTable, data).then((response) => {
+        return response
+    })
 }
 
 module.exports = { getLogs, getLogByModifiedBy, getLogByModifiedTable, getLogByModifiedTableAndId }

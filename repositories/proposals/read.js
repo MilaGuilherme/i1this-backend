@@ -7,8 +7,7 @@ const tables = require("../../db/tables.json")
  * @returns {Object}
  */
 function getProposals() {
-  return methods.getAll(tables.proposalsTable).then((data) => {
-    let response = data.length === 0 ? `No products found` : data
+  return methods.getAll(tables.proposalsTable).then((response) => {
     return response
   })
 }
@@ -19,9 +18,7 @@ function getProposals() {
  * @returns {Object}
  */
 function getProposalsByID(id) {
-  const data = { "id": id }
-  return methods.getBy(tables.proposalsTable, data).then((data) => {
-    let response = data.length === 0 ? `No proposal with the ID ${id} was found` : data
+  return methods.getBy(tables.proposalsTable, { "id": id }).then((response) => {
     return response
   })
 }
@@ -32,9 +29,7 @@ function getProposalsByID(id) {
  * @returns {Object}
  */
 function getProposalUsers(proposal_id) {
-  const data = { "proposal_id": proposal_id }
-  return methods.getBy(tables.acceptedTable, data).then((data) => {
-    let response = data.length === 0 ? `No users who accepted the proposal of ID ${proposal_id} were found` : data
+  return methods.getBy(tables.acceptedTable, { "proposal_id": proposal_id }).then((response) => {
     return response
   })
 }

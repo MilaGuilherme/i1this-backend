@@ -1,5 +1,5 @@
 const tables = require("../../db/tables.json")
- const methods = require('../../helpers/methodsHelper');
+const methods = require('../../helpers/methodsHelper');
 
 
 /**
@@ -8,23 +8,23 @@ const tables = require("../../db/tables.json")
  * @param {Object} data
  * @returns {Object}
  */
-function insertProposal(agent_id, data) {
+function insertProposal(data,agent_id) {
   return methods.insert(tables.proposalsTable, data, agent_id).then((response) => {
-            return response
-        }) 
+    return response
+  })
 }
 
 /**
  * @put proposals/{id}
- * @param {number} agent_id
  * @param {number}  id
+ * @param {number} agent_id
  * @param {Object} data
  * @returns {Object}
  */
-function updateProposal(agent_id, id, data) {
+function updateProposal(id, data, agent_id) {
   return methods.update(tables.proposalsTable, data, id, agent_id).then((response) => {
-            return response
-        }) 
+    return response
+  })
 }
 
-module.exports = { insertProposal ,updateProposal };
+module.exports = { insertProposal, updateProposal };
