@@ -9,9 +9,19 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+const indexRouter = require("./controllers");
 const categoriesRouter = require("./controllers/categories");
+const productsRouter = require("./controllers/products");
+const proposalsRouter = require("./controllers/proposals");
+const usersRouter = require("./controllers/users");
+const userTypesRouter = require("./controllers/userTypes");
 
+app.use('/', indexRouter);
 app.use('/categories', categoriesRouter);
+app.use('/products', productsRouter);
+app.use('/proposals', proposalsRouter);
+app.use('/users', usersRouter);
+app.use('/usertypes', userTypesRouter);
 
 app.post('/', function (req, res) {
   console.log(req.body)
@@ -19,7 +29,7 @@ app.post('/', function (req, res) {
 })
 
 const server = app.listen(port, () => {
-  console.log("Your app is listening on port " + port);
+  console.log("Your app is listening on port http://localhost:" + port);
 });
 
 process.on( 'SIGTERM', function () {

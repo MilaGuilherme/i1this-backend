@@ -66,28 +66,28 @@ async function getProposalAcceptees(id) {
  */
 async function post(data) {
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!data.product_id)
-        return { code: 403, message: 'missing: product_id' }
+        return {"status":403, message: 'missing: product_id' }
 
     else if (!data.data.created_by)
-        return { code: 403, message: 'missing: data.created_by' }
+        return {"status":403, message: 'missing: data.created_by' }
 
     else if (!data.data.price)
-        return { code: 403, message: 'missing: data.price' }
+        return {"status":403, message: 'missing: data.price' }
 
     else if (!data.data.links)
-        return { code: 403, message: 'missing: data.links' }
+        return {"status":403, message: 'missing: data.links' }
 
     else if (!data.data.photos)
-        return { code: 403, message: 'missing: data.photos' }
+        return {"status":403, message: 'missing: data.photos' }
 
     else if (!data.data.minimun_quantity)
-        return { code: 403, message: 'missing: data.minimun_quantity' }
+        return {"status":403, message: 'missing: data.minimun_quantity' }
 
     else if (!data.data.requires_intent)
-        return { code: 403, message: 'missing: data.requires_intent' }
+        return {"status":403, message: 'missing: data.requires_intent' }
 
     else {
         return write.insertProposal(data.data, data.agent_id)
@@ -114,13 +114,13 @@ async function post(data) {
  */
  async function update(id, data) {
     if (!id)
-        return { code: 403, message: 'id' }
+        return {"status":403, message: 'id' }
 
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!data.data)
-        return { code: 403, message: 'missing: data' }
+        return {"status":403, message: 'missing: data' }
 
     else {
         return write.updateUser(id, data.data, data.agent_id)

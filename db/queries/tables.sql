@@ -9,10 +9,10 @@ CREATE TABLE `users`
      `name`       VARCHAR(255) NOT NULL,
      `password`   VARCHAR(255) NOT NULL,
      `email`      VARCHAR(255) NOT NULL,
-     `type_id`    INT DEFAULT '1',
+     `type_id`    INT DEFAULT 3,
      `created_at` TIMESTAMP,
      `updated_at` TIMESTAMP,
-     `active`     BOOLEAN
+     `active`     BOOLEAN DEFAULT true NOT NULL,
   );
 
 CREATE TABLE `user_types`

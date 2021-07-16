@@ -13,6 +13,16 @@ function getUsers() {
 }
 
 /**
+ * @get /users
+ * @returns {Object}
+ */
+function getByEmail(email) {
+  return methods.getBy(tables.userTable,{"email":email}).then((response) => {
+    return response
+  })
+}
+
+/**
  * @get users/{id}
  * @param {Number} id
  * @returns {Object}
@@ -82,4 +92,4 @@ function getUserProposed(user_id) {
   })
 }
 
-module.exports = { getUsers, getUserByID, getUserProduct, getUserOned, getUserWatched, getUserAccepted,getUserProposed };
+module.exports = { getUsers, getByEmail, getUserByID, getUserProduct, getUserOned, getUserWatched, getUserAccepted,getUserProposed };

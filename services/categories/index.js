@@ -113,13 +113,13 @@ async function getChildren(id) {
  */
 async function post(data) {
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!data.data)
-        return { code: 403, message: 'missing: data' }
+        return {"status":403, message: 'missing: data' }
 
     else if (!data.data.name)
-        return { code: 403, message: 'missing: data.name' }
+        return {"status":403, message: 'missing: data.name' }
 
     else {
         return write.insertCategory(data.data, data.agent_id)
@@ -143,13 +143,13 @@ async function post(data) {
  */
 async function postRelationship(parent_id, child_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!parent_id)
-        return { code: 403, message: 'missing: parent_id' }
+        return {"status":403, message: 'missing: parent_id' }
 
     else if (!child_id)
-        return { code: 403, message: 'missing: child_id' }
+        return {"status":403, message: 'missing: child_id' }
 
     else {
         const data = {
@@ -177,13 +177,13 @@ async function postRelationship(parent_id, child_id, info) {
  */
 async function update(id, data) {
     if (!id)
-        return { code: 403, message: 'id' }
+        return {"status":403, message: 'id' }
 
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!data.data)
-        return { code: 403, message: 'missing: data' }
+        return {"status":403, message: 'missing: data' }
 
     else {
         return write.updateCategory(id, data.data, data.agent_id)
@@ -207,10 +207,10 @@ async function update(id, data) {
  */
 async function del(id, info) {
     if (!id)
-        return { code: 403, message: 'id' }
+        return {"status":403, message: 'id' }
 
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else {
         return write.removeCategory(id, info.agent_id)
@@ -231,13 +231,13 @@ async function del(id, info) {
  */
 async function deleteRelationship(parent_id, child_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!parent_id)
-        return { code: 403, message: 'missing: parent_id' }
+        return {"status":403, message: 'missing: parent_id' }
 
     else if (!child_id)
-        return { code: 403, message: 'missing: child_id' }
+        return {"status":403, message: 'missing: child_id' }
 
     else {
         const data = {

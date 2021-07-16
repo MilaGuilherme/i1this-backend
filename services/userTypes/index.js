@@ -66,13 +66,13 @@ async function getTypeUsers(id) {
  */
 async function post(data) {
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!data.name)
-        return { code: 403, message: 'missing: name' }
+        return {"status":403, message: 'missing: name' }
 
     else if (!data.data.permissions)
-        return { code: 403, message: 'missing: data.permissions' }
+        return {"status":403, message: 'missing: data.permissions' }
 
     else {
         return write.insertUserType(data.data, data.agent_id)
@@ -99,13 +99,13 @@ async function post(data) {
  */
  async function update(id, data) {
     if (!id)
-        return { code: 403, message: 'id' }
+        return {"status":403, message: 'id' }
 
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!data.data)
-        return { code: 403, message: 'missing: data' }
+        return {"status":403, message: 'missing: data' }
 
     else {
         return write.updateUser(id, data.data, data.agent_id)

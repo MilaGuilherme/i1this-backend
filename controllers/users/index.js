@@ -1,6 +1,9 @@
 const express = require('express');
+const verify = require('../../helpers/authHelper');
 const service = require('../../services/users')
 const router = express.Router();
+const verify = require('../../helpers/authHelper');
+
 
 /*
  * GET ROUTES
@@ -57,39 +60,39 @@ router.get('/:id/categories', function (req, res) {
 /*
  * POST ROUTES
  */
-router.post('/', function (req, res) {
+router.post('/', verify, function (req, res) {
     let data = req.body;
     service.post(data)
         .then((response) => {
-            res.status(response.status).send(response)
+            res.status(response.status || 404).send(response)
         })
 });
 
-router.post('/:id/one/:product_id', function (req, res) {
+router.post('/:id/one/:product_id', verify, function (req, res) {
     let data = req.body;
     let user_id = req.params.id;
     let product_id = req.params.parent_id;
-    service.postOne(user_id,product_id,data)
+    service.postOne(user_id, product_id, data)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.post('/:id/category/:category_id', function (req, res) {
+router.post('/:id/category/:category_id', verify, function (req, res) {
     let data = req.body;
     let user_id = req.params.id;
     let category_id = req.params.parent_id;
-    service.postWatchCategory(user_id,category_id,data)
+    service.postWatchCategory(user_id, category_id, data)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.post('/:id/proposals/:proposal_id', function (req, res) {
+router.post('/:id/proposals/:proposal_id', verify, function (req, res) {
     let data = req.body;
     let user_id = req.params.id;
     let proposal_id = req.params.parent_id;
-    service.postAcceptProposal(user_id,proposal_id,data)
+    service.postAcceptProposal(user_id, proposal_id, data)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -100,9 +103,9 @@ router.post('/:id/proposals/:proposal_id', function (req, res) {
  * PUT ROUTES
 */
 
-router.put('/:id', function (req, res) {
+router.put('/:id', verify, function (req, res) {
     let data = req.body;
-    service.update(req.params.id,data)
+    service.update(req.params.id, data)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -112,31 +115,31 @@ router.put('/:id', function (req, res) {
  * DELETE ROUTES
  */
 
-router.delete('/:id/one/:product_id', function (req, res) {
+router.delete('/:id/one/:product_id', verify, function (req, res) {
     let data = req.body;
     let user_id = req.params.id;
     let product_id = req.params.product_id;
-    service.deleteOne(user_id,product_id,data)
+    service.deleteOne(user_id, product_id, data)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.delete('/:id/category/:category_id', function (req, res) {
+router.delete('/:id/category/:category_id', verify, function (req, res) {
     let data = req.body;
     let user_id = req.params.id;
     let category_id = req.params.product_id;
-    service.deleteOne(user_id,category_id,data)
+    service.deleteOne(user_id, category_id, data)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.delete('/:id/proposals/:proposal_id', function (req, res) {
+router.delete('/:id/proposals/:proposal_id', verify, function (req, res) {
     let data = req.body;
     let user_id = req.params.id;
     let proposal_id = req.params.proposal_id;
-    service.deletAcceptance(user_id,proposal_id,data)
+    service.deletAcceptance(user_id, proposal_id, data)
         .then((response) => {
             res.status(response.status).send(response)
         })

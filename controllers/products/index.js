@@ -1,6 +1,8 @@
 const express = require('express');
 const service = require('../../services/products')
 const router = express.Router();
+const verify = require('../../helpers/authHelper');
+
 
 /*
  * GET ROUTES
@@ -43,7 +45,7 @@ router.get('/:id/proposals', function (req, res) {
 /*
  * POST ROUTES
  */
-router.post('/', function (req, res) {
+router.post('/',verify, function (req, res) {
     let data = req.body;
     service.post(data)
         .then((response) => {
@@ -51,7 +53,7 @@ router.post('/', function (req, res) {
         })
 });
 
-router.post('/:id/category/:category_id', function (req, res) {
+router.post('/:id/category/:category_id',verify, function (req, res) {
     let data = req.body;
     let product_id = req.params.id;
     let category_id = req.params.parent_id;
@@ -66,7 +68,7 @@ router.post('/:id/category/:category_id', function (req, res) {
  * PUT ROUTES
 */
 
-router.put('/:id', function (req, res) {
+router.put('/:id',verify, function (req, res) {
     let data = req.body;
     service.update(req.params.id,data)
         .then((response) => {
@@ -77,7 +79,7 @@ router.put('/:id', function (req, res) {
 /*
  * DELETE ROUTES
  */
-router.delete('/:id', function (req, res) {
+router.delete('/:id',verify, function (req, res) {
     let id = req.params.id
     let data = req.body;
     service.del(id,data)
@@ -86,7 +88,7 @@ router.delete('/:id', function (req, res) {
         })
 });
 
-router.delete('/:id/category/', function (req, res) {
+router.delete('/:id/category/',verify, function (req, res) {
     let data = req.body;
     let id = req.params.id;
     service.deleteRelationship(id,data)

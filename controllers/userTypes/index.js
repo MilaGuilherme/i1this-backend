@@ -1,6 +1,8 @@
 const express = require('express');
 const service = require('../../services/userTypes')
 const router = express.Router();
+const verify = require('../../helpers/authHelper');
+
 
 /*
  * GET ROUTES
@@ -29,7 +31,7 @@ router.get('/:id/users', function (req, res) {
 /*
  * POST ROUTES
  */
-router.post('/', function (req, res) {
+router.post('/',verify, function (req, res) {
     let data = req.body;
     service.post(data)
         .then((response) => {
@@ -41,7 +43,7 @@ router.post('/', function (req, res) {
  * PUT ROUTES
 */
 
-router.put('/:id', function (req, res) {
+router.put('/:id',verify, function (req, res) {
     let data = req.body;
     service.update(req.params.id,data)
         .then((response) => {

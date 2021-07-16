@@ -1,6 +1,8 @@
 const express = require('express');
 const service = require('../../services/categories')
 const router = express.Router();
+const verify = require('../../helpers/authHelper');
+
 
 /*
  * GET ROUTES
@@ -50,7 +52,7 @@ router.get('/:id/children', function (req, res) {
 /*
  * POST ROUTES
  */
-router.post('/', function (req, res) {
+router.post('/',verify, function (req, res) {
     let data = req.body;
     service.post(data)
         .then((response) => {
@@ -58,7 +60,7 @@ router.post('/', function (req, res) {
         })
 });
 
-router.post('/:id/parents/:parent_id', function (req, res) {
+router.post('/:id/parents/:parent_id',verify, function (req, res) {
     let data = req.body;
     let child_id = req.params.id;
     let parent_id = req.params.parent_id;
@@ -68,7 +70,7 @@ router.post('/:id/parents/:parent_id', function (req, res) {
         })
 });
 
-router.post('/:id/children/:child_id', function (req, res) {
+router.post('/:id/children/:child_id',verify, function (req, res) {
     let data = req.body;
     let child_id = req.params.child_id;
     let parent_id = req.params.id;
@@ -82,7 +84,7 @@ router.post('/:id/children/:child_id', function (req, res) {
  * PUT ROUTES
 */
 
-router.put('/:id', function (req, res) {
+router.put('/:id',verify, function (req, res) {
     let data = req.body;
     service.update(req.params.id,data)
         .then((response) => {
@@ -93,7 +95,7 @@ router.put('/:id', function (req, res) {
 /*
  * DELETE ROUTES
  */
-router.delete('/:id', function (req, res) {
+router.delete('/:id',verify, function (req, res) {
     let id = req.params.id
     let data = req.body;
     service.del(id,data)
@@ -102,7 +104,7 @@ router.delete('/:id', function (req, res) {
         })
 });
 
-router.delete('/:id/parents/:parent_id', function (req, res) {
+router.delete('/:id/parents/:parent_id',verify, function (req, res) {
     let data = req.body;
     let child_id = req.params.id;
     let parent_id = req.params.parent_id;
@@ -112,7 +114,7 @@ router.delete('/:id/parents/:parent_id', function (req, res) {
         })
 });
 
-router.delete('/:id/children/:child_id', function (req, res) {
+router.delete('/:id/children/:child_id',verify, function (req, res) {
     let data = req.body;
     let child_id = req.params.child_id;
     let parent_id = req.params.id;

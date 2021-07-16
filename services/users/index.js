@@ -1,8 +1,24 @@
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const read = require('../../repositories/users/read')
 const write = require('../../repositories/users/write')
 
 //TODO TEST THIS
+
+/**
+ * @param {String} email
+ * @returns {Promise}
+ */
+ async function getByEmail(email) {
+    return read.getByEmail(email).then((response) => {
+        response.status ?
+            res = response :
+            res = response.length === 0 ?
+                { "status": 404, "message": "Not Found", "content": `No user with id ${id} was found` } :
+                { "status": 200, "message": "success", "content": response }
+        return res;
+    })
+}
 
 /*
 * GET SERVICES
@@ -131,24 +147,26 @@ async function getCategories(id) {
  */
 async function post(data) {
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return { "status": 403, message: 'missing: agent_id' }
 
     else if (!data.data)
-        return { code: 403, message: 'missing: data' }
+        return { "status": 403, message: 'missing: data' }
 
     else if (!data.data.name)
-        return { code: 403, message: 'missing: data.name' }
+        return { "status": 403, message: 'missing: data.name' }
 
     else if (!data.data.password)
-        return { code: 403, message: 'missing: data.password' }
+        return { "status": 403, message: 'missing: data.password' }
 
     else if (!data.data.email)
-        return { code: 403, message: 'missing: data.email' }
-
-    else if (!data.data.type_id)
-        return { code: 403, message: 'missing: data.type_id' }
+        return { "status": 403, message: 'missing: data.email' }
 
     else {
+        await bcrypt.hash(data["data"]["password"], saltRounds).then(function (hash) {
+            data.data["password"] = hash;
+        });
+        data.data["created_at"] = new Date();
+        data.data["updated_at"] = new Date();
         return write.insertUser(data.data, data.agent_id)
             .then(response => {
                 response.status ?
@@ -170,18 +188,18 @@ async function post(data) {
  */
 async function postOne(user_id, product_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return { "status": 403, message: 'missing: agent_id' }
 
     else if (!user_id)
-        return { code: 403, message: 'missing: user_id' }
+        return { "status": 403, message: 'missing: user_id' }
 
     else if (!product_id)
-        return { code: 403, message: 'missing: product_id' }
-
+        return { "status": 403, message: 'missing: product_id' }
     else {
         const data = {
             "user_id": user_id,
-            "product_id": product_id
+            "product_id": product_id,
+            "oned_at": new Date()
         }
         return write.insertOne(data, info.agent_id)
             .then(response => {
@@ -201,18 +219,19 @@ async function postOne(user_id, product_id, info) {
  */
 async function postWatchCategory(user_id, category_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return { "status": 403, message: 'missing: agent_id' }
 
     else if (!user_id)
-        return { code: 403, message: 'missing: user_id' }
+        return { "status": 403, message: 'missing: user_id' }
 
     else if (!category_id)
-        return { code: 403, message: 'missing: category_id' }
+        return { "status": 403, message: 'missing: category_id' }
 
     else {
         const data = {
             "user_id": user_id,
-            "category_id": category_id
+            "category_id": category_id,
+            "watched_at": new Date()
         }
         return write.insertWatch(data, info.agent_id)
             .then(response => {
@@ -232,18 +251,20 @@ async function postWatchCategory(user_id, category_id, info) {
  */
 async function postAcceptProposal(user_id, proposal_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return { "status": 403, message: 'missing: agent_id' }
 
     else if (!user_id)
-        return { code: 403, message: 'missing: user_id' }
+        return { "status": 403, message: 'missing: user_id' }
 
     else if (!proposal_id)
-        return { code: 403, message: 'missing: proposal_id' }
+        return { "status": 403, message: 'missing: proposal_id' }
 
     else {
         const data = {
             "user_id": user_id,
-            "proposal_id": proposal_id
+            "proposal_id": proposal_id,
+            "accepted_at": new Date(),
+            "buying_intent": info.intent || false,
         }
         return write.insertAccept(data, info.agent_id)
             .then(response => {
@@ -259,22 +280,28 @@ async function postAcceptProposal(user_id, proposal_id, info) {
 */
 
 /**
- * @put /categories/{category_id}
+ * @put /users/{user_id}
  * @param {number} id
  * @param {Object} data
  * @returns {Promise}
  */
 async function update(id, data) {
     if (!id)
-        return { code: 403, message: 'id' }
+        return { "status": 403, message: 'id' }
 
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return { "status": 403, message: 'missing: agent_id' }
 
     else if (!data.data)
-        return { code: 403, message: 'missing: data' }
+        return { "status": 403, message: 'missing: data' }
 
     else {
+        if (data["data"]["password"]) {
+            await bcrypt.hash(data["data"]["password"], saltRounds).then(function (hash) {
+                data.data["password"] = hash;
+            });
+        }
+        data.data["updated_at"] = new Date();
         return write.updateUser(id, data.data, data.agent_id)
             .then(response => {
                 let res;
@@ -298,13 +325,13 @@ async function update(id, data) {
  */
 async function deleteOne(user_id, product_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return { "status": 403, message: 'missing: agent_id' }
 
     else if (!user_id)
-        return { code: 403, message: 'missing: user_id' }
+        return { "status": 403, message: 'missing: user_id' }
 
     else if (!product_id)
-        return { code: 403, message: 'missing: product_id' }
+        return { "status": 403, message: 'missing: product_id' }
 
     else {
         const data = {
@@ -329,13 +356,13 @@ async function deleteOne(user_id, product_id, info) {
  */
 async function deleteWatch(user_id, category_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return { "status": 403, message: 'missing: agent_id' }
 
     else if (!user_id)
-        return { code: 403, message: 'missing: user_id' }
+        return { "status": 403, message: 'missing: user_id' }
 
     else if (!category_id)
-        return { code: 403, message: 'missing: category_id' }
+        return { "status": 403, message: 'missing: category_id' }
 
     else {
         const data = {
@@ -360,13 +387,13 @@ async function deleteWatch(user_id, category_id, info) {
  */
 async function deletAcceptance(user_id, proposal_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return { "status": 403, message: 'missing: agent_id' }
 
     else if (!user_id)
-        return { code: 403, message: 'missing: user_id' }
+        return { "status": 403, message: 'missing: user_id' }
 
     else if (!proposal_id)
-        return { code: 403, message: 'missing: proposal_id' }
+        return { "status": 403, message: 'missing: proposal_id' }
 
     else {
         const data = {
@@ -382,4 +409,4 @@ async function deletAcceptance(user_id, proposal_id, info) {
     }
 }
 
-module.exports = { get, getById, getProducts, getOnes, getAcceptedProposals, getPostedProposals,getCategories, post, postOne, postWatchCategory, postAcceptProposal, update, deleteOne, deleteWatch, deletAcceptance }
+module.exports = { get, getById,getByEmail, getProducts, getOnes, getAcceptedProposals, getPostedProposals, getCategories, post, postOne, postWatchCategory, postAcceptProposal, update, deleteOne, deleteWatch, deletAcceptance }

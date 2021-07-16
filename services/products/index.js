@@ -99,22 +99,22 @@ async function getProposals(id) {
  */
 async function post(data) {
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!data.data)
-        return { code: 403, message: 'missing: data' }
+        return {"status":403, message: 'missing: data' }
 
     else if (!data.data.name)
-        return { code: 403, message: 'missing: data.name' }
+        return {"status":403, message: 'missing: data.name' }
 
     else if (!data.data.created_by)
-        return { code: 403, message: 'missing: data.created_by' }
+        return {"status":403, message: 'missing: data.created_by' }
 
     else if (!data.data.description)
-        return { code: 403, message: 'missing: data.description' }
+        return {"status":403, message: 'missing: data.description' }
 
     else if (!data.data.category_id)
-        return { code: 403, message: 'missing: data.category_id' }
+        return {"status":403, message: 'missing: data.category_id' }
 
     else {
         return write.insertProduct(data.data, data.agent_id)
@@ -138,13 +138,13 @@ async function post(data) {
  */
 async function postRelationship(product_id, category_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!product_id)
-        return { code: 403, message: 'missing: product_id' }
+        return {"status":403, message: 'missing: product_id' }
 
     else if (!category_id)
-        return { code: 403, message: 'missing: category_id' }
+        return {"status":403, message: 'missing: category_id' }
 
     else {
         const data = {
@@ -172,13 +172,13 @@ async function postRelationship(product_id, category_id, info) {
  */
 async function update(id, data) {
     if (!id)
-        return { code: 403, message: 'id' }
+        return {"status":403, message: 'id' }
 
     if (!data.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!data.data)
-        return { code: 403, message: 'missing: data' }
+        return {"status":403, message: 'missing: data' }
 
     else {
         return write.updateProduct(id, data.data, data.agent_id)
@@ -203,10 +203,10 @@ async function update(id, data) {
  */
 async function deleteRelationship(product_id, info) {
     if (!info.agent_id)
-        return { code: 403, message: 'missing: agent_id' }
+        return {"status":403, message: 'missing: agent_id' }
 
     else if (!product_id)
-        return { code: 403, message: 'missing: product_id' }
+        return {"status":403, message: 'missing: product_id' }
 
     else {
         const data = {
