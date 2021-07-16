@@ -18,7 +18,5 @@ change the info to match your database
 `node db/refreshDB.js`
 #### To build the tables:
 `node db/refreshTables.js`
-**OR**
-`knex migrate:latest`
 #### To seed the tables:
 `knex seed:run`
