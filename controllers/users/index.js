@@ -2,7 +2,6 @@ const express = require('express');
 const verify = require('../../helpers/authHelper');
 const service = require('../../services/users')
 const router = express.Router();
-const verify = require('../../helpers/authHelper');
 
 
 /*

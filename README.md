@@ -4,7 +4,7 @@
 `npm install`
 
 ### By default the API uses MySQL 5.7.31 and Knex
-Create an .env file on the root of the folder and add the following"status"
+Create an .env file on the root of the folder and add the following
 
 	NODE_ENV=development
 	PORT=3001

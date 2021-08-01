@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const port = process.env.PORT;
 const db = require('./db/db')
+const cors = require('cors')
 
 const express = require('express');
 const app = express();
@@ -16,6 +17,12 @@ const proposalsRouter = require("./controllers/proposals");
 const usersRouter = require("./controllers/users");
 const userTypesRouter = require("./controllers/userTypes");
 
+const corsOptions = {
+  origin: process.env.FRONTEND,
+  exposedHeaders: ['auth-token']
+}
+
+app.use(cors(corsOptions));
 app.use('/', indexRouter);
 app.use('/categories', categoriesRouter);
 app.use('/products', productsRouter);
