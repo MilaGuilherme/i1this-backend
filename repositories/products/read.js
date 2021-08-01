@@ -5,10 +5,17 @@ const methods = require('../../helpers/methodsHelper');
  * @get /products
  * @returns {Object}
  */
-function getProducts() {
-  return methods.getAll(tables.productsTable).then((response) => {
-    return response
-  })
+function getProducts(params = null) {
+  if (Object.keys(params) == 0) {
+    return methods.getAll(tables.productsTable).then((response) => {
+      return response
+    })
+  }
+  else if (params.orderBy) {
+    return methods.getOrdered(tables.productsTable, params.orderBy).then((response) => {
+      return response
+    })
+  }
 }
 
 /**

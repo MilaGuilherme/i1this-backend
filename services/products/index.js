@@ -12,8 +12,8 @@ const write = require('../../repositories/products/write')
  * @get /products
  * @returns {Promise}
  */
-async function get() {
-    return read.getProducts().then((response) => {
+async function get(params) {
+    return read.getProducts(params).then((response) => {
         response.status ?
             res = response :
             res = response.length === 0 ?
@@ -117,6 +117,9 @@ async function post(data) {
         return {"status":403, message: 'missing: data.category_id' }
 
     else {
+        data.data.created_at = new Date();
+        data.data.updated_at = new Date();
+        data.data.photos?data.data.photos = JSON.stringify(data.data.photos):null
         return write.insertProduct(data.data, data.agent_id)
             .then(response => {
                 response.status ?

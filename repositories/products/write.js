@@ -8,11 +8,14 @@ const methods = require('../../helpers/methodsHelper');
  * @returns {Object}
  */
 function insertProduct(data,agent_id) {
-    return methods.insert(tables.productsTable, data, agent_id).then((response) => {
-        insertProductInCategory(agent_id, {
-            "product_id": response.id,
-            "category_id": data.category_id
-        })
+    const category_id = data.category_id
+    delete data.category_id
+    return methods.insert(tables.productsTable, data, agent_id).then(response => {
+        const product_id = response[0].id
+        insertProductInCategory({
+            "product_id": product_id,
+            "category_id": category_id
+        },agent_id)
         return response
     })
 }
@@ -38,6 +41,7 @@ function updateProduct(id, data, agent_id) {
  * @returns {Object}
  */
 function insertProductInCategory(data,agent_id) {
+    console.log(data)
     return methods.insert(tables.PrdInCatTable, data, agent_id).then((response) => {
         return response
     })

@@ -17,9 +17,9 @@ router.post('/signin', (req, res) => {
         bcrypt.compare(data.password || 'none', pass).then((validPass) => {
             if (validPass) {
                 const token = jwt.sign({ agent_id: id, type_id: type }, process.env.TOKEN_KEY)
-                res.set('auth-token', token).send({status:200, message:'Incorrect password'})
+                res.set('auth-token', token).status(200).send("Logged in")
             }
-            else res.send({status:403, message:'Incorrect password'})
+            else res.status(403).send('Incorrect password')
         })
     })
 })
@@ -27,7 +27,7 @@ router.post('/signin', (req, res) => {
 router.post('/signup', (req, res) => {
     const data = req.body 
     try{
-    userService.post(data).then(response=> res.send({status:response.status,message:response.message}))
+    userService.post(data).then(response=> res.status(response.status).send(response.message))
     }
     catch(err){
         res.send(err);

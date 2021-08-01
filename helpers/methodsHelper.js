@@ -183,4 +183,24 @@ function getBy(tableName, condition) {
         })
 }
 
-module.exports = { insert, update, updateBatch, remove, removeBatch, getAll, getBy }
+/**
+ * @param {string} tableName
+ * @param {Object} condition
+ * @returns {Promise}
+ */
+function getOrdered(tableName, param, limit = 5) {
+    return db(tableName)
+        .orderBy(param, order = "desc")
+        .limit(limit)
+        .then((response) => {
+            process.env.NODE_ENV === 'development' ? console.log(response) : null;
+            return response;
+        })
+        .catch((error) => {
+            let err = errorHelper(error)
+            process.env.NODE_ENV === 'development' ? console.log(err) : null;
+            return err;
+        })
+}
+
+module.exports = { insert, update, updateBatch, remove, removeBatch, getAll, getBy, getOrdered }

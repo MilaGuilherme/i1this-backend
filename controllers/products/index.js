@@ -8,7 +8,7 @@ const verify = require('../../helpers/authHelper');
  * GET ROUTES
  */
 router.get('/', function (req, res) {
-    service.get().then((response) => {
+    service.get(req.query).then((response) => {
         res.status(response.status).send(response)
     })
 });
