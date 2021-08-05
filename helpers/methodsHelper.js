@@ -1,4 +1,4 @@
-const db = require('../db/db')
+const db = require('../models')
 const dotenv = require('dotenv');
 const writelogs = require('../repositories/logs/write');
 const log = writelogs.log;
