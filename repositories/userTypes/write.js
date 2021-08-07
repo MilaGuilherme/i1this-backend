@@ -1,6 +1,4 @@
-const tables = require("../../db/tables.json")
-const methods = require('../../helpers/methodsHelper');
-
+const { UserType } = require("../../models")
 
 /**
  * @post /usertypes
@@ -8,10 +6,14 @@ const methods = require('../../helpers/methodsHelper');
  * @param {number} agent_id
  * @returns {Object}
  */
-function insertUserType(data) {
-  return methods.insert(tables.userTypesTable, data, agent_id).then((response) => {
-    return response
-  })
+async function insertUserType(data) {
+  try {
+    let res = await UserType.create(data);
+    return res
+  }
+  catch (err) {
+    return err;
+  }
 };
 
 /**

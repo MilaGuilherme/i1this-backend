@@ -3,23 +3,6 @@ const saltRounds = 10;
 const read = require('../../repositories/users/read')
 const write = require('../../repositories/users/write')
 
-//TODO TEST THIS
-
-/**
- * @param {String} email
- * @returns {Promise}
- */
- async function getByEmail(email) {
-    return read.getByEmail(email).then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No user with id ${id} was found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
-    })
-}
-
 /*
 * GET SERVICES
 */
@@ -29,7 +12,7 @@ const write = require('../../repositories/users/write')
  * @returns {Promise}
  */
 async function get() {
-    return read.getUsers().then((response) => {
+    return read.getAll().then((response) => {
         response.status ?
             res = response :
             res = response.length === 0 ?
@@ -45,11 +28,36 @@ async function get() {
  * @returns {Promise}
  */
 async function getById(id) {
-    return read.getUserByID(id).then((response) => {
+    let filter = {
+        where: {
+            "id": id
+        }
+    }
+    return read.getBy(filter).then((response) => {
         response.status ?
             res = response :
             res = response.length === 0 ?
                 { "status": 404, "message": "Not Found", "content": `No user with id ${id} was found` } :
+                { "status": 200, "message": "success", "content": response }
+        return res;
+    })
+}
+/**
+ * @get users/
+ * @param {Number} id
+ * @returns {Promise}
+ */
+async function getByEmail(email) {
+    let filter = {
+        Where: {
+            "email": email
+        }
+    }
+    return read.getBy(filter).then((response) => {
+        response.status ?
+            res = response :
+            res = response.length === 0 ?
+                { "status": 404, "message": "Not Found", "content": `No user with id ${email} was found` } :
                 { "status": 200, "message": "success", "content": response }
         return res;
     })
@@ -146,37 +154,13 @@ async function getCategories(id) {
  * @returns {Promise}
  */
 async function post(data) {
-    if (!data.agent_id)
-        return { "status": 403, message: 'missing: agent_id' }
-
-    else if (!data.data)
-        return { "status": 403, message: 'missing: data' }
-
-    else if (!data.data.name)
-        return { "status": 403, message: 'missing: data.name' }
-
-    else if (!data.data.password)
-        return { "status": 403, message: 'missing: data.password' }
-
-    else if (!data.data.email)
-        return { "status": 403, message: 'missing: data.email' }
-
-    else {
-        await bcrypt.hash(data["data"]["password"], saltRounds).then(function (hash) {
-            data.data["password"] = hash;
-        });
-        data.data["created_at"] = new Date();
-        data.data["updated_at"] = new Date();
-        return write.insertUser(data.data, data.agent_id)
-            .then(response => {
-                response.status ?
-                    res = response :
-                    res = response.length === 0 ?
-                        { "status": 404, "message": "Not Found", "content": `` } :
-                        { "status": 201, "message": "success", "content": response }
-                return res;
-            })
-    }
+    await bcrypt.hash(data["data"]["password"], saltRounds).then(function (hash) {
+        data.data["password"] = hash;
+    });
+    return write.insertUser(data.data)
+        .then(response => {
+            return response;
+        })
 }
 
 /**
@@ -409,4 +393,4 @@ async function deletAcceptance(user_id, proposal_id, info) {
     }
 }
 
-module.exports = { get, getById,getByEmail, getProducts, getOnes, getAcceptedProposals, getPostedProposals, getCategories, post, postOne, postWatchCategory, postAcceptProposal, update, deleteOne, deleteWatch, deletAcceptance }
+module.exports = { get, getById, getByEmail, getProducts, getOnes, getAcceptedProposals, getPostedProposals, getCategories, post, postOne, postWatchCategory, postAcceptProposal, update, deleteOne, deleteWatch, deletAcceptance }

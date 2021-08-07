@@ -59,7 +59,7 @@ router.get('/:id/categories', function (req, res) {
 /*
  * POST ROUTES
  */
-router.post('/', verify, function (req, res) {
+router.post('/', function (req, res) {
     let data = req.body;
     service.post(data)
         .then((response) => {

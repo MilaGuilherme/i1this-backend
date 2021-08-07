@@ -1,36 +1,44 @@
-const tables = require("../../db/tables.json")
-const methods = require('../../helpers/methodsHelper');
+const { UserType , User } = require("../../models")
 
 /**
- * @get /usertypes
  * @returns {Object}
  */
-function getUserTypes() {
-  return methods.getAll(tables.userTypesTable).then((response) => {
-    return response
-  })
+async function get() {
+  try {
+    return await UserType.findAll()
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
- * @get usertypes/{id}
- * @param {Number} id
+ * @param {Object} filter
  * @returns {Object}
  */
-function getUserTypeByID(id) {
-  return methods.getBy(tables.userTypesTable, { "id": id }).then((response) => {
-    return response
-  })
+ async function getBy(filter = null) {
+  try {
+    return await UserType.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
- * @get usertypes/{type_id}/users
- * @param {Number} type_id
+ * @param {Object} filter
  * @returns {Object}
  */
-function getUserTypeUsers(type_id) {
-  return methods.getBy(tables.userTable, { "type_id": type_id }).then((response) => {
-    return response
-  })
+ async function getUsers(filter = null) {
+   filter = {
+     include : [User]
+   }
+  try {
+    return await UserType.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
-module.exports = { getUserTypes, getUserTypeByID, getUserTypeUsers };
+module.exports = { get, getBy, getUsers};

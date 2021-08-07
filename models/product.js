@@ -4,8 +4,9 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
-    static associate({User,Category}) {
-      this.belongsTo(User,{foreignKey:'userId'})
+    static associate({User,Category,Proposal}) {
+      this.belongsTo(User)
+      this.hasMany(Proposal)
       this.belongsToMany(Category,{through:'Product_Category'})
       this.belongsToMany(User,{through:'Product_Oned_By'})
     }
@@ -40,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     active: {
       type: DataTypes.BOOLEAN,
       allowNull:false,
-      value: true
+      defaultValue: true
     }
   }, {
     sequelize,

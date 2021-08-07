@@ -4,16 +4,24 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate({Product,UserType,Category}) {
-      this.hasMany(Product,{foreignKey:'productId'})
-      this.belongsToMany(Category,{through:'User_Categories'})
-      this.belongsTo(UserType,{foreignKey:'typeId'})
+    static associate({Product,UserType,Category,Proposal}) {
+      this.hasMany(Proposal)
+      this.hasMany(Product)
+      this.belongsToMany(Category,{through:'User_Category'})
+      this.belongsToMany(Proposal,{through:'Proposal_Accepted'})
+      this.belongsToMany(Product,{through:'Product_Oned_By'})
+      this.belongsTo(UserType)
     }
   };
+
   User.init({
     name: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    typeId:{
+      type: DataTypes.INTEGER,
+      defaultValue:3
     },
     password: {
       type: DataTypes.STRING,
@@ -25,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique:true,
       validate:{
         isEmail:true
       }
@@ -32,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     active: {
       type: DataTypes.BOOLEAN,
       allowNull:false,
-      value: true
+      defaultValue: true
     }
   }, {
     sequelize,

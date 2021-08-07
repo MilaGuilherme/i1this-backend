@@ -1,6 +1,5 @@
 
 const errorHelper = require("../../helpers/errorHelper")
-const tables = require("../../db/tables.json")
 const db = require('../../models')
 
 //DO NOT USE THE METHODS FROM METHOD.JS

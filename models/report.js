@@ -5,16 +5,13 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Report extends Model {
     static associate({Product,User}) {
-        this.hasOne(Product,{foreignKey:"productId"})
-        this.belongsToMany(User,{through:"User_Reports"})
+        this.belongsTo(Product)
+        this.belongsTo(User)
     }
   };
   Report.init({
     reason: {
       type: DataTypes.TEXT
-    },
-    reports: {
-      type: DataTypes.INTEGER
     },
   }, {
     sequelize,

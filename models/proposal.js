@@ -5,9 +5,9 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Proposal extends Model {
     static associate({ User, Product }) {
-      this.belongsTo(User, { foreignKey: 'userId' })
-      this.belongsTo(Product, { foreignKey: 'productId' })
-      this.belongsToMany(User, { as:"proposalId",through: 'accepted_proposals' })
+      this.belongsTo(User)
+      this.belongsTo(Product)
+      this.belongsToMany(User,{through: 'Proposal_Accepted' })
     }
   };
   Proposal.init({
@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.JSON,
     },
     links: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull:false,
     },
     price:{
       type:DataTypes.FLOAT,
@@ -30,11 +31,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     requiresIntent: {
       type: DataTypes.BOOLEAN,
+      allowNull:false,
+      defaultValue:false
+    },
+    dueDate: {
+      type: DataTypes.DATE,
     },
     active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      value: true
+      defaultValue: true
     }
   }, {
     sequelize,

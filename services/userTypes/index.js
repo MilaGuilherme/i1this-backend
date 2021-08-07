@@ -13,7 +13,8 @@ const write = require('../../repositories/userTypes/write')
  * @returns {Promise}
  */
 async function get() {
-    return read.getUserTypes().then((response) => {
+    return read.get().then((response) => {
+        console.log(response)
         response.status ?
             res = response :
             res = response.length === 0 ?
@@ -29,7 +30,13 @@ async function get() {
  * @returns {Promise}
  */
 async function getById(id) {
-    return read.getUserTypeByID(id).then((response) => {
+    let filter = {
+        where:{
+            "id":id
+        }
+    }
+    return read.getBy(filter).then((response) => {
+        console.log(response)
         response.status ?
             res = response :
             res = response.length === 0 ?
@@ -45,7 +52,13 @@ async function getById(id) {
  * @returns {Promise}
  */
 async function getTypeUsers(id) {
-    return read.getUserTypeUsers(id).then((response) => {
+    let filter = {
+        where:{
+            "id":id
+        },
+    }
+    return read.getUsers(filter).then((response) => {
+        console.log(response)
         response.status ?
             res = response :
             res = response.length === 0 ?
@@ -66,13 +79,13 @@ async function getTypeUsers(id) {
  */
 async function post(data) {
     if (!data.agent_id)
-        return {"status":403, message: 'missing: agent_id' }
+        return { "status": 403, message: 'missing: agent_id' }
 
     else if (!data.name)
-        return {"status":403, message: 'missing: name' }
+        return { "status": 403, message: 'missing: name' }
 
     else if (!data.data.permissions)
-        return {"status":403, message: 'missing: data.permissions' }
+        return { "status": 403, message: 'missing: data.permissions' }
 
     else {
         return write.insertUserType(data.data, data.agent_id)
@@ -97,24 +110,13 @@ async function post(data) {
  * @param {Object} data
  * @returns {Promise}
  */
- async function update(id, data) {
-    if (!id)
-        return {"status":403, message: 'id' }
-
-    if (!data.agent_id)
-        return {"status":403, message: 'missing: agent_id' }
-
-    else if (!data.data)
-        return {"status":403, message: 'missing: data' }
-
-    else {
-        return write.updateUser(id, data.data, data.agent_id)
-            .then(response => {
-                let res;
-                response.status ? res = response : res = { "status": 201, "message": "success", "content": response }
-                return res;
-            })
-    }
+async function update(id, data) {
+    return write.updateUser(id, data.data, data.agent_id)
+        .then(response => {
+            let res;
+            response.status ? res = response : res = { "status": 201, "message": "success", "content": response }
+            return res;
+        })
 }
 
 module.exports = { get, getById, getTypeUsers, post, update }

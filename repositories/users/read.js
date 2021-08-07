@@ -1,36 +1,31 @@
-const tables = require("../../db/tables.json")
-const methods = require('../../helpers/methodsHelper');
+const { User } = require("../../models")
 
 
 /**
  * @get /users
  * @returns {Object}
  */
-function getUsers() {
-  return methods.getAll(tables.userTable).then((response) => {
-    return response
-  })
+ async function getAll() {
+  try {
+    return await User.find();
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
- * @get /users
+ * @get /users?filter
+ * @param {Object} filter
  * @returns {Object}
  */
-function getByEmail(email) {
-  return methods.getBy(tables.userTable,{"email":email}).then((response) => {
-    return response
-  })
-}
-
-/**
- * @get users/{id}
- * @param {Number} id
- * @returns {Object}
- */
-function getUserByID(id) {
-  return methods.getBy(tables.userTable, { "id": id }).then((response) => {
-    return response
-  })
+async function getBy(filter = null) {
+  try {
+    return await User.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
@@ -39,8 +34,8 @@ function getUserByID(id) {
  * @param {Number} created_by
  * @returns {Object}
  */
-function getUserProduct(created_by) {
-  return methods.getBy(tables.productsTable, { "created_by": created_by }).then((response) => {
+async function getUserProduct(created_by) {
+  return methods.getBy(table.productsTable, { "created_by": created_by }).then((response) => {
     return response
   })
 }
@@ -51,8 +46,8 @@ function getUserProduct(created_by) {
  * @param {Number} user_id
  * @returns {Object}
  */
-function getUserOned(user_id) {
-  return methods.getBy(tables.onedTable, { "user_id": user_id }).then((response) => {
+async function getUserOned(user_id) {
+  return methods.getBy(table.onedTable, { "user_id": user_id }).then((response) => {
     return response
   })
 }
@@ -62,8 +57,8 @@ function getUserOned(user_id) {
  * @param {Number} user_id
  * @returns {Object}
  */
-function getUserWatched(user_id) {
-  return methods.getBy(tables.watchedTable, { "user_id": user_id }).then((response) => {
+async function getUserWatched(user_id) {
+  return methods.getBy(table.watchedTable, { "user_id": user_id }).then((response) => {
     return response
   })
 }
@@ -74,8 +69,8 @@ function getUserWatched(user_id) {
  * @param {Number} user_id
  * @returns {Object}
  */
-function getUserAccepted(user_id) {
-  return methods.getBy(tables.acceptedTable, { "user_id": user_id }).then((response) => {
+async function getUserAccepted(user_id) {
+  return methods.getBy(table.acceptedTable, { "user_id": user_id }).then((response) => {
     return response
   })
 }
@@ -86,10 +81,10 @@ function getUserAccepted(user_id) {
  * @param {Number} user_id
  * @returns {Object}
  */
-function getUserProposed(user_id) {
-  return methods.getBy(tables.proposalsTable, { "created_by": user_id }).then((response) => {
+async function getUserProposed(user_id) {
+  return methods.getBy(table.proposalsTable, { "created_by": user_id }).then((response) => {
     return response
   })
 }
 
-module.exports = { getUsers, getByEmail, getUserByID, getUserProduct, getUserOned, getUserWatched, getUserAccepted,getUserProposed };
+module.exports = { getAll, getBy, getUserProduct, getUserOned, getUserWatched, getUserAccepted, getUserProposed };

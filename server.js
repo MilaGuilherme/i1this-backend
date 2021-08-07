@@ -1,6 +1,9 @@
 const dotenv = require('dotenv');
 dotenv.config();
 const port = process.env.PORT;
+
+const {sequelize} = require('./models')
+
 const cors = require('cors')
 
 const express = require('express');
@@ -30,5 +33,13 @@ app.use('/users', usersRouter);
 app.use('/usertypes', userTypesRouter);
 
 app.listen(port, () => {
+  sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
   console.log("Your app is listening on port http://localhost:" + port);
 });

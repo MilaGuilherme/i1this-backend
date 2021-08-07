@@ -4,15 +4,16 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
-    static associate({Product,User,Category}) {
-        this.hasMany(Product,{foreignKey:"productId"})
-        this.hasMany(User,{foreignKey:"userId"})
+    static associate({Product,Category,User}) {
+        this.belongsToMany(Product,{through:'Product_Category'})
+        this.belongsToMany(User,{through:'User_Category'})
         this.belongsTo(Category,{as:"parentId"})
     }
   };
   Category.init({
     name: {
       type: DataTypes.STRING,
+      unique:true,
       allowNull: false
     },
   }, {

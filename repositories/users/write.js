@@ -1,16 +1,18 @@
-const tables = require("../../db/tables.json")
-const methods = require('../../helpers/methodsHelper');
+const {User} = require("../../models")
 
 /**
  * @post /users
  * @param {Object} data
- * @param {number} agent_id
  * @returns {Object}
  */
-function insertUser(data, agent_id) {
-    return methods.insert(tables.userTable, data, agent_id).then((response) => {
-        return response
-    })
+async function insertUser(data) {
+    try {
+        let res = await User.create(data);
+        return res
+    }
+    catch (err) {
+        return err;
+    }
 };
 
 /**
@@ -33,7 +35,7 @@ function updateUser(id, data, agent_id) {
  * @param {number} user_id
  * @returns {Object}
  */
-function insertOne(data,agent_id) {
+function insertOne(data, agent_id) {
     return methods.insert(tables.onedTable, data, agent_id).then((response) => {
         return response
     })
@@ -45,7 +47,7 @@ function insertOne(data,agent_id) {
 * @param {number} agent_id
 * @returns {Object}
 */
-function insertWatch(data,agent_id) {
+function insertWatch(data, agent_id) {
     return methods.insert(tables.watchedTable, data, agent_id).then((response) => {
         return response
     })
@@ -70,7 +72,7 @@ function insertAccept(data, agent_id) {
  * @param {number} user_id
  * @returns {Object}
  */
-function removeOne(data,agent_id) {
+function removeOne(data, agent_id) {
     return methods.remove(tables.onedTable, data, agent_id).then((response) => {
         return response
     })
@@ -82,7 +84,7 @@ function removeOne(data,agent_id) {
 * @param {number} agent_id
 * @returns {Object}
 */
-function removeWatch(data,agent_id) {
+function removeWatch(data, agent_id) {
     return methods.remove(tables.watchedTable, data, agent_id).then((response) => {
         return response
     })
@@ -101,4 +103,4 @@ function removeAccept(data, agent_id) {
     })
 };
 
-module.exports = { insertUser, updateUser, insertOne, insertWatch, insertAccept,removeOne,removeAccept,removeWatch };
+module.exports = { insertUser, updateUser, insertOne, insertWatch, insertAccept, removeOne, removeAccept, removeWatch };

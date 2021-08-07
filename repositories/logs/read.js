@@ -1,6 +1,5 @@
 //ANCHOR Don't bother with service or controllers for now
 
-const tables = require("../../db/tables.json")
 const methods = require('../../helpers/methodsHelper');
 
 /**
