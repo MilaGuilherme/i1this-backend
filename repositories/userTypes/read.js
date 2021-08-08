@@ -3,20 +3,7 @@ const { UserType , User } = require("../../models")
 /**
  * @returns {Object}
  */
-async function get() {
-  try {
-    return await UserType.findAll()
-  }
-  catch (err) {
-    return err;
-  }
-}
-
-/**
- * @param {Object} filter
- * @returns {Object}
- */
- async function getBy(filter = null) {
+ async function get(filter) {
   try {
     return await UserType.findAll(filter);
   }
@@ -31,7 +18,12 @@ async function get() {
  */
  async function getUsers(filter = null) {
    filter = {
-     include : [User]
+     ...filter,
+     include: [{
+      model: User,
+      where: { active: true },
+      attributes: ['id', 'name', 'email', 'UserTypeId']
+    }]
    }
   try {
     return await UserType.findAll(filter);
@@ -41,4 +33,4 @@ async function get() {
   }
 }
 
-module.exports = { get, getBy, getUsers};
+module.exports = { get, getUsers};

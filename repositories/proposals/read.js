@@ -23,12 +23,12 @@ function getProposalsByID(id) {
 }
 
 /**
- * @get proposals/{proposal_id}/users
- * @param {Number} proposal_id
+ * @get proposals/{ProposalId}/users
+ * @param {Number} ProposalId
  * @returns {Object}
  */
-function getProposalUsers(proposal_id) {
-  return methods.getBy(tables.acceptedTable, { "proposal_id": proposal_id }).then((response) => {
+function getProposalUsers(ProposalId) {
+  return methods.getBy(tables.acceptedTable, { "ProposalId": ProposalId }).then((response) => {
     return response
   })
 }

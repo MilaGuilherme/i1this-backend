@@ -1,6 +1,6 @@
 
-const read = require('../../repositories/categories/read')
-const write = require('../../repositories/categories/write')
+const read = require('../repositories/categories/read')
+const write = require('../repositories/categories/write')
 
 /*
 * GET SERVICES
@@ -38,7 +38,7 @@ async function getById(id) {
 }
 
 /**
- * @get categories/{category_id}/products
+ * @get categories/{CategoryId}/products
  * @param {Number} id
  * @returns {Promise}
  */
@@ -54,8 +54,8 @@ async function getProducts(id) {
 }
 
 /**
- * @get categories/{category_id}/watchers
- * @param {Number} category_id
+ * @get categories/{CategoryId}/watchers
+ * @param {Number} CategoryId
  * @returns {Promise}
  */
 async function getWatchers(id) {
@@ -70,7 +70,7 @@ async function getWatchers(id) {
 }
 
 /**
- * @get categories/{category_id}/parents
+ * @get categories/{CategoryId}/parents
  * @param {Number} child_id
  * @returns {Promise}
  */
@@ -86,7 +86,7 @@ async function getParents(id) {
 }
 
 /**
- * @get categories/{category_id}/children
+ * @get categories/{CategoryId}/children
  * @param {Number} parent_id
  * @returns {Promise}
  */
@@ -170,7 +170,7 @@ async function postRelationship(parent_id, child_id, info) {
 */
 
 /**
- * @put /categories/{category_id}
+ * @put /categories/{CategoryId}
  * @param {number} id
  * @param {Object} data
  * @returns {Promise}
@@ -200,7 +200,7 @@ async function update(id, data) {
 */
 
 /**
- * @delete categories/{category_id}
+ * @delete categories/{CategoryId}
  * @param {number} id
  * @param {Object} info
  * @returns {Promise}

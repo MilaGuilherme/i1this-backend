@@ -7,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate({User,Category,Proposal}) {
       this.belongsTo(User)
       this.hasMany(Proposal)
-      this.belongsToMany(Category,{through:'Product_Category',as:'category'})
-      this.belongsToMany(User,{through:'Product_Oned_By',as:'oned_by_user'})
+      this.belongsToMany(Category,{through:'Product_Category',as:'category',unique: false,constraints: false})
+      this.belongsToMany(User,{through:'Product_Oned_By',as:'oned',unique: false,constraints: false})
     }
   };
   Product.init({
@@ -29,9 +29,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     photos:{
       type:DataTypes.JSON
-    },
-    ones:{
-      type:DataTypes.INTEGER
     },
     active: {
       type: DataTypes.BOOLEAN,

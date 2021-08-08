@@ -29,35 +29,35 @@ function getProductByID(id) {
 }
 
 /**
- * @get products/{product_id}/onedby
- * @param {Number} product_id
+ * @get products/{ProductId}/onedby
+ * @param {Number} ProductId
  * @returns {Object}
  */
-function getProductOnes(product_id) {
-  return methods.getBy(tables.onedTable, { "product_id": product_id }).then((response) => {
+function getProductOnes(ProductId) {
+  return methods.getBy(tables.onedTable, { "ProductId": ProductId }).then((response) => {
     return response
   })
 }
 
 
 /**
- * @get products/{product_id}/proposals
- * @param {Number} product_id
+ * @get products/{ProductId}/proposals
+ * @param {Number} ProductId
  * @returns {Object}
  */
-function getProductProposals(product_id) {
-  return methods.getBy(tables.proposalsTable, { "product_id": product_id }).then((response) => {
+function getProductProposals(ProductId) {
+  return methods.getBy(tables.proposalsTable, { "ProductId": ProductId }).then((response) => {
     return response
   })
 }
 
 /**
- * @get products/{product_id}/categories
- * @param {Number} product_id
+ * @get products/{ProductId}/categories
+ * @param {Number} ProductId
  * @returns {Object}
  */
-function getProductCategories(product_id) {
-  return methods.getBy(tables.PrdInCatTable, { "product_id": product_id }).then((response) => {
+function getProductCategories(ProductId) {
+  return methods.getBy(tables.PrdInCatTable, { "ProductId": ProductId }).then((response) => {
     return response
   })
 }

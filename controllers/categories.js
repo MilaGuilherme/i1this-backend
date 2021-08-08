@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const service = require('../../services/categories')
-const verify = require('../../helpers/authHelper');
+const service = require('../services/categories')
+const verify = require('../helpers/authHelper');
 
 
 /*

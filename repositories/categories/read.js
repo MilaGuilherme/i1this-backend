@@ -22,29 +22,29 @@ function getCategoryById(id) {
 }
 
 /**
- * @get categories/{category_id}/products
- * @param {Number} category_id
+ * @get categories/{CategoryId}/products
+ * @param {Number} CategoryId
  * @returns {Promise}
  */
-function getCategoryProducts(category_id) {
-    return methods.getBy(tables.PrdInCatTable, { "category_id": category_id }).then((response) => {
+function getCategoryProducts(CategoryId) {
+    return methods.getBy(tables.PrdInCatTable, { "CategoryId": CategoryId }).then((response) => {
         return response
     })
 }
 
 /**
- * @get categories/{category_id}/watchers
- * @param {Number} category_id
+ * @get categories/{CategoryId}/watchers
+ * @param {Number} CategoryId
  * @returns {Promise}
  */
-function getCategoryWatchers(category_id) {
-    return methods.getBy(tables.watchedTable, { "category_id": category_id }).then((response) => {
+function getCategoryWatchers(CategoryId) {
+    return methods.getBy(tables.watchedTable, { "CategoryId": CategoryId }).then((response) => {
         return response
     })
 }
 
 /**
- * @get categories/{category_id}/parents
+ * @get categories/{CategoryId}/parents
  * @param {Number} child_id
  * @returns {Promise}
  */
@@ -55,7 +55,7 @@ function getCategoryParents(child_id) {
 }
 
 /**
- * @get categories/{category_id}/children
+ * @get categories/{CategoryId}/children
  * @param {Number} parent_id
  * @returns {Promise}
  */

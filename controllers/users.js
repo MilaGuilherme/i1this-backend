@@ -1,7 +1,8 @@
-const express = require('express');
-const verify = require('../../helpers/authHelper');
-const service = require('../../services/users')
-const router = express.Router();
+const express = require('express')
+const jwt = require('jsonwebtoken')
+const verify = require('../helpers/authHelper')
+const service = require('../services/users')
+const router = express.Router()
 
 
 /*
@@ -15,42 +16,42 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
     let id = req.params.id
-    service.getById(id).then((response) => {
+    service.get({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 });
 
 router.get('/:id/products', function (req, res) {
     let id = req.params.id
-    service.getProducts(id).then((response) => {
+    service.getProducts({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 });
 
 router.get('/:id/ones', function (req, res) {
     let id = req.params.id
-    service.getOnes(id).then((response) => {
+    service.getOnes({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 })
 
 router.get('/:id/proposals/accepted', function (req, res) {
     let id = req.params.id
-    service.getAcceptedProposals(id).then((response) => {
+    service.getAcceptedProposals({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 })
 
 router.get('/:id/proposals/posted', function (req, res) {
     let id = req.params.id
-    service.getPostedProposals(id).then((response) => {
+    service.getPostedProposals({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 })
 
 router.get('/:id/categories', function (req, res) {
     let id = req.params.id
-    service.getCategories(id).then((response) => {
+    service.getCategories({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 })
@@ -59,44 +60,41 @@ router.get('/:id/categories', function (req, res) {
 /*
  * POST ROUTES
  */
-router.post('/', function (req, res) {
+router.post('/', verify, function (req, res) {
     let data = req.body;
-    service.post(data)
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.post(data, auth)
         .then((response) => {
             res.status(response.status || 404).send(response)
         })
 });
 
-router.post('/:id/one/:product_id', verify, function (req, res) {
-    let data = req.body;
-    let user_id = req.params.id;
-    let product_id = req.params.parent_id;
-    service.postOne(user_id, product_id, data)
+router.post('/:id/one/:ProductId', verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.postOne(data, auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.post('/:id/category/:category_id', verify, function (req, res) {
-    let data = req.body;
-    let user_id = req.params.id;
-    let category_id = req.params.parent_id;
-    service.postWatchCategory(user_id, category_id, data)
+router.post('/:id/category/:CategoryId', verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.postWatchCategory(data, auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.post('/:id/proposals/:proposal_id', verify, function (req, res) {
-    let data = req.body;
-    let user_id = req.params.id;
-    let proposal_id = req.params.parent_id;
-    service.postAcceptProposal(user_id, proposal_id, data)
+router.post('/:id/proposal/:ProposalId', verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.postAcceptProposal(data, auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
-
 
 /*
  * PUT ROUTES
@@ -104,7 +102,9 @@ router.post('/:id/proposals/:proposal_id', verify, function (req, res) {
 
 router.put('/:id', verify, function (req, res) {
     let data = req.body;
-    service.update(req.params.id, data)
+    data.id = req.params.id
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.update(data, auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -114,31 +114,28 @@ router.put('/:id', verify, function (req, res) {
  * DELETE ROUTES
  */
 
-router.delete('/:id/one/:product_id', verify, function (req, res) {
-    let data = req.body;
-    let user_id = req.params.id;
-    let product_id = req.params.product_id;
-    service.deleteOne(user_id, product_id, data)
+router.delete('/:id/one/:ProductId', verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.deleteOne(data, auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.delete('/:id/category/:category_id', verify, function (req, res) {
-    let data = req.body;
-    let user_id = req.params.id;
-    let category_id = req.params.product_id;
-    service.deleteOne(user_id, category_id, data)
+router.delete('/:id/category/:CategoryId', verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.deleteWatch(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.delete('/:id/proposals/:proposal_id', verify, function (req, res) {
-    let data = req.body;
-    let user_id = req.params.id;
-    let proposal_id = req.params.proposal_id;
-    service.deletAcceptance(user_id, proposal_id, data)
+router.delete('/:id/proposal/:ProposalId', verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.deleteAcceptance(data, auth)
         .then((response) => {
             res.status(response.status).send(response)
         })

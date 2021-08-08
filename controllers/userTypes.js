@@ -1,7 +1,8 @@
-const express = require('express');
-const service = require('../../services/userTypes')
-const router = express.Router();
-const verify = require('../../helpers/authHelper');
+const express = require('express')
+const jwt = require('jsonwebtoken')
+const service = require('../services/userTypes')
+const verify = require('../helpers/authHelper')
+const router = express.Router()
 
 
 /*
@@ -15,14 +16,14 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
     let id = req.params.id
-    service.getById(id).then((response) => {
+    service.get({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 });
 
 router.get('/:id/users', function (req, res) {
     let id = req.params.id
-    service.getTypeUsers(id).then((response) => {
+    service.getTypeUsers({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 });
@@ -31,9 +32,10 @@ router.get('/:id/users', function (req, res) {
 /*
  * POST ROUTES
  */
-router.post('/',verify, function (req, res) {
+router.post('/', verify, function (req, res) {
     let data = req.body;
-    service.post(data)
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.post(data, auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -43,9 +45,11 @@ router.post('/',verify, function (req, res) {
  * PUT ROUTES
 */
 
-router.put('/:id',verify, function (req, res) {
+router.put('/:id', verify, function (req, res) {
     let data = req.body;
-    service.update(req.params.id,data)
+    data.id = req.params.id;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.update(data, auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -54,6 +58,7 @@ router.put('/:id',verify, function (req, res) {
 /*
  * DELETE ROUTES
  */
+
 
 
 module.exports = router;

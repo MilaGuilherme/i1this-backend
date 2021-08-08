@@ -7,9 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate({Product,UserType,Category,Proposal}) {
       this.hasMany(Proposal)
       this.hasMany(Product)
-      this.belongsToMany(Category,{through:'User_Category',as:'category'})
-      this.belongsToMany(Proposal,{through:'Proposal_Accepted',as:'accepted'})
-      this.belongsToMany(Product,{through:'Product_Oned_By',as:'oned'})
+      this.belongsToMany(Category,{through:'User_Category',as:'category',unique: false,constraints: false})
+      this.belongsToMany(Proposal,{through:'Proposal_Accepted',as:'accepted',unique: false,constraints: false})
+      this.belongsToMany(Product,{through:'Product_Oned_By',as:'oned',unique: false,constraints: false})
       this.belongsTo(UserType)
     }
   };
@@ -18,10 +18,6 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false
-    },
-    typeId:{
-      type: DataTypes.INTEGER,
-      defaultValue:3
     },
     password: {
       type: DataTypes.STRING,
@@ -42,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull:false,
       defaultValue: true
+    },
+    UserTypeId:{
+      type: DataTypes.INTEGER,
+      defaultValue:3
     }
   }, {
     sequelize,

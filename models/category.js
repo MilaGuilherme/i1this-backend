@@ -5,8 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     static associate({Product,Category,User}) {
-        this.belongsToMany(Product,{through:'Product_Category'})
-        this.belongsToMany(User,{through:'User_Category'})
+        this.belongsToMany(Product,{through:'Product_Category',unique: false,constraints: false})
+        this.belongsToMany(User,{through:'User_Category',unique: false,constraints: false})
         this.belongsTo(Category,{as:"parent"})
     }
   };

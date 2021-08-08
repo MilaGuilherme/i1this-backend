@@ -1,6 +1,6 @@
 
-const read = require('../../repositories/products/read')
-const write = require('../../repositories/products/write')
+const read = require('../repositories/products/read')
+const write = require('../repositories/products/write')
 
 //TODO TEST THIS
 
@@ -40,7 +40,7 @@ async function getById(id) {
 }
 
 /**
- * @get products/{product_id}/categories
+ * @get products/{ProductId}/categories
  * @param {Number} id
  * @returns {Promise}
  */
@@ -56,8 +56,8 @@ async function getCategories(id) {
 }
 
 /**
- * @get products/{product_id}/onedby
- * @param {Number} product_id
+ * @get products/{ProductId}/onedby
+ * @param {Number} ProductId
  * @returns {Promise}
  */
 async function getOnes(id) {
@@ -72,8 +72,8 @@ async function getOnes(id) {
 }
 
 /**
- * @get products/{product_id}/proposals
- * @param {Number} product_id
+ * @get products/{ProductId}/proposals
+ * @param {Number} ProductId
  * @returns {Promise}
  */
 async function getProposals(id) {
@@ -113,8 +113,8 @@ async function post(data) {
     else if (!data.data.description)
         return {"status":403, message: 'missing: data.description' }
 
-    else if (!data.data.category_id)
-        return {"status":403, message: 'missing: data.category_id' }
+    else if (!data.data.CategoryId)
+        return {"status":403, message: 'missing: data.CategoryId' }
 
     else {
         data.data.created_at = new Date();
@@ -133,26 +133,26 @@ async function post(data) {
 }
 
 /**
- * @post /products/{product_id}/category/{category_id}
- * @param {number} product_id
- * @param {number} category_id
+ * @post /products/{ProductId}/category/{CategoryId}
+ * @param {number} ProductId
+ * @param {number} CategoryId
  * @param {Object} info
  * @returns {Promise} 
  */
-async function postRelationship(product_id, category_id, info) {
+async function postRelationship(ProductId, CategoryId, info) {
     if (!info.agent_id)
         return {"status":403, message: 'missing: agent_id' }
 
-    else if (!product_id)
-        return {"status":403, message: 'missing: product_id' }
+    else if (!ProductId)
+        return {"status":403, message: 'missing: ProductId' }
 
-    else if (!category_id)
-        return {"status":403, message: 'missing: category_id' }
+    else if (!CategoryId)
+        return {"status":403, message: 'missing: CategoryId' }
 
     else {
         const data = {
-            "product_id": product_id,
-            "category_id": category_id
+            "ProductId": ProductId,
+            "CategoryId": CategoryId
         }
         return write.insertProductInCategory(data, info.agent_id)
             .then(response => {
@@ -168,7 +168,7 @@ async function postRelationship(product_id, category_id, info) {
 */
 
 /**
- * @put /categories/{category_id}
+ * @put /categories/{CategoryId}
  * @param {number} id
  * @param {Object} data
  * @returns {Promise}
@@ -199,22 +199,22 @@ async function update(id, data) {
 
 
 /**
- * @delete /products/{product_id}/category
- * @param {number} product_id
+ * @delete /products/{ProductId}/category
+ * @param {number} ProductId
  * @param {Object} info
  * @returns {Promise} 
  */
-async function deleteRelationship(product_id, info) {
+async function deleteRelationship(ProductId, info) {
     if (!info.agent_id)
         return {"status":403, message: 'missing: agent_id' }
 
-    else if (!product_id)
-        return {"status":403, message: 'missing: product_id' }
+    else if (!ProductId)
+        return {"status":403, message: 'missing: ProductId' }
 
     else {
         const data = {
-            "product_id": product_id,
-            "category_id": 0
+            "ProductId": ProductId,
+            "CategoryId": 0
         }
         return write.removeProductFromCategory(data, info.agent_id)
             .then(response => {

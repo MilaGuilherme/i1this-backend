@@ -1,5 +1,4 @@
 
-const errorHelper = require("../../helpers/errorHelper")
 const db = require('../../models')
 
 //DO NOT USE THE METHODS FROM METHOD.JS

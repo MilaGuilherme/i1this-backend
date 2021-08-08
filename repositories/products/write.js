@@ -7,13 +7,13 @@ const methods = require('../../helpers/methodsHelper');
  * @returns {Object}
  */
 function insertProduct(data,agent_id) {
-    const category_id = data.category_id
-    delete data.category_id
+    const CategoryId = data.CategoryId
+    delete data.CategoryId
     return methods.insert(tables.productsTable, data, agent_id).then(response => {
-        const product_id = response[0].id
+        const ProductId = response[0].id
         insertProductInCategory({
-            "product_id": product_id,
-            "category_id": category_id
+            "ProductId": ProductId,
+            "CategoryId": CategoryId
         },agent_id)
         return response
     })
@@ -34,26 +34,25 @@ function updateProduct(id, data, agent_id) {
 
 
 /**
- * @post /products/{product_id}/category/{category_id}
+ * @post /products/{ProductId}/category/{CategoryId}
  * @param {number} agent_id
  * @param {Object} data
  * @returns {Object}
  */
 function insertProductInCategory(data,agent_id) {
-    console.log(data)
     return methods.insert(tables.PrdInCatTable, data, agent_id).then((response) => {
         return response
     })
 }
 
 /**
- * @delete /products/{product_id}/category
+ * @delete /products/{ProductId}/category
  * @param {number} agent_id
  * @param {Object}  data
  * @returns {Object}
  */
 function removeProductFromCategory(data,agent_id) {
-    return methods.update(tables.PrdInCatTable, data, product_id, agent_id).then((response) => {
+    return methods.update(tables.PrdInCatTable, data, ProductId, agent_id).then((response) => {
         return response
     })
 }

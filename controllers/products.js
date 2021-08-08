@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const service = require('../../services/products')
-const verify = require('../../helpers/authHelper');
+const service = require('../services/products')
+const verify = require('../helpers/authHelper');
 
 
 /*
@@ -53,11 +53,11 @@ router.post('/',verify, function (req, res) {
         })
 });
 
-router.post('/:id/category/:category_id',verify, function (req, res) {
+router.post('/:id/category/:CategoryId',verify, function (req, res) {
     let data = req.body;
-    let product_id = req.params.id;
-    let category_id = req.params.parent_id;
-    service.postRelationship(product_id,category_id,data)
+    let ProductId = req.params.id;
+    let CategoryId = req.params.parent_id;
+    service.postRelationship(ProductId,CategoryId,data)
         .then((response) => {
             res.status(response.status).send(response)
         })

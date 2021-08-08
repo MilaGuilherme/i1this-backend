@@ -2,21 +2,10 @@
 
 ### Install the dependencies with
 `npm install`
-
-### By default the API uses MySQL 5.7.31 and Knex
-Create an .env file on the root of the folder and add the following
-
-	NODE_ENV=development
-	PORT=3001
-	HOST= localhost,
-	USER=root,
-	PASSWORD=,
-
-change the info to match your database
+### By default the API uses MariaDB 10.4.13 and Sequelize
+Update the file inside /config to your settings
 ### Run on console
-#### To build the database:
-`node db/refreshDB.js`
-#### To build the tables:
-`node db/refreshTables.js`
-#### To seed the tables:
-`knex seed:run`
+#### To build and fill the database with basic infor:
+`node startup.js`
+#### To start the server:
+npm run start

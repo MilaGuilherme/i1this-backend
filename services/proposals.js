@@ -1,6 +1,6 @@
 
-const read = require('../../repositories/proposals/read')
-const write = require('../../repositories/proposals/write')
+const read = require('../repositories/proposals/read')
+const write = require('../repositories/proposals/write')
 
 //TODO TEST THIS
 
@@ -40,7 +40,7 @@ async function getById(id) {
 }
 
 /**
- * @get proposals/{proposal_id}/users
+ * @get proposals/{ProposalId}/users
  * @param {Number} id
  * @returns {Promise}
  */
@@ -68,8 +68,8 @@ async function post(data) {
     if (!data.agent_id)
         return {"status":403, message: 'missing: agent_id' }
 
-    else if (!data.product_id)
-        return {"status":403, message: 'missing: product_id' }
+    else if (!data.ProductId)
+        return {"status":403, message: 'missing: ProductId' }
 
     else if (!data.data.created_by)
         return {"status":403, message: 'missing: data.created_by' }
@@ -107,7 +107,7 @@ async function post(data) {
 */
 
 /**
- * @put /categories/{category_id}
+ * @put /categories/{CategoryId}
  * @param {number} id
  * @param {Object} data
  * @returns {Promise}

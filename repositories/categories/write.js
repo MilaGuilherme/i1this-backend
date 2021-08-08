@@ -14,7 +14,7 @@ function insertCategory(data, agent_id) {
 }
 
 /**
- * @put /categories/{category_id}
+ * @put /categories/{CategoryId}
  * @param {number} id
  * @param {Object} data
  * @param {number} agent_id
@@ -27,13 +27,13 @@ function updateCategory(id, data, agent_id) {
 };
 
 /**
- * @delete categories/{category_id}
+ * @delete categories/{CategoryId}
  * @param {number} id
  * @param {number} agent_id
  * @returns {Promise}
  */
 function removeCategory(id, agent_id) {
-    methods.updateBatch(tables.PrdInCatTable, { "category_id": id },{ "category_id": 0 }, agent_id, id)
+    methods.updateBatch(tables.PrdInCatTable, { "CategoryId": id },{ "CategoryId": 0 }, agent_id, id)
     return methods.remove(tables.categoriesTable, { id }, agent_id).then(response => {
         return response
     })

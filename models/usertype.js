@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class UserType extends Model {
     static associate({User}) {
-      this.hasMany(User)
+      this.hasMany(User,{defaultValue:3})
     }
   };
   UserType.init({

@@ -9,14 +9,14 @@ const router = express.Router();
 router.post('/signin', (req, res) => {
     const data = req.body
     if (data.email) {
-        userService.getByEmail(data.email).then((response) => {
+        userService.signin(data.email).then((response) => {
             const result = response.content[0].dataValues
             const id = result.id
             const pass = result.password
-            const typeId = result.typeId
+            const UserTypeId = result.UserTypeId
             bcrypt.compare(data.password || 'none', pass).then((validPass) => {
                 if (validPass) {
-                    const token = jwt.sign({ agent_id: id, user_type: typeId}, process.env.TOKEN_KEY)
+                    const token = jwt.sign({ user: id, type: UserTypeId}, process.env.TOKEN_KEY)
                     res.set('auth-token', token).status(200).send("Logged in")
                 }
                 else res.status(403).send('Incorrect password')
@@ -27,12 +27,16 @@ router.post('/signin', (req, res) => {
 })
 
 router.post('/signup', (req, res) => {
-    const data = req.body
+    const data = {
+        name: req.body.name,
+        password: req.body.password,
+        email: req.body.email,
+    }
     try {
-        userService.post(data).then(response => res.status(response.status).send(response.message))
+        userService.signup(data).then(response => res.status(response.status).send(response))
     }
     catch (err) {
-        res.send(err);
+        res.status(response.status).send(response)
     }
 })
 
