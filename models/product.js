@@ -7,25 +7,20 @@ module.exports = (sequelize, DataTypes) => {
     static associate({User,Category,Proposal}) {
       this.belongsTo(User)
       this.hasMany(Proposal)
-      this.belongsToMany(Category,{through:'Product_Category'})
-      this.belongsToMany(User,{through:'Product_Oned_By'})
+      this.belongsToMany(Category,{through:'Product_Category',as:'category'})
+      this.belongsToMany(User,{through:'Product_Oned_By',as:'oned_by_user'})
     }
   };
   Product.init({
     name:{
       type:DataTypes.STRING,
-      allowNull:false,
-      validate:{
-        isUrl:false,
-        isAlphanumeric:true,
-      }
+      allowNull:false
     },
     price:{
       type:DataTypes.FLOAT,
       allowNull:false,
       validate:{
-        isDecimal:true,
-        is:'^\d+(\.\d{1,2})?$'
+        isDecimal:true
       }
     },
     description: {

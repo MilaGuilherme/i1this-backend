@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({Product,Category,User}) {
         this.belongsToMany(Product,{through:'Product_Category'})
         this.belongsToMany(User,{through:'User_Category'})
-        this.belongsTo(Category,{as:"parentId"})
+        this.belongsTo(Category,{as:"parent"})
     }
   };
   Category.init({

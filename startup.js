@@ -12,7 +12,7 @@ async function start() {
             "name": "Admin",
             "password": "$2b$10$HNndd.LcZrb1ZTdIKbC0PeeOK0lZSdLOWMAwulFxF9a3Wos7BErQq", //password
             "email": "admin@i1this.com",
-            "usertypeId": 1
+            "UserTypeId": 1
         },
         {
             "name": "Seller",
@@ -25,14 +25,6 @@ async function start() {
             "password": "$2b$10$HNndd.LcZrb1ZTdIKbC0PeeOK0lZSdLOWMAwulFxF9a3Wos7BErQq",
             "email": "buyer@i1this.com",
             "UserTypeId": 3
-        }
-    ])
-    await Category.bulkCreate([
-        {
-            "name": "Default Parent Category"
-        },
-        {
-            "name": "Default Child Category"
         }
     ])
     await Product.bulkCreate([
@@ -51,6 +43,23 @@ async function start() {
             "photos": '[{"alt":"","src":"https://via.placeholder.com/150"},{"alt":"","src":"https://via.placeholder.com/250"}]',
         }
     ])
+    await Category.create(
+        {
+            "name": "Default Parent Category"
+        })
+        .then(category=>{
+        category.addUsers(1)
+        category.addProducts(1)
+        })
+    await Category.create(
+        {
+            "name": "Default Child Category",
+            "parentId":1
+        })
+        .then(category=>{
+        category.addUsers([2,3])
+        category.addProducts(2)
+        })
     await Proposal.bulkCreate([
         {
             "photos": '[{"alt":"","src":"https://via.placeholder.com/150"},{"alt":"","src":"https://via.placeholder.com/250"}]',
@@ -59,9 +68,8 @@ async function start() {
             "minimunQty": 0,
             "requiresIntent": false,
             "dueDate": new Date(),
-            "productId": 1,
-            "userId": 2,
-            Category:2
+            "ProductId": 1,
+            "UserId": 2,
         },
         {
             "photos": '[{"alt":"","src":"https://via.placeholder.com/150"},{"alt":"","src":"https://via.placeholder.com/250"}]',
@@ -70,10 +78,14 @@ async function start() {
             "minimunQty": 0,
             "requiresIntent": false,
             "dueDate": new Date(),
-            "productId": 1,
-            "userId": 2
+            "ProductId": 1,
+            "UserId": 2
         }
     ])
+    await User.findOne({where:{id:3}}).then(user=>{
+        user.addAccepted(1)
+        user.addOned(2)
+    })
     await Report.bulkCreate([
         {
             "reason":"Lorem ipsum dolor sit amet",
