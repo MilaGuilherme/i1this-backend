@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ User, Product }) {
       this.belongsTo(User)
       this.belongsTo(Product)
-      this.belongsToMany(User,{through: 'Proposal_Accepted',as:"Accepted",unique: false,constraints: false})
+      this.belongsToMany(User,{through: 'Proposal_Accepted',as:"accepted",unique: false,constraints: false})
     }
   };
   Proposal.init({
@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       validate:{
         isDecimal:true,
-        is:'^\d+(\.\d{1,2})?$'
       }
     },
     minimunQty: {

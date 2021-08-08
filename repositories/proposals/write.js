@@ -1,29 +1,41 @@
-const methods = require('../../helpers/methodsHelper');
+const { Proposal } = require("../../models")
 
 
 /**
  * @post proposals/
- * @param {number} agent_id
  * @param {Object} data
  * @returns {Object}
  */
-function insertProposal(data,agent_id) {
-  return methods.insert(tables.proposalsTable, data, agent_id).then((response) => {
-    return response
-  })
+async function insertProposal(data) {
+  try {
+    let res = await Proposal.create(data).catch(err => { return err })
+    return res
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
  * @put proposals/{id}
- * @param {number}  id
- * @param {number} agent_id
  * @param {Object} data
  * @returns {Object}
  */
-function updateProposal(id, data, agent_id) {
-  return methods.update(tables.proposalsTable, data, id, agent_id).then((response) => {
-    return response
-  })
+async function updateProposal(data) {
+  try {
+    let res = await Proposal.update(
+      {
+        ...data
+      }, {
+      where: {
+        id: data.id
+      }
+    }).catch(err => { return err })
+    return res
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 module.exports = { insertProposal, updateProposal };

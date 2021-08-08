@@ -1,6 +1,8 @@
-const express = require('express');
+const express = require('express')
+const router = express.Router()
+const jwt = require('jsonwebtoken')
+
 const service = require('../services/proposals')
-const router = express.Router();
 const verify = require('../helpers/authHelper');
 
 
@@ -15,14 +17,14 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
     let id = req.params.id
-    service.getById(id).then((response) => {
+    service.get({"id":id}).then((response) => {
         res.status(response.status).send(response)
     })
 });
 
 router.get('/:id/users', function (req, res) {
     let id = req.params.id
-    service.getProposalAcceptees(id).then((response) => {
+    service.getProposalAcceptees({"id":id}).then((response) => {
         res.status(response.status).send(response)
     })
 });
@@ -32,7 +34,9 @@ router.get('/:id/users', function (req, res) {
  */
 router.post('/',verify, function (req, res) {
     let data = req.body;
-    service.post(data)
+    let auth = jwt.decode(req.headers["auth-token"])
+    data.UserId = auth.user
+        service.post(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -45,7 +49,9 @@ router.post('/',verify, function (req, res) {
 
 router.put('/:id',verify, function (req, res) {
     let data = req.body;
-    service.update(req.params.id,data)
+    data.id = req.params.id
+    let auth = jwt.decode(req.headers["auth-token"])
+        service.update(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })

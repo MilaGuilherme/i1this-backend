@@ -1,6 +1,7 @@
 
 const read = require('../repositories/proposals/read')
 const write = require('../repositories/proposals/write')
+const statusHelper = require("../helpers/statusHelper");
 
 //TODO TEST THIS
 
@@ -9,49 +10,53 @@ const write = require('../repositories/proposals/write')
 */
 
 /**
- * @get /proposals
+ * @get /users
+ * @param {Object} filter
  * @returns {Promise}
  */
-async function get() {
-    return read.getProposals().then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No proposals found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
+async function get(filter = null) {
+    filter = {
+        where: {
+            ...filter,
+            active: true
+        },        
+    }
+    return read.get(filter).then((response) => {
+        return statusHelper(response, "No users where found")
     })
 }
 
 /**
- * @get proposals/{id}
- * @param {Number} id
+ * @get /proposals
+ * @param {Object} filter
  * @returns {Promise}
  */
-async function getById(id) {
-    return read.getProposalsByID(id).then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No proposal with id ${id} was found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
+async function get(filter = null) {
+    filter = {
+        where: {
+            ...filter,
+            active: true
+        },
+    }
+    return read.get(filter).then((response) => {
+        return statusHelper(response, "No proposals found")
     })
 }
 
 /**
  * @get proposals/{ProposalId}/users
- * @param {Number} id
+ * @param {Object} filter
  * @returns {Promise}
  */
-async function getProposalAcceptees(id) {
-    return read.getProposalUsers(id).then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No users who accepted the proposal of ID ${id} were found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
+async function getProposalAcceptees(filter) {
+    filter = {
+        where: {
+            ...filter,
+            active: true
+        },
+    }
+    return read.getProposalUsers(filter).then((response) => {
+        return statusHelper(response, "No proposals found")
     })
 }
 
@@ -62,42 +67,14 @@ async function getProposalAcceptees(id) {
 /**
  * @post /proposals
  * @param {Object} data
+ * @param {Number} auth
  * @returns {Promise}
  */
-async function post(data) {
-    if (!data.agent_id)
-        return {"status":403, message: 'missing: agent_id' }
-
-    else if (!data.ProductId)
-        return {"status":403, message: 'missing: ProductId' }
-
-    else if (!data.data.created_by)
-        return {"status":403, message: 'missing: data.created_by' }
-
-    else if (!data.data.price)
-        return {"status":403, message: 'missing: data.price' }
-
-    else if (!data.data.links)
-        return {"status":403, message: 'missing: data.links' }
-
-    else if (!data.data.photos)
-        return {"status":403, message: 'missing: data.photos' }
-
-    else if (!data.data.minimun_quantity)
-        return {"status":403, message: 'missing: data.minimun_quantity' }
-
-    else if (!data.data.requires_intent)
-        return {"status":403, message: 'missing: data.requires_intent' }
-
-    else {
-        return write.insertProposal(data.data, data.agent_id)
+async function post(data,auth) {
+    if (auth.user == data.id || auth.type == 1) {
+        return write.insertProposal(data)
             .then(response => {
-                response.status ?
-                    res = response :
-                    res = response.length === 0 ?
-                        { "status": 404, "message": "Not Found", "content": `` } :
-                        { "status": 201, "message": "success", "content": response }
-                return res;
+                return statusHelper(response)
             })
     }
 }
@@ -108,28 +85,17 @@ async function post(data) {
 
 /**
  * @put /categories/{CategoryId}
- * @param {number} id
  * @param {Object} data
+ * @param {number} auth
  * @returns {Promise}
  */
- async function update(id, data) {
-    if (!id)
-        return {"status":403, message: 'id' }
-
-    if (!data.agent_id)
-        return {"status":403, message: 'missing: agent_id' }
-
-    else if (!data.data)
-        return {"status":403, message: 'missing: data' }
-
-    else {
-        return write.updateUser(id, data.data, data.agent_id)
+async function update(data,auth) {
+    if (auth.user == data.id || auth.type == 1) {
+        return write.updateProposal(data)
             .then(response => {
-                let res;
-                response.status ? res = response : res = { "status": 201, "message": "success", "content": response }
-                return res;
+                return statusHelper(response)
             })
     }
 }
 
-module.exports = { get, getById, getProposalAcceptees, post, update }
+module.exports = { get, getProposalAcceptees, post, update }

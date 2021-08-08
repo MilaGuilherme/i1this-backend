@@ -1,8 +1,9 @@
 const express = require('express')
+const router = express.Router()
 const jwt = require('jsonwebtoken')
+
 const verify = require('../helpers/authHelper')
 const service = require('../services/users')
-const router = express.Router()
 
 
 /*
