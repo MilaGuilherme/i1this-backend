@@ -22,7 +22,7 @@ const { UserType , User } = require("../../models")
      include: [{
       model: User,
       where: { active: true },
-      attributes: ['id', 'name', 'email', 'UserTypeId']
+      attributes: ['id', 'name', 'UserTypeId']
     }]
    }
   try {

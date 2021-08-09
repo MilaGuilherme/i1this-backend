@@ -41,7 +41,7 @@ async function getUserProduct(filter = null) {
     include: [{
       model: Product,
       where: { active: true },
-      attributes: ['id', 'name', 'price', 'description']
+      attributes: ['id', 'name', 'price', 'description','photos',]
     }]
   }
   try {

@@ -2,6 +2,9 @@ module.exports = function statusHelper(response , error="Unknown error"){
     console.log("*****************************************************")
     console.log(response)
     console.log("*****************************************************")
+    if (!response) {
+        return { "status": 500, "message": "No response from the database", "content": error }
+    }
     if (response.length == 0) {
         return { "status": 404, "message": "Not Found", "content": error }
     }

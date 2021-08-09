@@ -1,8 +1,8 @@
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const statusHelper = require("../helpers/statusHelper");
 const read = require('../repositories/users/read')
 const write = require('../repositories/users/write')
+const statusHelper = require("../helpers/statusHelper");
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 /*
 * GET SERVICES
@@ -19,10 +19,10 @@ async function get(filter = null) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'email', 'UserTypeId']
+        attributes: ['id', 'name', 'UserTypeId']
     }
     return read.get(filter).then((response) => {
-        return statusHelper(response, "No users where found")
+        return statusHelper(response, "No users were found")
     })
 }
 
@@ -37,7 +37,7 @@ async function getProducts(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'email', 'UserTypeId']
+        attributes: ['id', 'name', 'UserTypeId']
     }
     return read.getUserProduct(filter).then((response) => {
         return statusHelper(response, "No products created by this user were found")
@@ -55,7 +55,7 @@ async function getOnes(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'email', 'UserTypeId']
+        attributes: ['id', 'name', 'UserTypeId']
     }
     return read.getUserOned(filter).then((response) => {
         return statusHelper(response, "No products with +1 by this user were found")
@@ -73,7 +73,7 @@ async function getAcceptedProposals(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'email', 'UserTypeId']
+        attributes: ['id', 'name', 'UserTypeId']
     }
     return read.getUserAccepted(filter).then((response) => {
         return statusHelper(response, "No proposals accepted by this user were found")
@@ -91,7 +91,7 @@ async function getPostedProposals(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'email', 'UserTypeId']
+        attributes: ['id', 'name', 'UserTypeId']
     }
     return read.getUserProposed(filter).then((response) => {
         return statusHelper(response, "No proposals posted by this user were found")
@@ -109,7 +109,7 @@ async function getCategories(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'email', 'UserTypeId']
+        attributes: ['id', 'name', 'UserTypeId']
     }
     return read.getUserWatched(filter).then((response) => {
         return statusHelper(response, "No categories watched by this user were found")

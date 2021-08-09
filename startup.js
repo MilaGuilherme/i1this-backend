@@ -32,20 +32,21 @@ async function start() {
             "name": "Test product 1",
             "UserId": 3,
             "price": 5.45,
-            "description": ` Integer pharetra arcu sit amet sapien rhoncus, sit amet dapibus eros accumsan. Praesent ut ligula porttitor, commodo metus a, varius libero. Quisque ac ante mauris. Phasellus justo sapien, fringilla porttitor nisl ut, viverra fermentum lectus. Quisque viverra convallis gravida. Duis ultricies volutpat ligula tincidunt placerat. Aenean vulputate massa sit amet ex semper commodo. Proin nibh lorem, pellentesque non urna et, dictum vulputate tellus. Ut volutpat convallis auctor.`,
+            "description": "Integer pharetra arcu sit amet sapien rhoncus, sit amet dapibus eros accumsan. Praesent ut ligula porttitor, commodo metus a, varius libero. Quisque ac ante mauris. Phasellus justo sapien, fringilla porttitor nisl ut, viverra fermentum lectus. Quisque viverra convallis gravida. Duis ultricies volutpat ligula tincidunt placerat. Aenean vulputate massa sit amet ex semper commodo. Proin nibh lorem, pellentesque non urna et, dictum vulputate tellus. Ut volutpat convallis auctor.",
             "photos": [{"alt":"","src":"https://via.placeholder.com/150"},{"alt":"","src":"https://via.placeholder.com/250"}],
         },
         {
             "name": "Test product 2",
             "UserId": 3,
             "price": 10.45,
-            "description": ` Integer pharetra arcu sit amet sapien rhoncus, sit amet dapibus eros accumsan. Praesent ut ligula porttitor, commodo metus a, varius libero. Quisque ac ante mauris. Phasellus justo sapien, fringilla porttitor nisl ut, viverra fermentum lectus. Quisque viverra convallis gravida. Duis ultricies volutpat ligula tincidunt placerat. Aenean vulputate massa sit amet ex semper commodo. Proin nibh lorem, pellentesque non urna et, dictum vulputate tellus. Ut volutpat convallis auctor.`,
+            "description": "Integer pharetra arcu sit amet sapien rhoncus, sit amet dapibus eros accumsan. Praesent ut ligula porttitor, commodo metus a, varius libero. Quisque ac ante mauris. Phasellus justo sapien, fringilla porttitor nisl ut, viverra fermentum lectus. Quisque viverra convallis gravida. Duis ultricies volutpat ligula tincidunt placerat. Aenean vulputate massa sit amet ex semper commodo. Proin nibh lorem, pellentesque non urna et, dictum vulputate tellus. Ut volutpat convallis auctor.",
             "photos": [{"alt":"","src":"https://via.placeholder.com/150"},{"alt":"","src":"https://via.placeholder.com/250"}],
         }
     ])
     await Category.create(
         {
-            "name": "Default Parent Category"
+            "name": "Default Parent Category",
+            "parentId":1
         })
         .then(category=>{
         category.addUsers(1)

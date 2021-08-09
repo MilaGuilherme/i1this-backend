@@ -26,8 +26,8 @@ async function getProposalUsers(filter) {
     include: [{
       model: User,
       as: 'accepted',
-      where: { id:{[Op.not]:null} },
-      attributes: ['id', 'name', 'email', 'UserTypeId']
+      where: { id:{[Op.not]:null},UserTypeId:3 },
+      attributes: ['id', 'name', 'UserTypeId']
     }]
   }
   try {

@@ -1,7 +1,10 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
+const jwt = require('jsonwebtoken')
+
+const verify = require('../helpers/authHelper')
 const service = require('../services/products')
-const verify = require('../helpers/authHelper');
+
 
 
 /*
@@ -15,28 +18,28 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
     let id = req.params.id
-    service.getById(id).then((response) => {
+    service.get({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 });
 
 router.get('/:id/categories', function (req, res) {
     let id = req.params.id
-    service.getCategories(id).then((response) => {
+    service.getCategories({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 });
 
 router.get('/:id/onedby', function (req, res) {
     let id = req.params.id
-    service.getOnes(id).then((response) => {
+    service.getOnes({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 })
 
 router.get('/:id/proposals', function (req, res) {
     let id = req.params.id
-    service.getProposals(id).then((response) => {
+    service.getProposals({ "id": id }).then((response) => {
         res.status(response.status).send(response)
     })
 })
@@ -45,19 +48,19 @@ router.get('/:id/proposals', function (req, res) {
 /*
  * POST ROUTES
  */
-router.post('/',verify, function (req, res) {
+router.post('/', verify, function (req, res) {
     let data = req.body;
-    service.post(data)
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.post(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.post('/:id/category/:CategoryId',verify, function (req, res) {
-    let data = req.body;
-    let ProductId = req.params.id;
-    let CategoryId = req.params.parent_id;
-    service.postRelationship(ProductId,CategoryId,data)
+router.post('/:id/category/:CategoryId', verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.postRelationship(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -68,9 +71,11 @@ router.post('/:id/category/:CategoryId',verify, function (req, res) {
  * PUT ROUTES
 */
 
-router.put('/:id',verify, function (req, res) {
+router.put('/:id', verify, function (req, res) {
     let data = req.body;
-    service.update(req.params.id,data)
+    data.id = req.params.id
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.update(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -79,19 +84,19 @@ router.put('/:id',verify, function (req, res) {
 /*
  * DELETE ROUTES
  */
-router.delete('/:id',verify, function (req, res) {
-    let id = req.params.id
-    let data = req.body;
-    service.del(id,data)
+router.delete('/:id', verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.del(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.delete('/:id/category/',verify, function (req, res) {
-    let data = req.body;
-    let id = req.params.id;
-    service.deleteRelationship(id,data)
+router.delete('/:id/category/:CategoryId', verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.deleteRelationship(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
