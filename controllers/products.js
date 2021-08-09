@@ -11,7 +11,7 @@ const service = require('../services/products')
  * GET ROUTES
  */
 router.get('/', function (req, res) {
-    service.get(req.query).then((response) => {
+    service.get(res.params,order=req.query.order,limit=req.query.limit).then((response) => {
         res.status(response.status).send(response)
     })
 });

@@ -1,11 +1,20 @@
-const { User, Product,Proposal,Category } = require("../../models")
+const { User, Product, Proposal, Category } = require("../../models")
 
 /**
  * @get /products
  * @param {Object} filter
  * @returns {Object}
  */
- async function get(filter) {
+async function get(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: Category,
+      as: 'categories',
+      attributes: ['id', 'name'],
+      required: true
+    }]
+  }
   try {
     return await Product.findAll(filter);
   }
@@ -24,7 +33,7 @@ async function getProductOnes(filter) {
     ...filter,
     include: [{
       model: User,
-      as:'oned',
+      as: 'oned',
       where: { active: true },
       attributes: ['id', 'name', 'UserTypeId']
     }]
@@ -64,12 +73,12 @@ async function getProductProposals(filter) {
  * @param {Object} filter
  * @returns {Promise}
  */
- async function getProductCategories(filter) {
+async function getProductCategories(filter) {
   filter = {
     ...filter,
     include: [{
       model: Category,
-      as:'categories'
+      as: 'categories'
     }]
   }
   try {

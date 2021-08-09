@@ -1,6 +1,7 @@
 
 const read = require('../repositories/products/read')
 const write = require('../repositories/products/write')
+const { sequelize } = require('../models')
 const statusHelper = require("../helpers/statusHelper");
 
 
@@ -15,14 +16,21 @@ const statusHelper = require("../helpers/statusHelper");
  * @param {Object} filter
  * @returns {Promise}
  */
-async function get(filter = null) {
+async function get(filter = null, order = null, limit = null) {
+    order ? order = { order: [sequelize.literal(`${order} DESC`)] } : order = null
+    limit ? limit = { limit: parseInt(limit) } : limit = null
+
     filter = {
         where: {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId']
+        ...limit,
+        ...order,
+        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId',
+            [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = id)`), 'ones']]
     }
+    console.log(filter)
     return read.get(filter).then((response) => {
         return statusHelper(response, "No products were found")
     })
@@ -40,7 +48,7 @@ async function getCategories(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId']
+        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId', [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = id)`), 'ones']]
     }
     return read.getProductCategories(filter).then((response) => {
         return statusHelper(response, "No products were found in this category")
@@ -58,7 +66,7 @@ async function getOnes(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId']
+        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId', [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = id)`), 'ones']]
     }
     return read.getProductOnes(filter).then((response) => {
         return statusHelper(response, "This product wasn't +1 yet")
@@ -76,7 +84,7 @@ async function getProposals(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId']
+        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId', [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = id)`), 'ones']]
     }
     return read.getProductProposals(filter).then((response) => {
         return statusHelper(response, "No products were found in this category")
@@ -153,7 +161,7 @@ async function update(data, auth) {
  * @param {Number} auth
  * @returns {Promise} 
  */
-async function deleteRelationship(data,auth) {
+async function deleteRelationship(data, auth) {
     if (auth.user == data.id || auth.type == 1) {
         return write.removeProductFromCategory(data)
             .then(response => {
