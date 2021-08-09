@@ -1,6 +1,6 @@
 module.exports = function statusHelper(response , error="Unknown error"){
     console.log("*****************************************************")
-    console.log(response)
+    process.env.NODE_ENV === 'development' ? console.log(response) : null;
     console.log("*****************************************************")
     if (!response) {
         return { "status": 500, "message": "No response from the database", "content": error }

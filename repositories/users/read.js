@@ -35,7 +35,7 @@ async function get(filter) {
  * @param {Object} filter
  * @returns {Object}
  */
-async function getUserProduct(filter = null) {
+async function getUserProduct(filter) {
   filter = {
     ...filter,
     include: [{
@@ -57,7 +57,7 @@ async function getUserProduct(filter = null) {
  * @param {Object} filter
  * @returns {Object}
  */
-async function getUserOned(filter = null) {
+async function getUserOned(filter) {
   filter = {
     ...filter,
     include: [{

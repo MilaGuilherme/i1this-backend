@@ -1,6 +1,7 @@
 
 const read = require('../repositories/categories/read')
 const write = require('../repositories/categories/write')
+const statusHelper = require("../helpers/statusHelper");
 
 /*
 * GET SERVICES
@@ -8,96 +9,65 @@ const write = require('../repositories/categories/write')
 
 /**
  * @get /categories
+ * @param {Object} filter
  * @returns {Promise}
  */
-async function get() {
-    return read.getCategories().then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No categories found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
-    })
-}
-
-/**
- * @get categories/{id}
- * @param {Number} id
- * @returns {Promise}
- */
-async function getById(id) {
-    return read.getCategoryById(id).then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No category with id ${id} was found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
+async function get(filter = null) {
+    filter = {
+        where: {
+            ...filter,
+        },
+    }
+    return read.get(filter).then((response) => {
+        return statusHelper(response, "No categories were found")
     })
 }
 
 /**
  * @get categories/{CategoryId}/products
- * @param {Number} id
+ * @param {Object} filter
  * @returns {Promise}
  */
-async function getProducts(id) {
-    return read.getCategoryProducts(id).then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No products in the category of ID ${id} were found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
+async function getProducts(filter) {
+    filter = {
+        where: {
+            ...filter,
+        },
+    }
+    return read.getCategoryProducts(filter).then((response) => {
+        return statusHelper(response, "No products were found in this category")
     })
 }
 
 /**
- * @get categories/{CategoryId}/watchers
- * @param {Number} CategoryId
+ * @get categories/{CategoryId}/users
+ * @param {Object} filter
  * @returns {Promise}
  */
-async function getWatchers(id) {
-    return read.getCategoryWatchers(id).then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No users watching in the category of ID ${id} were found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
-    })
-}
-
-/**
- * @get categories/{CategoryId}/parents
- * @param {Number} child_id
- * @returns {Promise}
- */
-async function getParents(id) {
-    return read.getCategoryParents(id).then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No parents to the category of ID ${id} were found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
+async function getWatchers(filter) {
+    filter = {
+        where: {
+            ...filter,
+        },
+    }
+    return read.getCategoryWatchers(filter).then((response) => {
+        return statusHelper(response, "No users were found in this category")
     })
 }
 
 /**
  * @get categories/{CategoryId}/children
- * @param {Number} parent_id
+ * @param {Object} filter
  * @returns {Promise}
  */
-async function getChildren(id) {
-    return read.getCategoryChildren(id).then((response) => {
-        response.status ?
-            res = response :
-            res = response.length === 0 ?
-                { "status": 404, "message": "Not Found", "content": `No children to the category of ID ${id} were found` } :
-                { "status": 200, "message": "success", "content": response }
-        return res;
+async function getChildren(filter) {
+    filter = {
+        where: {
+            "parentId": filter.id,
+        },
+    }
+    return read.get(filter).then((response) => {
+        return statusHelper(response, "No categories were found")
     })
 }
 
@@ -109,58 +79,33 @@ async function getChildren(id) {
 /**
  * @post /categories
  * @param {Object} data
+ * @param {number} auth
  * @returns {Promise}
  */
-async function post(data) {
-    if (!data.agent_id)
-        return {"status":403, message: 'missing: agent_id' }
-
-    else if (!data.data)
-        return {"status":403, message: 'missing: data' }
-
-    else if (!data.data.name)
-        return {"status":403, message: 'missing: data.name' }
-
-    else {
-        return write.insertCategory(data.data, data.agent_id)
+async function post(data, auth) {
+    if (auth.type == 1) {
+        return write.insertCategory(data)
             .then(response => {
-                response.status ?
-                    res = response :
-                    res = response.length === 0 ?
-                        { "status": 404, "message": "Not Found", "content": `` } :
-                        { "status": 201, "message": "success", "content": response }
-                return res;
+                return statusHelper(response)
             })
     }
 }
 
 /**
- * @post /categories/{parent_id}/children/{child_id}
- * @param {number} parent_id
- * @param {number} child_id
- * @param {Object} info
+ * @post /categories
+ * @param {Object} data
+ * @param {number} auth
  * @returns {Promise} 
  */
-async function postRelationship(parent_id, child_id, info) {
-    if (!info.agent_id)
-        return {"status":403, message: 'missing: agent_id' }
-
-    else if (!parent_id)
-        return {"status":403, message: 'missing: parent_id' }
-
-    else if (!child_id)
-        return {"status":403, message: 'missing: child_id' }
-
-    else {
-        const data = {
-            "parent_id": parent_id,
-            "child_id": child_id
-        }
-        return write.insertRelationship(data, info.agent_id)
+async function postRelationship(data, auth) {
+    let filter = {
+        "id": data.childId,
+        "parentId": data.parentId
+    }
+    if (auth.type == 1) {
+        return write.updateCategory(filter)
             .then(response => {
-                let res;
-                response.status ? res = response : res = { "status": 201, "message": "success", "content": response }
-                return res;
+                return statusHelper(response)
             })
     }
 }
@@ -171,26 +116,15 @@ async function postRelationship(parent_id, child_id, info) {
 
 /**
  * @put /categories/{CategoryId}
- * @param {number} id
  * @param {Object} data
+ * @param {number} auth
  * @returns {Promise}
  */
-async function update(id, data) {
-    if (!id)
-        return {"status":403, message: 'id' }
-
-    if (!data.agent_id)
-        return {"status":403, message: 'missing: agent_id' }
-
-    else if (!data.data)
-        return {"status":403, message: 'missing: data' }
-
-    else {
-        return write.updateCategory(id, data.data, data.agent_id)
+async function update(data,auth) {
+    if (auth.type == 1) {
+        return write.updateCategory(data)
             .then(response => {
-                let res;
-                response.status ? res = response : res = { "status": 201, "message": "success", "content": response }
-                return res;
+                return statusHelper(response)
             })
     }
 }
@@ -201,56 +135,36 @@ async function update(id, data) {
 
 /**
  * @delete categories/{CategoryId}
- * @param {number} id
- * @param {Object} info
+ * @param {Object} data
+ * @param {number} auth
  * @returns {Promise}
  */
-async function del(id, info) {
-    if (!id)
-        return {"status":403, message: 'id' }
-
-    if (!info.agent_id)
-        return {"status":403, message: 'missing: agent_id' }
-
-    else {
-        return write.removeCategory(id, info.agent_id)
+async function del(data, auth) {
+    if (auth.type == 1) {
+        return write.removeCategory(data)
             .then(response => {
-                let res;
-                response.status ? res = response : res = response === 0 ? { "status": 404, "content": "No content to delete" } : { "status": 202, "content": "Content deleted" }
-                return res;
+                return statusHelper(response)
             })
     }
 }
 
 /**
- * @delete /categories/{parent_id}/children/{child_id}
- * @param {number} parent_id
- * @param {number} child_id
- * @param {Object} info
+ * @delete /categories
+ * @param {Object} data
+ * @param {number} auth
  * @returns {Promise} 
  */
-async function deleteRelationship(parent_id, child_id, info) {
-    if (!info.agent_id)
-        return {"status":403, message: 'missing: agent_id' }
-
-    else if (!parent_id)
-        return {"status":403, message: 'missing: parent_id' }
-
-    else if (!child_id)
-        return {"status":403, message: 'missing: child_id' }
-
-    else {
-        const data = {
-            "parent_id": parent_id,
-            "child_id": child_id
-        }
-        return write.removeRelationship(data, info.agent_id)
+async function deleteRelationship(data,auth) {
+    let filter = {
+        "id": data.childId,
+        "parentId": 1
+    }
+    if (auth.type == 1) {
+        return write.updateCategory(filter)
             .then(response => {
-                let res;
-                response.status ? res = response : res = response === 0 ? { "status": 404, "content": "No content to delete" } : { "status": 202, "content": "Content deleted" }
-                return res;
+                return statusHelper(response)
             })
     }
 }
 
-module.exports = { get, getById, getProducts, getWatchers, getParents, getChildren, post, postRelationship, update, del, deleteRelationship }
+module.exports = { get, getProducts, getWatchers, getChildren, post, postRelationship, update, del, deleteRelationship }

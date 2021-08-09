@@ -17,35 +17,28 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
     let id = req.params.id
-    service.getById(id).then((response) => {
+    service.get({"id":id}).then((response) => {
         res.status(response.status).send(response)
     })
 });
 
 router.get('/:id/products', function (req, res) {
     let id = req.params.id
-    service.getProducts(id).then((response) => {
+    service.getProducts({"id":id}).then((response) => {
         res.status(response.status).send(response)
     })
 });
 
-router.get('/:id/watchers', function (req, res) {
+router.get('/:id/users', function (req, res) {
     let id = req.params.id
-    service.getWatchers(id).then((response) => {
-        res.status(response.status).send(response)
-    })
-})
-
-router.get('/:id/parents', function (req, res) {
-    let id = req.params.id
-    service.getParents(id).then((response) => {
+    service.getWatchers({"id":id}).then((response) => {
         res.status(response.status).send(response)
     })
 })
 
 router.get('/:id/children', function (req, res) {
     let id = req.params.id
-    service.getChildren(id).then((response) => {
+    service.getChildren({"id":id}).then((response) => {
         res.status(response.status).send(response)
     })
 })
@@ -56,27 +49,26 @@ router.get('/:id/children', function (req, res) {
  */
 router.post('/',verify, function (req, res) {
     let data = req.body;
-    service.post(data)
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.post(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.post('/:id/parents/:parent_id',verify, function (req, res) {
-    let data = req.body;
-    let child_id = req.params.id;
-    let parent_id = req.params.parent_id;
-    service.postRelationship(parent_id,child_id,data)
+router.post('/:childId/parents/:parentId',verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.postRelationship(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.post('/:id/children/:child_id',verify, function (req, res) {
-    let data = req.body;
-    let child_id = req.params.child_id;
-    let parent_id = req.params.id;
-    service.postRelationship(parent_id,child_id,data)
+router.post('/:parentId/child/:childId',verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.postRelationship(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -88,7 +80,9 @@ router.post('/:id/children/:child_id',verify, function (req, res) {
 
 router.put('/:id',verify, function (req, res) {
     let data = req.body;
-    service.update(req.params.id,data)
+    data.id = req.params.id
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.update(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
@@ -98,29 +92,27 @@ router.put('/:id',verify, function (req, res) {
  * DELETE ROUTES
  */
 router.delete('/:id',verify, function (req, res) {
-    let id = req.params.id
-    let data = req.body;
-    service.del(id,data)
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.del(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.delete('/:id/parents/:parent_id',verify, function (req, res) {
-    let data = req.body;
-    let child_id = req.params.id;
-    let parent_id = req.params.parent_id;
-    service.deleteRelationship(parent_id,child_id,data)
+router.delete('/:childId/parents/:parentId',verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.deleteRelationship(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
 });
 
-router.delete('/:id/children/:child_id',verify, function (req, res) {
-    let data = req.body;
-    let child_id = req.params.child_id;
-    let parent_id = req.params.id;
-    service.deleteRelationship(parent_id,child_id,data)
+router.delete('/:parentId/child/:childId',verify, function (req, res) {
+    let data = req.params;
+    let auth = jwt.decode(req.headers["auth-token"])
+    service.deleteRelationship(data,auth)
         .then((response) => {
             res.status(response.status).send(response)
         })
