@@ -1,4 +1,3 @@
-const methods = require('../../helpers/methodsHelper');
 const { User, Product, Category } = require("../../models")
 
 /**
