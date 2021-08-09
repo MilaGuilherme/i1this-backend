@@ -1,66 +1,83 @@
-const tables = require("../../db/tables.json")
-const methods = require('../../helpers/methodsHelper');
+const { User, Product,Proposal,Category } = require("../../models")
 
 /**
  * @get /products
+ * @param {Object} filter
  * @returns {Object}
  */
-function getProducts(params = null) {
-  if (Object.keys(params) == 0) {
-    return methods.getAll(tables.productsTable).then((response) => {
-      return response
-    })
+ async function get(filter) {
+  try {
+    return await Product.findAll(filter);
   }
-  else if (params.orderBy) {
-    return methods.getOrdered(tables.productsTable, params.orderBy).then((response) => {
-      return response
-    })
+  catch (err) {
+    return err;
   }
 }
 
 /**
- * @get products/{id}
- * @param {Number} id
- * @returns {Object}
+ * @get products/{ProductId}/onedby
+ * @param {Object} filter
+ * @returns {Promise}
  */
-function getProductByID(id) {
-  return methods.getBy(tables.productsTable, { "id": id }).then((response) => {
-    return response
-  })
+async function getProductOnes(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: User,
+      as:'oned',
+      where: { active: true },
+      attributes: ['id', 'name', 'UserTypeId']
+    }]
+  }
+  try {
+    return await Product.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
+}
+
+
+/**
+ * @get products/{ProductId}/proposals
+ * @param {Object} filter
+ * @returns {Promise}
+ */
+async function getProductProposals(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: Proposal,
+      where: { active: true },
+    }]
+  }
+  try {
+    return await Product.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
- * @get products/{product_id}/onedby
- * @param {Number} product_id
- * @returns {Object}
+ * @get products/{ProductId}/categories
+ * @param {Object} filter
+ * @returns {Promise}
  */
-function getProductOnes(product_id) {
-  return methods.getBy(tables.onedTable, { "product_id": product_id }).then((response) => {
-    return response
-  })
+ async function getProductCategories(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: Category,
+      as:'categories'
+    }]
+  }
+  try {
+    return await Product.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
-
-/**
- * @get products/{product_id}/proposals
- * @param {Number} product_id
- * @returns {Object}
- */
-function getProductProposals(product_id) {
-  return methods.getBy(tables.proposalsTable, { "product_id": product_id }).then((response) => {
-    return response
-  })
-}
-
-/**
- * @get products/{product_id}/categories
- * @param {Number} product_id
- * @returns {Object}
- */
-function getProductCategories(product_id) {
-  return methods.getBy(tables.PrdInCatTable, { "product_id": product_id }).then((response) => {
-    return response
-  })
-}
-
-module.exports = { getProducts, getProductByID, getProductOnes, getProductProposals, getProductCategories };
+module.exports = { get, getProductOnes, getProductProposals, getProductCategories };

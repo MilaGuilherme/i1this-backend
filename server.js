@@ -1,7 +1,9 @@
 const dotenv = require('dotenv');
 dotenv.config();
 const port = process.env.PORT;
-const db = require('./db/db')
+
+const {sequelize} = require('./models')
+
 const cors = require('cors')
 
 const express = require('express');
@@ -30,25 +32,14 @@ app.use('/proposals', proposalsRouter);
 app.use('/users', usersRouter);
 app.use('/usertypes', userTypesRouter);
 
-app.post('/', function (req, res) {
-  console.log(req.body)
-  res.send('home')
-})
-
-const server = app.listen(port, () => {
-  console.log("Your app is listening on port http://localhost:" + port);
-});
-
-process.on( 'SIGTERM', function () {
-
-  server.close(function () {
-    db.destroy();
-    console.log( "Closed out remaining connections.");
+app.listen(port, () => {
+  sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
   });
-
-  setTimeout( function () {
-    console.error("Could not close connections in time, forcefully shutting down");
-    process.exit(1); 
-  }, 30*1000);
-
+  console.log("Your app is listening on port http://localhost:" + port);
 });

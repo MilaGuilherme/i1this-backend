@@ -1,69 +1,67 @@
-const tables = require("../../db/tables.json")
 const methods = require('../../helpers/methodsHelper');
+const { User, Product, Category } = require("../../models")
 
 /**
  * @get /categories
- * @returns {Promise}
+ * @param {Object} filter
+ * @returns {Object}
  */
-function getCategories() {
-    return methods.getAll(tables.categoriesTable).then((response) => {
-        return response
-    })
+async function get(filter) {
+    try {
+        return await Category.findAll(filter);
+    }
+    catch (err) {
+        return err;
+    }
 }
 
 /**
- * @get categories/{id}
- * @param {Number} id
+ * @get categories/{CategoryId}/products
+ * @param {Object} filter
  * @returns {Promise}
  */
-function getCategoryById(id) {
-    return methods.getBy(tables.categoriesTable, { id }).then((response) => {
-        return response
-    })
+async function getCategoryProducts(filter) {
+    filter = {
+        ...filter,
+        include: [{
+            model: Product,
+            where: {
+                active: true
+            },
+            attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId']
+        }]
+    }
+    try {
+        return await Category.findAll(filter);
+    }
+    catch (err) {
+        return err;
+    }
 }
 
 /**
- * @get categories/{category_id}/products
- * @param {Number} category_id
+ * @get categories/{CategoryId}/watchers
+ * @param {Object} filter
  * @returns {Promise}
  */
-function getCategoryProducts(category_id) {
-    return methods.getBy(tables.PrdInCatTable, { "category_id": category_id }).then((response) => {
-        return response
-    })
+async function getCategoryWatchers(filter) {
+    filter = {
+        ...filter,
+        include: [{
+            model: User,
+            where: {
+                active: true
+            },
+            attributes: ['id', 'name', 'UserTypeId']
+        }]
+    }
+    try {
+        return await Category.findAll(filter);
+    }
+    catch (err) {
+        return err;
+    }
 }
 
-/**
- * @get categories/{category_id}/watchers
- * @param {Number} category_id
- * @returns {Promise}
- */
-function getCategoryWatchers(category_id) {
-    return methods.getBy(tables.watchedTable, { "category_id": category_id }).then((response) => {
-        return response
-    })
-}
 
-/**
- * @get categories/{category_id}/parents
- * @param {Number} child_id
- * @returns {Promise}
- */
-function getCategoryParents(child_id) {
-    return methods.getBy(tables.catParentsTable, { "child_id": child_id }).then((response) => {
-        return response
-    })
-}
-
-/**
- * @get categories/{category_id}/children
- * @param {Number} parent_id
- * @returns {Promise}
- */
-function getCategoryChildren(parent_id) {
-    return methods.getBy(tables.catParentsTable, { "parent_id": parent_id }).then((response) => {
-        return response
-    })
-}
-
-module.exports = { getCategories, getCategoryById, getCategoryProducts, getCategoryWatchers, getCategoryParents, getCategoryChildren };
+module.exports = { get, getCategoryProducts, getCategoryWatchers };

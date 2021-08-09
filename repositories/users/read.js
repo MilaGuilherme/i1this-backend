@@ -1,95 +1,145 @@
-const tables = require("../../db/tables.json")
-const methods = require('../../helpers/methodsHelper');
+const { User, Product,Proposal,Category } = require("../../models")
+const { Op } = require("sequelize");
 
 
 /**
- * @get /users
+ * @get /login
  * @returns {Object}
  */
-function getUsers() {
-  return methods.getAll(tables.userTable).then((response) => {
-    return response
-  })
+async function login(filter) {
+  try {
+    return await User.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
  * @get /users
+ * @param {Object} filter
  * @returns {Object}
  */
-function getByEmail(email) {
-  return methods.getBy(tables.userTable,{"email":email}).then((response) => {
-    return response
-  })
-}
-
-/**
- * @get users/{id}
- * @param {Number} id
- * @returns {Object}
- */
-function getUserByID(id) {
-  return methods.getBy(tables.userTable, { "id": id }).then((response) => {
-    return response
-  })
+async function get(filter) {
+  try {
+    return await User.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
  * @get users/{id}/products
 
- * @param {Number} created_by
+ * @param {Object} filter
  * @returns {Object}
  */
-function getUserProduct(created_by) {
-  return methods.getBy(tables.productsTable, { "created_by": created_by }).then((response) => {
-    return response
-  })
-}
-
-
-/**
- * @get users/{user_id}/ones
- * @param {Number} user_id
- * @returns {Object}
- */
-function getUserOned(user_id) {
-  return methods.getBy(tables.onedTable, { "user_id": user_id }).then((response) => {
-    return response
-  })
-}
-
-/**
- * @get users/{user_id}/categories
- * @param {Number} user_id
- * @returns {Object}
- */
-function getUserWatched(user_id) {
-  return methods.getBy(tables.watchedTable, { "user_id": user_id }).then((response) => {
-    return response
-  })
+async function getUserProduct(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: Product,
+      where: { active: true },
+      attributes: ['id', 'name', 'price', 'description','photos',]
+    }]
+  }
+  try {
+    return await User.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
- * @get users/{user_id}/accepted
-
- * @param {Number} user_id
+ * @get users/{id}/products
+ * @param {Object} filter
  * @returns {Object}
  */
-function getUserAccepted(user_id) {
-  return methods.getBy(tables.acceptedTable, { "user_id": user_id }).then((response) => {
-    return response
-  })
+async function getUserOned(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: Product,
+      as: 'oned',
+      where: { id:{[Op.not]:null} },
+      attributes: ['id', 'name', 'price', 'description']
+    }]
+  }
+  try {
+    return await User.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
- * @get users/{user_id}/accepted
-
- * @param {Number} user_id
+ * @get users/{UserId}/accepted
+ * @param {Object} filter
  * @returns {Object}
  */
-function getUserProposed(user_id) {
-  return methods.getBy(tables.proposalsTable, { "created_by": user_id }).then((response) => {
-    return response
-  })
+async function getUserAccepted(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: Proposal,
+      as: 'accepted',
+      where: { id:{[Op.not]:null} },
+      attributes: ['id', 'photos', 'links', 'price','minimunQty','requiresIntent','productId']
+    }]
+  }
+  try {
+    return await User.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
-module.exports = { getUsers, getByEmail, getUserByID, getUserProduct, getUserOned, getUserWatched, getUserAccepted,getUserProposed };
+/**
+ * @get users/{UserId}/created
+ * @param {Object} filter
+ * @returns {Object}
+ */
+async function getUserProposed(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: Proposal,
+      where: { id:{[Op.not]:null} },
+      attributes: ['id', 'photos', 'links', 'price','minimunQty','requiresIntent','productId']
+    }]
+  }
+  try {
+    return await User.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
+}
+
+/**
+ * @get users/{UserId}/categories
+ * @param {Object} filter
+ * @returns {Object}
+ */
+ async function getUserWatched(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: Category,
+      as: 'category',
+      where: { id:{[Op.not]:null} },
+    }]
+  }
+  try {
+    return await User.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
+}
+
+module.exports = { login, get, getUserProduct, getUserOned, getUserWatched, getUserAccepted, getUserProposed };

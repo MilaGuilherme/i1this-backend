@@ -1,37 +1,43 @@
-const tables = require("../../db/tables.json")
- const methods = require('../../helpers/methodsHelper');
+const { User,Proposal } = require("../../models")
+const { Op } = require("sequelize");
 
 
 /**
- * @get proposals/
+ * @param {Object} filter
  * @returns {Object}
  */
-function getProposals() {
-  return methods.getAll(tables.proposalsTable).then((response) => {
-    return response
-  })
+ async function get(filter) {
+  try {
+    return await Proposal.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
 /**
- * @get proposals/{id}
- * @param {Number} id
+ * @get proposals/{ProposalId}/users
+ * @param {Object} filter
  * @returns {Object}
  */
-function getProposalsByID(id) {
-  return methods.getBy(tables.proposalsTable, { "id": id }).then((response) => {
-    return response
-  })
+async function getProposalUsers(filter) {
+  filter = {
+    ...filter,
+    include: [{
+      model: User,
+      as: 'accepted',
+      where: { id:{[Op.not]:null},UserTypeId:3 },
+      attributes: ['id', 'name', 'UserTypeId']
+    }]
+  }
+  try {
+    return await Proposal.findAll(filter);
+  }
+  catch (err) {
+    return err;
+  }
 }
 
-/**
- * @get proposals/{proposal_id}/users
- * @param {Number} proposal_id
- * @returns {Object}
- */
-function getProposalUsers(proposal_id) {
-  return methods.getBy(tables.acceptedTable, { "proposal_id": proposal_id }).then((response) => {
-    return response
-  })
-}
 
-module.exports = { getProposals, getProposalsByID, getProposalUsers };
+
+module.exports = { get, getProposalUsers };
