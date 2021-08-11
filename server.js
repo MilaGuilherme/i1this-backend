@@ -21,7 +21,7 @@ const userTypesRouter = require("./controllers/userTypes");
 
 const corsOptions = {
   origin: process.env.FRONTEND,
-  exposedHeaders: ['auth-token']
+  exposedHeaders: ['auth-token','id','type'],
 }
 
 app.use(cors(corsOptions));

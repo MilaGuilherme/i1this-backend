@@ -10,17 +10,21 @@ router.post('/signin', (req, res) => {
     const data = req.body
     if (data.email) {
         userService.signin(data.email).then((response) => {
-            const result = response.content[0].dataValues
-            const id = result.id
-            const pass = result.password
-            const UserTypeId = result.UserTypeId
-            bcrypt.compare(data.password || 'none', pass).then((validPass) => {
-                if (validPass) {
-                    const token = jwt.sign({ user: id, type: UserTypeId}, process.env.TOKEN_KEY)
-                    res.set('auth-token', token).status(200).send("Logged in")
-                }
-                else res.status(403).send('Incorrect password')
-            })
+            if (response.content != "No user with this e-mail was found") {
+                const result = response.content[0].dataValues
+                console.log(response.content)
+                const id = result.id
+                const pass = result.password
+                const UserTypeId = result.UserTypeId
+                bcrypt.compare(data.password || 'none', pass).then((validPass) => {
+                    if (validPass) {
+                        const token = jwt.sign({ user: id, type: UserTypeId }, process.env.TOKEN_KEY)
+                        res.set({ 'auth-token': token, 'id': id, 'type': UserTypeId }).status(200).send("Logged in")
+                    }
+                    else res.status(403).send('Incorrect password')
+                })
+            }
+            else res.status(404).send('No user found')
         })
     }
     else res.status(403).send('Missing email')

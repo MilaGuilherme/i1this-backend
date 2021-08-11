@@ -12,7 +12,8 @@ async function get(filter) {
       model: Category,
       as: 'categories',
       attributes: ['id', 'name'],
-      required: true
+      required: true,
+      through: { attributes: [] }
     }]
   }
   try {

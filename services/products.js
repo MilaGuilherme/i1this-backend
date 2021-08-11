@@ -28,7 +28,7 @@ async function get(filter = null, order = null, limit = null) {
         ...limit,
         ...order,
         attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId',
-            [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = id)`), 'ones']]
+            [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = Product.id)`), 'ones']]
     }
     console.log(filter)
     return read.get(filter).then((response) => {
@@ -48,7 +48,8 @@ async function getCategories(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId', [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = id)`), 'ones']]
+        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId',
+        [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = Product.id)`), 'ones']]
     }
     return read.getProductCategories(filter).then((response) => {
         return statusHelper(response, "No products were found in this category")
@@ -66,7 +67,8 @@ async function getOnes(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId', [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = id)`), 'ones']]
+        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId',
+        [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = Product.id)`), 'ones']]
     }
     return read.getProductOnes(filter).then((response) => {
         return statusHelper(response, "This product wasn't +1 yet")
@@ -84,7 +86,8 @@ async function getProposals(filter) {
             ...filter,
             active: true
         },
-        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId', [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = id)`), 'ones']]
+        attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId',
+        [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = Product.id)`), 'ones']]
     }
     return read.getProductProposals(filter).then((response) => {
         return statusHelper(response, "No products were found in this category")
@@ -103,14 +106,17 @@ async function getProposals(filter) {
  * @returns {Promise} 
  */
 async function post(data, auth) {
-    if (auth.user == data.id || auth.type == 1) {
+    if (auth.user == data.userId || auth.type == 1) {
         data.UserId = auth.user
         return write.insertProduct(data)
             .then(response => {
                 return statusHelper(response)
             })
     }
-}
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
+    }}
 
 /**
  * @post /products/{ProductId}/category/{CategoryId}
@@ -119,11 +125,15 @@ async function post(data, auth) {
  * @returns {Promise} 
  */
 async function postRelationship(data, auth) {
-    if (auth.user == data.id || auth.type == 1) {
+    if (auth.user == data.userId || auth.type == 1) {
         return write.insertProductInCategory(data)
             .then(response => {
                 return statusHelper(response)
             })
+    }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
     }
 }
 
@@ -138,7 +148,7 @@ async function postRelationship(data, auth) {
  * @returns {Promise}
  */
 async function update(data, auth) {
-    if (auth.user == data.id || auth.type == 1) {
+    if (auth.user == data.userId || auth.type == 1) {
         return write.updateProduct(data)
             .then(response => {
                 return statusHelper(response)
@@ -162,7 +172,7 @@ async function update(data, auth) {
  * @returns {Promise} 
  */
 async function deleteRelationship(data, auth) {
-    if (auth.user == data.id || auth.type == 1) {
+    if (auth.user == data.userId || auth.type == 1) {
         return write.removeProductFromCategory(data)
             .then(response => {
                 return statusHelper(response)

@@ -198,6 +198,10 @@ async function postOne(data, auth) {
                 return statusHelper(response)
             })
     }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
+    }
 }
 
 /**
@@ -213,6 +217,10 @@ async function postWatchCategory(data, auth) {
                 return statusHelper(response)
             })
     }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
+    }
 }
 
 /**
@@ -227,6 +235,10 @@ async function postAcceptProposal(data, auth) {
             .then(response => {
                 return statusHelper(response)
             })
+    }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
     }
 }
 
@@ -247,6 +259,10 @@ async function update(data, auth) {
                 return statusHelper(response)
             })
     }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
+    }
 }
 
 /*
@@ -266,6 +282,10 @@ async function deleteOne(data,auth) {
                 return statusHelper(response)
             })
     }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
+    }
 }
 
 /**
@@ -281,6 +301,10 @@ async function deleteWatch(data,auth) {
                 return statusHelper(response)
             })
     }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
+    }
 }
 
 /**
@@ -295,6 +319,10 @@ async function deleteAcceptance(data,auth) {
             .then(response => {
                 return statusHelper(response)
             })
+    }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
     }
 }
 

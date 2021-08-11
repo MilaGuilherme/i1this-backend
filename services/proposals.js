@@ -71,11 +71,15 @@ async function getProposalAcceptees(filter) {
  * @returns {Promise}
  */
 async function post(data,auth) {
-    if (auth.user == data.id || auth.type == 1) {
+    if (auth.user == data.userId || auth.type == 1) {
         return write.insertProposal(data)
             .then(response => {
                 return statusHelper(response)
             })
+    }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
     }
 }
 
@@ -90,11 +94,15 @@ async function post(data,auth) {
  * @returns {Promise}
  */
 async function update(data,auth) {
-    if (auth.user == data.id || auth.type == 1) {
+    if (auth.user == data.userId || auth.type == 1) {
         return write.updateProposal(data)
             .then(response => {
                 return statusHelper(response)
             })
+    }
+    else {
+        res = { "status": 403, "message": "Forbidden", "content": '' }
+        return res;
     }
 }
 

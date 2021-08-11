@@ -17,6 +17,7 @@ async function get(filter = null) {
         where: {
             ...filter,
         },
+        attributes: ['id', 'name']
     }
     return read.get(filter).then((response) => {
         return statusHelper(response, "No categories were found")
@@ -33,6 +34,7 @@ async function getProducts(filter) {
         where: {
             ...filter,
         },
+        attributes: ['id', 'name']
     }
     return read.getCategoryProducts(filter).then((response) => {
         return statusHelper(response, "No products were found in this category")
@@ -90,6 +92,7 @@ async function post(data, auth) {
             })
     }
 }
+
 
 /**
  * @post /categories

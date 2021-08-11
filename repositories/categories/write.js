@@ -15,6 +15,7 @@ async function insertCategory(data) {
     }
 }
 
+
 /**
  * @put /categories/{CategoryId}
  * @param {Object} data

@@ -1,4 +1,4 @@
-const { User, Product, Category } = require("../../models")
+const { sequelize, User, Product, Category } = require("../../models")
 
 /**
  * @get /categories
@@ -27,7 +27,8 @@ async function getCategoryProducts(filter) {
             where: {
                 active: true
             },
-            attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId']
+            attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId',[sequelize.literal('(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = `Products`.`id`)'), 'ones']],
+            through: { attributes: [] }
         }]
     }
     try {

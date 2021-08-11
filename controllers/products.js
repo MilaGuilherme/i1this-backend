@@ -51,6 +51,7 @@ router.get('/:id/proposals', function (req, res) {
 router.post('/', verify, function (req, res) {
     let data = req.body;
     let auth = jwt.decode(req.headers["auth-token"])
+    console.log(data)
     service.post(data,auth)
         .then((response) => {
             res.status(response.status).send(response)

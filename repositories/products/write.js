@@ -28,7 +28,6 @@ async function insertProduct(data) {
  */
  async function insertProductInCategory(data) {
     try {
-        console.log(data)
         return Product.findOne({ where: { id: data.id } }).then(product => {
             return product.addCategories(data.CategoryId)
         }).catch(err => { return err })

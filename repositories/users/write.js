@@ -40,7 +40,14 @@ async function insertOne(data) {
     try {
         return User.findOne({ where: { id: data.id } }).then(user => {
             return user.addOned(data.ProductId)
-        }).catch(err => { return err })
+        }).catch(err => {
+            if (err.errors.validatorKey = 'not_unique') {
+                return User.findOne({ where: { id: data.id } }).then(user => {
+                    return user.removeOned(data.ProductId)
+                })
+            }
+            return err
+        })
     }
     catch (err) {
         return err;
