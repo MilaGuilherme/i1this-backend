@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate({Product,UserType,Category,Proposal}) {
       this.hasMany(Proposal)
-      this.hasMany(Product)
+      this.hasMany(Product,{foreignKey:'UserId'})
       this.belongsToMany(Category,{through:'User_Category',as:'category',unique: false,constraints: false})
       this.belongsToMany(Proposal,{through:'Proposal_Accepted',as:'accepted',unique: false,constraints: false})
       this.belongsToMany(Product,{through:'Product_Oned_By',as:'oned',unique: false,constraints: false})

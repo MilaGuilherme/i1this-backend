@@ -6,15 +6,39 @@ const { User, Product, Proposal, Category } = require("../../models")
  * @returns {Object}
  */
 async function get(filter) {
-  filter = {
-    ...filter,
-    include: [{
-      model: Category,
-      as: 'categories',
-      attributes: ['id', 'name'],
-      required: true,
-      through: { attributes: [] }
-    }]
+  if (typeof filter.where.id == 'string') {
+    filter = {
+      ...filter,
+      include: [{
+        model: Category,
+        as: 'categories',
+        attributes: ['id', 'name'],
+        required: true,
+        through: { attributes: [] }
+      }, {
+        model: User,
+        as: 'owner',
+        attributes: ['id', 'name'],
+        required: true,
+      }, {
+        model: Proposal,
+        as: 'proposals',
+        attributes: ['id','photos', 'links','price','minimunQty','requiresIntent','dueDate'],
+      }
+      ]
+    }
+  }
+  else {
+    filter = {
+      ...filter,
+      include: [{
+        model: Category,
+        as: 'categories',
+        attributes: ['id', 'name'],
+        required: true,
+        through: { attributes: [] }
+      }]
+    }
   }
   try {
     return await Product.findAll(filter);

@@ -63,8 +63,8 @@ async function start() {
         })
     await Proposal.bulkCreate([
         {
-            "photos": [{"alt":"","src":"https://via.placeholder.com/150"},{"alt":"","src":"https://via.placeholder.com/250"}],
             "links": "https://i1this.com/",
+            "photos":[{"alt":"","src":"https://via.placeholder.com/150"},{"alt":"","src":"https://via.placeholder.com/250"}],
             "price": 10.45,
             "minimunQty": 0,
             "requiresIntent": false,
@@ -73,11 +73,11 @@ async function start() {
             "UserId": 2,
         },
         {
-            "photos": [{"alt":"","src":"https://via.placeholder.com/150"},{"alt":"","src":"https://via.placeholder.com/250"}],
             "links": "https://i1this.com/",
+            "photos":[{"alt":"","src":"https://via.placeholder.com/150"},{"alt":"","src":"https://via.placeholder.com/250"}],
             "price": 10.45,
-            "minimunQty": 0,
-            "requiresIntent": false,
+            "minimunQty": 2,
+            "requiresIntent": true,
             "dueDate": new Date(),
             "ProductId": 1,
             "UserId": 2

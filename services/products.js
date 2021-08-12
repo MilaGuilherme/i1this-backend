@@ -30,7 +30,6 @@ async function get(filter = null, order = null, limit = null) {
         attributes: ['id', 'name', 'price', 'description', 'photos', 'UserId',
             [sequelize.literal(`(SELECT COUNT(*) FROM product_oned_by WHERE ProductId = Product.id)`), 'ones']]
     }
-    console.log(filter)
     return read.get(filter).then((response) => {
         return statusHelper(response, "No products were found")
     })
