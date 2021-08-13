@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     photos: {
       type: DataTypes.JSON,
     },
-    links: {
+    link: {
       type: DataTypes.STRING,
       allowNull:false,
     },

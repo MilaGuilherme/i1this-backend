@@ -109,7 +109,7 @@ async function getUserProposed(filter) {
     include: [{
       model: Proposal,
       where: { id:{[Op.not]:null} },
-      attributes: ['id', 'photos', 'links', 'price','minimunQty','requiresIntent','productId']
+      attributes: ['id', 'photos', 'link', 'price','minimunQty','requiresIntent','productId']
     }]
   }
   try {

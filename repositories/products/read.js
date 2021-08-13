@@ -23,7 +23,7 @@ async function get(filter) {
       }, {
         model: Proposal,
         as: 'proposals',
-        attributes: ['id','photos', 'links','price','minimunQty','requiresIntent','dueDate'],
+        attributes: ['id', 'photos', 'link', 'price', 'minimunQty', 'requiresIntent', 'dueDate'],
       }
       ]
     }
