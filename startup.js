@@ -104,14 +104,7 @@ async function start() {
             "price": 77.00,
             "description": "Folding bench made of natural pine wood, great for use at home with in commerce. Size: 50 cm tall, 35x35 cm seat.",
             "photos": [{ "alt": "", "src": "https://www.i1this.com/img/products/11/img-product-11-1.png" }, { "alt": "", "src": "https://www.i1this.com/img/products/11/img-product-11-2.png" }],
-        },
-        {
-            "name": "ZeeDog guide with Shock Absorber",
-            "UserId": 3,
-            "price": 109.00,
-            "description": "ZeeDog's fatboy bumper leash is perfect for puppies who think they're buffalo. It’s shock absorbing spring absorbs the impact of the pull, relieving strain on your wrist and shoulder.",
-            "photos": [{ "alt": "", "src": "https://www.i1this.com/img/products/12/img-product-12-1.png" }, { "alt": "", "src": "https://www.i1this.com/img/products/12/img-product-12-2.png" }, { "alt": "", "src": "https://www.i1this.com/img/products/12/img-product-12-3.png" }],
-        },
+        }
 
     ])
     await Category.create(
@@ -151,9 +144,6 @@ async function start() {
         {
             "name": "Pets",
             "parentId": 1
-        })
-        .then(category => {
-            category.addProducts(12)
         })
     await Proposal.bulkCreate([
         {
@@ -265,17 +255,7 @@ async function start() {
             "dueDate": new Date(),
             "ProductId": 11,
             "UserId": 2,
-        },
-        {
-            "link": "https://www.enjoei.com.br/p/guia-com-amortecedor-zee-dog-fatboy-para-caes-g-58681476?rsid=d71cfd37-0e8f-4b4c-82bd-410891ce4ab7-1628804451039&rsp=5&rspix=19",
-            "photos": [{ "alt": "", "src": "https://www.i1this.com/img/products/12/img-product-12-1.png" }, { "alt": "", "src": "https://www.i1this.com/img/products/12/img-product-12-2.png" }, { "alt": "", "src": "https://www.i1this.com/img/products/12/img-product-12-3.png" }],
-            "price": 109.00,
-            "minimunQty": 3,
-            "requiresIntent": true,
-            "dueDate": new Date(),
-            "ProductId": 12,
-            "UserId": 2,
-        },
+        }
 
     ])
     await User.findOne({ where: { id: 3 } }).then(user => {
