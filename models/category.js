@@ -5,8 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     static associate({Product,Category,User}) {
-        this.belongsToMany(Product,{through:'Product_Category',unique: false,constraints: false})
-        this.belongsToMany(User,{through:'User_Category',unique: false,constraints: false})
+        this.belongsToMany(Product,{through:'product_pategory',unique: false,constraints: false})
+        this.belongsToMany(User,{through:'user_category',unique: false,constraints: false})
         this.belongsTo(Category,{as:"parent"})
     }
   };
@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     paranoid: true,
+    tableName: 'categories',
     modelName: 'Category',
   });
   return Category;

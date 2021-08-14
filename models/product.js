@@ -7,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate({User,Category,Proposal}) {
       this.belongsTo(User,{as:'owner',foreignKey:'UserId'})
       this.hasMany(Proposal,{as:'proposals'})
-      this.belongsToMany(Category,{through:'Product_Category', foreignKey: 'ProductId', as:'categories',unique: false,constraints: false})
-      this.belongsToMany(User,{through:'Product_Oned_By',as:'oned',unique: false,constraints: false})
+      this.belongsToMany(Category,{through:'product_category', foreignKey: 'ProductId', as:'categories',unique: false,constraints: false})
+      this.belongsToMany(User,{through:'product_oned_by',as:'oned',unique: false,constraints: false})
     }
   };
   Product.init({
@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Product',
+    tableName: 'products',
     paranoid: true,
   });
   return Product;

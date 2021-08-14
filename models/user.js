@@ -7,9 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate({Product,UserType,Category,Proposal}) {
       this.hasMany(Proposal)
       this.hasMany(Product,{foreignKey:'UserId'})
-      this.belongsToMany(Category,{through:'User_Category',as:'category',unique: false,constraints: false})
-      this.belongsToMany(Proposal,{through:'Proposal_Accepted',as:'accepted',unique: false,constraints: false})
-      this.belongsToMany(Product,{through:'Product_Oned_By',as:'oned',unique: false,constraints: false})
+      this.belongsToMany(Category,{through:'user_category',as:'category',unique: false,constraints: false})
+      this.belongsToMany(Proposal,{through:'proposal_accepted',as:'accepted',unique: false,constraints: false})
+      this.belongsToMany(Product,{through:'product_oned_by',as:'oned',unique: false,constraints: false})
       this.belongsTo(UserType)
     }
   };
@@ -45,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
+    tableName: 'users',
     modelName: 'User',
   });
   return User;
