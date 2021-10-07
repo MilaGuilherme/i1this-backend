@@ -2,3 +2,4 @@ node_modules
 .env
 .vscode
 server_prod.js
+config/config.json
