@@ -8,4 +8,4 @@ Update the file inside /config to your settings
 #### To build and fill the database with basic infor:
 `node startup.js`
 #### To start the server:
-npm run start
+`npm run start`
